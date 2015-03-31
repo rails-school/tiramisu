@@ -26,7 +26,7 @@ public class LandingActivity extends BaseActivity {
 
     public void onEventMainThread(ErrorEvent event) {
         Crouton
-            .makeText(this, event.message, Style.ALERT)
+            .makeText(this, event.getMessage(), Style.ALERT)
             .show();
     }
 }

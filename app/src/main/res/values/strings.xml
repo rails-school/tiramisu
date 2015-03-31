@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">Tiramisu</string>
 
-    <string name="api_endpoint">https://www.railsschool.org/</string>
+    <!--<string name="api_endpoint">https://www.railsschool.org/</string>-->
+    <string name="api_endpoint">http://private-fd5c8-tiramisu.apiary-mock.com/</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>

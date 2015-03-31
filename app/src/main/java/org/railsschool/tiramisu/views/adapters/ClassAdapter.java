@@ -27,7 +27,7 @@ public class ClassAdapter extends SmartAdapter<Integer> {
         return String.format(
             getContext().getString(
                 R.string.class_teacher_introduction,
-                teacher.name
+                teacher.getName()
             )
         );
     }
@@ -47,21 +47,21 @@ public class ClassAdapter extends SmartAdapter<Integer> {
             .getPair(
                 itemAt(position),
                 (lesson, teacher) -> {
-                    headline.setText(lesson.title);
-                    digest.setText(lesson.summary);
+                    headline.setText(lesson.getTitle());
+                    digest.setText(lesson.getSummary());
                     teacherIntro.setText(_getTeacherIntro(teacher));
                 },
                 (newLesson) -> {
-                    if (!headline.getText().equals(newLesson.title)) {
-                        headline.setText(newLesson.title);
+                    if (!headline.getText().equals(newLesson.getTitle())) {
+                        headline.setText(newLesson.getTitle());
                     }
 
-                    if (!digest.getText().equals(newLesson.summary)) {
-                        headline.setText(newLesson.summary);
+                    if (!digest.getText().equals(newLesson.getSummary())) {
+                        headline.setText(newLesson.getSummary());
                     }
                 },
                 (newUser) -> {
-                    if (!teacherIntro.getText().equals(newUser.name)) {
+                    if (!teacherIntro.getText().equals(newUser.getName())) {
                         teacherIntro.setText(_getTeacherIntro(newUser));
                     }
                 },

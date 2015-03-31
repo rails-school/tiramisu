@@ -58,7 +58,7 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
 
         Action<Lesson> getTeacher = (lesson) -> {
             _userBusiness.find(
-                lesson.teacherId,
+                lesson.getTeacherId(),
                 (teacher) -> {
                     success.run(lesson, teacher);
                 },

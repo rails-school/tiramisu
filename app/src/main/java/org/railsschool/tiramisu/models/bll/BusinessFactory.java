@@ -20,7 +20,7 @@ public class BusinessFactory {
             _user = new UserBusiness(
                 context,
                 RailsSchoolAPIOutletFactory.provide(context),
-                DAOFactory.provideUser()
+                DAOFactory.provideUser(context)
             );
         }
 
@@ -33,7 +33,7 @@ public class BusinessFactory {
                 context,
                 RailsSchoolAPIOutletFactory.provide(context),
                 provideUser(context),
-                DAOFactory.provideLesson()
+                DAOFactory.provideLesson(context)
             );
         }
 

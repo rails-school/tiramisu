@@ -10,7 +10,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.railsschool.tiramisu.R;
+import org.railsschool.tiramisu.models.beans.Lesson;
+import org.railsschool.tiramisu.models.beans.User;
 import org.railsschool.tiramisu.models.bll.remote.interfaces.IRailsSchoolAPIOutlet;
+import org.railsschool.tiramisu.models.bll.serializers.LessonSerializer;
+import org.railsschool.tiramisu.models.bll.serializers.UserSerializer;
 
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
@@ -27,6 +31,8 @@ class RailsSchoolAPIOutlet implements IRailsSchoolAPIOutlet {
         this._context = context;
 
         Gson gson = new GsonBuilder()
+            .registerTypeAdapter(User.class, new UserSerializer())
+            .registerTypeAdapter(Lesson.class, new LessonSerializer())
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .create();
 

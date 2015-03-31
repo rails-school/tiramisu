@@ -1,7 +1,7 @@
 package org.railsschool.tiramisu.models.bll.remote;
 
 import org.railsschool.tiramisu.models.beans.Lesson;
-import org.railsschool.tiramisu.models.beans.SchoolClass;
+import org.railsschool.tiramisu.models.bll.structs.SchoolClass;
 import org.railsschool.tiramisu.models.beans.User;
 
 import java.util.List;

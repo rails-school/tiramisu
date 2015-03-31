@@ -1,12 +1,15 @@
 package org.railsschool.tiramisu.models.bll;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.coshx.chocolatine.utils.actions.Action;
 
 import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.models.bll.remote.IRailsSchoolAPI;
 import org.railsschool.tiramisu.models.bll.remote.interfaces.IRailsSchoolAPIOutlet;
+
+import retrofit.RetrofitError;
 
 /**
  * @class BaseBusiness
@@ -32,5 +35,10 @@ abstract class BaseBusiness {
             },
             () -> failure.run(_context.getString(R.string.error_no_connection))
         );
+    }
+
+    public void processError(RetrofitError error, Action<String> failure) {
+        Log.e(getClass().getSimpleName(), error.getMessage(), error);
+        failure.run(_context.getString(R.string.error_default));
     }
 }

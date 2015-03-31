@@ -20,10 +20,9 @@ public class UserSerializer implements JsonDeserializer<User> {
         User outcome = new User();
         JsonObject o = json.getAsJsonObject();
 
-        outcome
-            .setId(o.get("id").getAsInt())
-            .setName(o.get("name").getAsString())
-            .isTeacher(o.get("teacher").getAsBoolean());
+        outcome.setId(o.get("id").getAsInt());
+        outcome.setName(o.get("name").getAsString());
+        outcome.setTeacher(o.get("teacher").getAsBoolean());
 
         return outcome;
     }

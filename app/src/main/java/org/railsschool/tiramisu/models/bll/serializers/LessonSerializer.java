@@ -20,14 +20,13 @@ public class LessonSerializer implements JsonDeserializer<Lesson> {
         Lesson outcome = new Lesson();
         JsonObject o = json.getAsJsonObject();
 
-        outcome
-            .setId(o.get("id").getAsInt())
-            .setTitle(o.get("title").getAsString())
-            .setSummary(o.get("summary").getAsString())
-            .setDescription(o.get("description").getAsString())
-            .setStartTime(o.get("start_time").getAsString())
-            .setEndTime(o.get("end_time").getAsString())
-            .setTeacherId(o.get("teacher_id").getAsInt());
+        outcome.setId(o.get("id").getAsInt());
+        outcome.setTitle(o.get("title").getAsString());
+        outcome.setSummary(o.get("summary").getAsString());
+        outcome.setDescription(o.get("description").getAsString());
+        outcome.setStartTime(o.get("start_time").getAsString());
+        outcome.setEndTime(o.get("end_time").getAsString());
+        outcome.setTeacherId(o.get("teacher_id").getAsInt());
 
         return outcome;
     }

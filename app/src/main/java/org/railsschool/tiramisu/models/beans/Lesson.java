@@ -9,74 +9,67 @@ import io.realm.annotations.PrimaryKey;
  */
 public class Lesson extends RealmObject {
     @PrimaryKey
-    private int    _id;
-    private String _title;
-    private String _summary;
-    private String _description;
-    private String _startTime;
-    private String _endTime;
-    private int    _teacherId;
+    private int    id;
+    private String title;
+    private String summary;
+    private String description;
+    private String startTime;
+    private String endTime;
+    private int    teacherId;
 
     public int getId() {
-        return _id;
+        return id;
     }
 
-    public Lesson setId(int value) {
-        _id = value;
-        return this;
+    public void setId(int value) {
+        id = value;
     }
 
     public String getTitle() {
-        return _title;
+        return title;
     }
 
-    public Lesson setTitle(String value) {
-        _title = value;
-        return this;
+    public void setTitle(String value) {
+        title = value;
     }
 
     public String getSummary() {
-        return _summary;
+        return summary;
     }
 
-    public Lesson setSummary(String value) {
-        _summary = value;
-        return this;
+    public void setSummary(String value) {
+        summary = value;
     }
 
     public String getDescription() {
-        return _description;
+        return description;
     }
 
-    public Lesson setDescription(String value) {
-        _description = value;
-        return this;
+    public void setDescription(String value) {
+        description = value;
     }
 
     public String getStartTime() {
-        return _startTime;
+        return startTime;
     }
 
-    public Lesson setStartTime(String value) {
-        _startTime = value;
-        return this;
+    public void setStartTime(String value) {
+        startTime = value;
     }
 
     public String getEndTime() {
-        return _endTime;
+        return endTime;
     }
 
-    public Lesson setEndTime(String value) {
-        _endTime = value;
-        return this;
+    public void setEndTime(String value) {
+        endTime = value;
     }
 
     public int getTeacherId() {
-        return _teacherId;
+        return teacherId;
     }
 
-    public Lesson setTeacherId(int value) {
-        _teacherId = value;
-        return this;
+    public void setTeacherId(int value) {
+        teacherId = value;
     }
 }

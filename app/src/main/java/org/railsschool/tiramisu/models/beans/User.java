@@ -9,34 +9,31 @@ import io.realm.annotations.PrimaryKey;
  */
 public class User extends RealmObject {
     @PrimaryKey
-    private int     _id;
-    private String  _name;
-    private boolean _teacher;
+    private int     id;
+    private String  name;
+    private boolean isTeacher;
 
     public int getId() {
-        return _id;
+        return id;
     }
 
-    public User setId(int value) {
-        _id = value;
-        return this;
+    public void setId(int value) {
+        id = value;
     }
 
     public String getName() {
-        return _name;
+        return name;
     }
 
-    public User setName(String value) {
-        _name = value;
-        return this;
+    public void setName(String value) {
+        name = value;
     }
 
     public boolean isTeacher() {
-        return _teacher;
+        return isTeacher;
     }
 
-    public User isTeacher(boolean value) {
-        _teacher = value;
-        return this;
+    public void setTeacher(boolean value) {
+        isTeacher = value;
     }
 }

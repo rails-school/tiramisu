@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_default">
+        Whoops! An unknown error has occured. Please try again!
+    </string>
+
+    <string name="error_no_connection">
+        No Internet connection spotted. Please check your network again.
+    </string>
+</resources>

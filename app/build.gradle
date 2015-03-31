@@ -60,9 +60,18 @@ android {
     }
 }
 
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.0.0'
+
+    // Chocolatine
+    compile(name: 'chocolatine', ext: 'aar')
 
     // Espresso
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'

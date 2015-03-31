@@ -5,6 +5,7 @@ import android.content.Context;
 import org.railsschool.tiramisu.models.bll.interfaces.ILessonBusiness;
 import org.railsschool.tiramisu.models.bll.interfaces.IUserBusiness;
 import org.railsschool.tiramisu.models.bll.remote.RailsSchoolAPIOutletFactory;
+import org.railsschool.tiramisu.models.dao.DAOFactory;
 
 /**
  * @class BusinessFactory
@@ -18,7 +19,8 @@ public class BusinessFactory {
         if (_user == null) {
             _user = new UserBusiness(
                 context,
-                RailsSchoolAPIOutletFactory.provide(context)
+                RailsSchoolAPIOutletFactory.provide(context),
+                DAOFactory.provideUser()
             );
         }
 
@@ -30,7 +32,8 @@ public class BusinessFactory {
             _lesson = new LessonBusiness(
                 context,
                 RailsSchoolAPIOutletFactory.provide(context),
-                provideUser(context)
+                provideUser(context),
+                DAOFactory.provideLesson()
             );
         }
 

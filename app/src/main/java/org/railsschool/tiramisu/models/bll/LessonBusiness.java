@@ -68,8 +68,10 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
         };
 
         if (_lessonDAO.exists(lessonId)) {
+            // Lesson already in local storage, run callback
             getTeacher.run(_lessonDAO.find(lessonId));
 
+            // Refresh lesson details
             tryConnecting(
                 (api) -> {
                     api.getLesson(
@@ -86,6 +88,7 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
                 failure
             );
         } else {
+            // No entry in local storage, forced to pull
             tryConnecting(
                 (api) -> {
                     api.getLesson(

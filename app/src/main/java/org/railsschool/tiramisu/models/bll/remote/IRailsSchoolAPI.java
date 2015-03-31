@@ -1,4 +1,4 @@
-package org.railsschool.tiramisu.remote;
+package org.railsschool.tiramisu.models.bll.remote;
 
 import org.railsschool.tiramisu.models.beans.Lesson;
 import org.railsschool.tiramisu.models.beans.SchoolClass;

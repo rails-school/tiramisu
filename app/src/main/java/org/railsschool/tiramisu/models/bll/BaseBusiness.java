@@ -19,6 +19,19 @@ abstract class BaseBusiness {
     private Context               _context;
     private IRailsSchoolAPIOutlet _outlet;
 
+    abstract class BLLCallback<T> implements retrofit.Callback<T> {
+        private Action<String> _failure;
+
+        public BLLCallback(Action<String> failure) {
+            this._failure = failure;
+        }
+
+        @Override
+        public void failure(RetrofitError error) {
+            processError(error, _failure);
+        }
+    }
+
     public BaseBusiness(Context context, IRailsSchoolAPIOutlet outlet) {
         this._context = context;
         this._outlet = outlet;

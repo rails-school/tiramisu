@@ -14,8 +14,6 @@ import org.railsschool.tiramisu.models.bll.structs.LessonTeacherPair;
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit.Callback;
-import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 /**
@@ -51,7 +49,7 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
             (api) -> {
                 api.getUser(
                     l.teacherId,
-                    new Callback<User>() {
+                    new BLLCallback<User>(failure) {
                         @Override
                         public void success(User user, Response response) {
                             outcome.add(new LessonTeacherPair(l, user));
@@ -63,11 +61,6 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
                                 success,
                                 failure
                             );
-                        }
-
-                        @Override
-                        public void failure(RetrofitError error) {
-                            processError(error, failure);
                         }
                     }
                 );
@@ -93,15 +86,10 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
         tryConnecting(
             (api) -> {
                 api.getLessons(
-                    new Callback<List<Lesson>>() {
+                    new BLLCallback<List<Lesson>>(failure) {
                         @Override
                         public void success(List<Lesson> lessons, Response response) {
                             _pair(lessons, success, failure);
-                        }
-
-                        @Override
-                        public void failure(RetrofitError error) {
-                            processError(error, failure);
                         }
                     }
                 );

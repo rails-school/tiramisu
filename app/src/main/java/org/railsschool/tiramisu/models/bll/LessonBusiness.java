@@ -3,15 +3,15 @@ package org.railsschool.tiramisu.models.bll;
 import android.content.Context;
 
 import com.coshx.chocolatine.utils.actions.Action;
+import com.coshx.chocolatine.utils.actions.Action2;
 
 import org.railsschool.tiramisu.models.beans.Lesson;
 import org.railsschool.tiramisu.models.beans.User;
 import org.railsschool.tiramisu.models.bll.interfaces.ILessonBusiness;
 import org.railsschool.tiramisu.models.bll.interfaces.IUserBusiness;
 import org.railsschool.tiramisu.models.bll.remote.interfaces.IRailsSchoolAPIOutlet;
-import org.railsschool.tiramisu.models.bll.structs.LessonTeacherPair;
+import org.railsschool.tiramisu.models.dao.interfaces.ILessonDAO;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.client.Response;
@@ -21,80 +21,86 @@ import retrofit.client.Response;
  * @brief
  */
 class LessonBusiness extends BaseBusiness implements ILessonBusiness {
+
     private IUserBusiness _userBusiness;
+    private ILessonDAO    _lessonDAO;
 
     public LessonBusiness(Context context, IRailsSchoolAPIOutlet outlet,
-                          IUserBusiness userBusiness) {
+                          IUserBusiness userBusiness, ILessonDAO lessonDAO) {
         super(context, outlet);
 
         this._userBusiness = userBusiness;
+        this._lessonDAO = lessonDAO;
     }
 
-    private void _pair(
-        List<LessonTeacherPair> outcome,
-        List<Lesson> lessons,
-        int cursor,
-        int size,
-        Action<List<LessonTeacherPair>> success,
-        Action<String> failure) {
-        final Lesson l;
-
-        if (cursor == size) {
-            success.run(outcome);
-            return;
-        }
-
-        l = lessons.get(cursor);
+    @Override
+    public void sortIdsByDate(Action<List<Integer>> success, Action<String> failure) {
         tryConnecting(
             (api) -> {
-                api.getUser(
-                    l.teacherId,
-                    new BLLCallback<User>(failure) {
+                api.getLessonIds(
+                    new BLLCallback<List<Integer>>(failure) {
                         @Override
-                        public void success(User user, Response response) {
-                            outcome.add(new LessonTeacherPair(l, user));
-                            _pair(
-                                outcome,
-                                lessons,
-                                cursor + 1,
-                                size,
-                                success,
-                                failure
-                            );
+                        public void success(List<Integer> lessons, Response response) {
+                            success.run(lessons);
                         }
                     }
                 );
             },
-            failure
-        );
-    }
-
-    private void _pair(List<Lesson> lessons, Action<List<LessonTeacherPair>> success,
-                       Action<String> failure) {
-        _pair(
-            new ArrayList<LessonTeacherPair>(),
-            lessons,
-            0,
-            lessons.size(),
-            success,
             failure
         );
     }
 
     @Override
-    public void sortByDate(Action<List<LessonTeacherPair>> success, Action<String> failure) {
-        tryConnecting(
-            (api) -> {
-                api.getLessons(
-                    new BLLCallback<List<Lesson>>(failure) {
-                        @Override
-                        public void success(List<Lesson> lessons, Response response) {
-                            _pair(lessons, success, failure);
+    public void getPair(
+        int lessonId, Action2<Lesson, User> success,
+        Action<Lesson> lessonRefresh, Action<User> teacherRefresh,
+        Action<String> failure) {
+
+        Action<Lesson> getTeacher = (lesson) -> {
+            _userBusiness.find(
+                lesson.teacherId,
+                (teacher) -> {
+                    success.run(lesson, teacher);
+                },
+                teacherRefresh,
+                failure
+            );
+        };
+
+        if (_lessonDAO.exists(lessonId)) {
+            getTeacher.run(_lessonDAO.find(lessonId));
+
+            tryConnecting(
+                (api) -> {
+                    api.getLesson(
+                        lessonId,
+                        new BLLCallback<Lesson>(failure) {
+                            @Override
+                            public void success(Lesson lesson, Response response) {
+                                lessonRefresh.run(lesson);
+                                _lessonDAO.update(lesson);
+                            }
                         }
-                    }
-                );
-            },
-            failure
-        );
+                    );
+                },
+                failure
+            );
+        } else {
+            tryConnecting(
+                (api) -> {
+                    api.getLesson(
+                        lessonId,
+                        new BLLCallback<Lesson>(failure) {
+                            @Override
+                            public void success(Lesson lesson, Response response) {
+                                getTeacher.run(lesson);
+                                _lessonDAO.create(lesson);
+                            }
+                        }
+                    );
+                },
+                failure
+            );
+        }
     }
 }

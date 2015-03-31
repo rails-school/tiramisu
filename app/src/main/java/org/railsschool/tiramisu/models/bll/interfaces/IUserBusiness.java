@@ -9,5 +9,6 @@ import org.railsschool.tiramisu.models.beans.User;
  * @brief
  */
 public interface IUserBusiness {
-    public void find(int id, Action<User> success, Action<String> failure);
+    public void find(int id, Action<User> success, Action<User> refresh,
+                     Action<String> failure);
 }

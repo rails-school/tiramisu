@@ -5,6 +5,6 @@
     </string>
 
     <string name="error_no_connection">
-        No Internet connection spotted. Please check your network again.
+        Aw :( There is no Internet connection. Please check that.
     </string>
 </resources>

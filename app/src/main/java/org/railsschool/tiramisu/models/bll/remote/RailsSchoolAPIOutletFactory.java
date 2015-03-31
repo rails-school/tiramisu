@@ -11,7 +11,7 @@ import org.railsschool.tiramisu.models.bll.remote.interfaces.IRailsSchoolAPIOutl
 public class RailsSchoolAPIOutletFactory {
     private static IRailsSchoolAPIOutlet _outlet;
 
-    public static IRailsSchoolAPIOutlet build(Context context) {
+    public static IRailsSchoolAPIOutlet provide(Context context) {
         if (_outlet == null) {
             _outlet = new RailsSchoolAPIOutlet(context);
         }

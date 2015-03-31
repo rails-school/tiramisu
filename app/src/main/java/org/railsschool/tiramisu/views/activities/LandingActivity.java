@@ -8,6 +8,7 @@ import org.railsschool.tiramisu.views.fragments.ClassListFragment;
 import org.railsschool.tiramisu.views.fragments.LandingHeaderFragment;
 
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
@@ -20,8 +21,17 @@ public class LandingActivity extends BaseActivity {
         setContentView(R.layout.activity_landing);
         ButterKnife.inject(this);
 
+        EventBus.getDefault().register(this);
+
         setFragment(R.id.landing_activity_header, new LandingHeaderFragment());
         setFragment(R.id.landing_activity_body, new ClassListFragment());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        EventBus.getDefault().unregister(this);
     }
 
     public void onEventMainThread(ErrorEvent event) {

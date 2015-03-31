@@ -22,7 +22,7 @@ public class LandingHeaderFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragment;
 
-        fragment = inflater.inflate(R.layout.fragment_landing_header, container);
+        fragment = inflater.inflate(R.layout.fragment_landing_header, container, false);
         ButterKnife.inject(this, fragment);
 
         return fragment;

@@ -11,8 +11,11 @@ import com.coshx.chocolatine.widgets.SmartAdapter;
 import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.models.beans.User;
 import org.railsschool.tiramisu.models.bll.BusinessFactory;
+import org.railsschool.tiramisu.views.events.ErrorEvent;
 
 import java.util.List;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * @class ClassAdapter
@@ -66,7 +69,7 @@ public class ClassAdapter extends SmartAdapter<Integer> {
                     }
                 },
                 (error) -> {
-
+                    EventBus.getDefault().post(new ErrorEvent(error));
                 }
             );
 

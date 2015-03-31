@@ -20,7 +20,8 @@ public abstract class BaseActivity extends Activity {
     public void setFragment(int id, Fragment fragment) {
         getFragmentManager()
             .beginTransaction()
-            .add(id, fragment)
+            .replace(id, fragment)
+            .addToBackStack(null)
             .commit();
     }
 }

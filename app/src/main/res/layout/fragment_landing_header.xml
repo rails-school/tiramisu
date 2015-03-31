@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    style="@style/FragmentLandingHeader"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <ImageView
+        android:src="@drawable/ic_gear"
+        android:layout_alignParentRight="true"
+        style="@style/FragmentLandingHeaderIcon"
+        />
+
+</RelativeLayout>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AdapterClass" parent="MatchParentWrapContent.Vertical">
+        <item name="android:padding">@dimen/layout_margin</item>
+    </style>
+
+    <style name="AdapterClassHeadline" parent="MatchParentWrapContent">
+        <item name="android:layout_marginBottom">@dimen/small_margin</item>
+
+        <item name="android:textSize">@dimen/h5</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="AdapterClassDigest" parent="MatchParentWrapContent">
+        <item name="android:layout_marginBottom">@dimen/medium_margin</item>
+
+        <item name="android:textSize">@dimen/p</item>
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">3</item>
+    </style>
+
+    <style name="AdapterClassTeacher" parent="MatchParentWrapContent">
+        <item name="android:textSize">@dimen/p</item>
+        <item name="android:textColor">@color/black</item>s
+    </style>
+</resources>

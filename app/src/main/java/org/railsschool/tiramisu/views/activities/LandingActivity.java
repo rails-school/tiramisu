@@ -1,17 +1,16 @@
 package org.railsschool.tiramisu.views.activities;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.views.events.ErrorEvent;
-import org.railsschool.tiramisu.views.fragments.ClassListFragment;
-import org.railsschool.tiramisu.views.fragments.LandingHeaderFragment;
 
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
-
+import io.realm.Realm;
 
 public class LandingActivity extends BaseActivity {
 
@@ -21,10 +20,9 @@ public class LandingActivity extends BaseActivity {
         setContentView(R.layout.activity_landing);
         ButterKnife.inject(this);
 
-        EventBus.getDefault().register(this);
+        Log.d("FOO", Realm.getInstance(getApplicationContext()).getPath());
 
-        setFragment(R.id.landing_activity_header, new LandingHeaderFragment());
-        setFragment(R.id.landing_activity_body, new ClassListFragment());
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -36,7 +34,7 @@ public class LandingActivity extends BaseActivity {
 
     public void onEventMainThread(ErrorEvent event) {
         Crouton
-            .makeText(this, event.getMessage(), Style.ALERT)
+            .makeText(this, event.message, Style.ALERT)
             .show();
     }
 }

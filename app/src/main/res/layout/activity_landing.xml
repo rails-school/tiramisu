@@ -7,17 +7,14 @@
     <fragment
         android:id="@+id/landing_activity_header"
         android:name="org.railsschool.tiramisu.views.fragments.LandingHeaderFragment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         tools:layout="@layout/fragment_landing_header"
-        tools:layout_height="@dimen/landing_header_size"
+        style="@style/FragmentLandingHeaderWrapper"
         />
 
     <fragment
         android:id="@+id/landing_activity_body"
         android:name="org.railsschool.tiramisu.views.fragments.ClassListFragment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/MatchParentWrapContent"
         tools:layout="@layout/fragment_class_list"
         />
 

@@ -28,10 +28,8 @@ public class ClassAdapter extends SmartAdapter<Integer> {
 
     private String _getTeacherIntro(User teacher) {
         return String.format(
-            getContext().getString(
-                R.string.class_teacher_introduction,
-                teacher.getName()
-            )
+            getContext().getString(R.string.class_teacher_introduction),
+            teacher.getName()
         );
     }
 

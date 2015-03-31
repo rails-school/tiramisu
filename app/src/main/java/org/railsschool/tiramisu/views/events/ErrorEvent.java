@@ -5,13 +5,9 @@ package org.railsschool.tiramisu.views.events;
  * @brief
  */
 public class ErrorEvent {
-    private String _message;
+    public String message;
 
     public ErrorEvent(String message) {
-        this._message = message;
-    }
-
-    public String getMessage() {
-        return _message;
+        this.message = message;
     }
 }

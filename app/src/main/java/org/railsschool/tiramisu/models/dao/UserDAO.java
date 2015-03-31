@@ -28,16 +28,21 @@ class UserDAO extends BaseDAO implements IUserDAO {
     public void create(User user) {
         getDAL().executeTransaction(
             (dal) -> {
-                User entity = dal.copyToRealm(user);
+                dal.copyToRealm(user);
             }
         );
     }
 
     @Override
     public void update(User user) {
+        delete(user);
+        create(user);
+    }
+
+    public void delete(User user) {
         getDAL().executeTransaction(
             (dal) -> {
-                User entity = dal.copyToRealm(user);
+                find(user.getId()).removeFromRealm();
             }
         );
     }

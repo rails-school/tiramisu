@@ -80,7 +80,7 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
                             @Override
                             public void success(Lesson lesson, Response response) {
                                 lessonRefresh.run(lesson);
-                                _lessonDAO.update(lesson);
+//                                _lessonDAO.update(lesson);
                             }
                         }
                     );
@@ -97,7 +97,7 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
                             @Override
                             public void success(Lesson lesson, Response response) {
                                 getTeacher.run(lesson);
-                                _lessonDAO.create(lesson);
+//                                _lessonDAO.create(lesson);
                             }
                         }
                     );

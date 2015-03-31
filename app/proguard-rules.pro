@@ -23,3 +23,17 @@
 -keep class io.realm.** { *; }
 -dontwarn javax.**
 -dontwarn io.realm.**
+
+# Retrofit
+-keep class com.google.gson.** { *; }
+-keep class com.google.inject.* { *; }
+-keep class org.apache.http.* { *; }
+-keep class org.apache.james.mime4j.* { *; }
+-keep class javax.inject.* { *; }
+-keep class retrofit.* { *; }
+-dontwarn rx.*
+-keep class com.example.testobfuscation.** { *; }
+-keepattributes Signature
+-keep class sun.misc.Unsafe { *; }
+-keepattributes *Annotation*
+-keepclasseswithmembers class * { @retrofit.http.* <methods>; }

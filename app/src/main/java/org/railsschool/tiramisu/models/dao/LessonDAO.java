@@ -28,16 +28,21 @@ class LessonDAO extends BaseDAO implements ILessonDAO {
     public void create(Lesson lesson) {
         getDAL().executeTransaction(
             (dal) -> {
-                Lesson entity = getDAL().copyToRealm(lesson);
+                dal.copyToRealm(lesson);
             }
         );
     }
 
     @Override
     public void update(Lesson lesson) {
+        delete(lesson);
+        create(lesson);
+    }
+
+    public void delete(Lesson lesson) {
         getDAL().executeTransaction(
             (dal) -> {
-                Lesson entity = getDAL().copyToRealm(lesson);
+                find(lesson.getId()).removeFromRealm();
             }
         );
     }

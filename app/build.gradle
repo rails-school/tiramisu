@@ -2,6 +2,12 @@ apply plugin: 'com.android.application'
 apply plugin: 'org.robolectric'
 
 android {
+    // Needed for lambda functions
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
 
@@ -104,6 +110,24 @@ dependencies {
     compile 'com.jakewharton:butterknife:6.1.0'
     compile 'de.greenrobot:eventbus:2.4.0'
 }
+
+// Using lambda functions
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'me.tatarka:gradle-retrolambda:2.5.0'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'me.tatarka.retrolambda'
+// End of lambda function config
 
 // Roboeletric config
 robolectric {

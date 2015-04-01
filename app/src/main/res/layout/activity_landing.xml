@@ -14,7 +14,7 @@
     <fragment
         android:id="@+id/landing_activity_body"
         android:name="org.railsschool.tiramisu.views.fragments.ClassListFragment"
-        style="@style/MatchParentWrapContent"
+        style="@style/FullVerticalStretchable"
         tools:layout="@layout/fragment_class_list"
         />
 

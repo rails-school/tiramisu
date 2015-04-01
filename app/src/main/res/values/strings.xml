@@ -6,6 +6,4 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-
-    <string name="class_teacher_introduction">By %1$s</string>
 </resources>

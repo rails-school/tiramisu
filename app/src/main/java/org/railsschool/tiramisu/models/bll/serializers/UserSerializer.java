@@ -22,7 +22,9 @@ public class UserSerializer implements JsonDeserializer<User> {
 
         outcome.setId(o.get("id").getAsInt());
         outcome.setName(o.get("name").getAsString());
+        outcome.setEmail(o.get("email").getAsString());
         outcome.setTeacher(o.get("teacher").getAsBoolean());
+        outcome.setHideLastName(o.get("hide_last_name").getAsBoolean());
 
         return outcome;
     }

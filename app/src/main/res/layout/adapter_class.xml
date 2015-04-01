@@ -5,22 +5,38 @@
     style="@style/AdapterClass"
     >
 
-    <TextView
-        android:id="@+id/adapter_class_headline"
-        style="@style/AdapterClassHeadline"
-        tools:text="@string/app_name"
-        />
+    <RelativeLayout
+        style="@style/MatchParentWrapContent"
+        >
+
+        <com.makeramen.RoundedImageView
+            android:id="@+id/adapter_class_avatar"
+            android:layout_centerVertical="true"
+            style="@style/AdapterClassAvatar"
+            tools:src="@drawable/default_avatar"
+            />
+
+        <TextView
+            android:id="@+id/adapter_class_headline"
+            android:layout_toRightOf="@id/adapter_class_avatar"
+            style="@style/AdapterClassHeadline"
+            tools:text="@string/app_name"
+            />
+
+        <TextView
+            android:id="@+id/adapter_class_teacher"
+            android:layout_below="@id/adapter_class_headline"
+            android:layout_toRightOf="@id/adapter_class_avatar"
+            style="@style/AdapterClassTeacher"
+            tools:text="@string/app_name"
+            />
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/adapter_class_digest"
         style="@style/AdapterClassDigest"
         tools:text="@string/error_default"
-        />
-
-    <TextView
-        android:id="@+id/adapter_class_teacher"
-        style="@style/AdapterClassTeacher"
-        tools:text="@string/class_teacher_introduction"
         />
 
 </LinearLayout>

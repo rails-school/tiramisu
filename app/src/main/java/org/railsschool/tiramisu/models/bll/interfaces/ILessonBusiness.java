@@ -20,6 +20,5 @@ public interface ILessonBusiness {
                         Action<Lesson> lessonRefresh, Action<User> teacherRefresh, Action<String> failure);
 
     public void getSchoolClassPair(int lessonId, Action2<SchoolClass, User> success,
-                                   Action<SchoolClass> classRefresh,
                                    Action<User> teacherRefresh, Action<String> failure);
 }

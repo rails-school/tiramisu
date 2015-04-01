@@ -4,7 +4,14 @@ import android.os.Bundle;
 import android.util.Log;
 
 import org.railsschool.tiramisu.R;
+import org.railsschool.tiramisu.views.events.ClassDetailsHeaderBackEvent;
+import org.railsschool.tiramisu.views.events.ClassDetailsInitEvent;
+import org.railsschool.tiramisu.views.events.ClassDetailsRequestedEvent;
 import org.railsschool.tiramisu.views.events.ErrorEvent;
+import org.railsschool.tiramisu.views.fragments.ClassDetailsFragment;
+import org.railsschool.tiramisu.views.fragments.ClassDetailsHeaderFragment;
+import org.railsschool.tiramisu.views.fragments.ClassListFragment;
+import org.railsschool.tiramisu.views.fragments.LandingHeaderFragment;
 
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
@@ -36,5 +43,17 @@ public class MainActivity extends BaseActivity {
         Crouton
             .makeText(this, event.getMessage(), Style.ALERT)
             .show();
+    }
+
+    public void onEventMainThread(ClassDetailsRequestedEvent event) {
+        setFragment(R.id.main_activity_header, new ClassDetailsHeaderFragment());
+        setFragment(R.id.main_activity_body, new ClassDetailsFragment());
+
+        EventBus.getDefault().postSticky(new ClassDetailsInitEvent(event.getLessonId()));
+    }
+
+    public void onEventMainThread(ClassDetailsHeaderBackEvent event) {
+        setFragment(R.id.main_activity_header, new LandingHeaderFragment());
+        setFragment(R.id.main_activity_body, new ClassListFragment());
     }
 }

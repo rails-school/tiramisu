@@ -13,6 +13,7 @@ import com.daimajia.androidanimations.library.YoYo;
 
 import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.models.bll.BusinessFactory;
+import org.railsschool.tiramisu.views.events.ClassDetailsRequestedEvent;
 import org.railsschool.tiramisu.views.events.ErrorEvent;
 import org.railsschool.tiramisu.views.utils.PicassoHelper;
 
@@ -46,6 +47,7 @@ public class ClassAdapter extends SmartAdapter<Integer> {
         View adapter;
         TextView headline, digest, teacherIntro;
         ImageView avatar;
+        Integer lessonId;
 
         adapter = recycle(convertView, R.layout.adapter_class, parent);
         headline = ViewHelper.findById(adapter, R.id.adapter_class_headline);
@@ -53,10 +55,12 @@ public class ClassAdapter extends SmartAdapter<Integer> {
         teacherIntro = ViewHelper.findById(adapter, R.id.adapter_class_teacher);
         avatar = ViewHelper.findById(adapter, R.id.adapter_class_avatar);
 
+        lessonId = itemAt(position);
+
         BusinessFactory
             .provideLesson(getContext())
             .getPair(
-                itemAt(position),
+                lessonId,
                 (lesson, teacher) -> {
                     headline.setText(lesson.getTitle());
                     digest.setText(lesson.getSummary());
@@ -75,6 +79,12 @@ public class ClassAdapter extends SmartAdapter<Integer> {
                     EventBus.getDefault().post(new ErrorEvent(error));
                 }
             );
+
+        adapter.setOnClickListener(
+            (v) -> {
+                EventBus.getDefault().post(new ClassDetailsRequestedEvent(lessonId));
+            }
+        );
 
         return adapter;
     }

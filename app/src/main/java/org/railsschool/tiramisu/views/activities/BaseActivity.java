@@ -21,7 +21,7 @@ public abstract class BaseActivity extends Activity {
         getFragmentManager()
             .beginTransaction()
             .replace(id, fragment)
-            .addToBackStack(null)
+            .addToBackStack(fragment.getClass().getSimpleName())
             .commit();
     }
 }

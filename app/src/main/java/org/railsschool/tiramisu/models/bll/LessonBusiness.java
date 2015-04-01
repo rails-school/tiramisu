@@ -68,6 +68,9 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
             );
         };
 
+        // Warning: this function assumes there is no duplicate in
+        // input list. Otherwise, this method must crash due to
+        // DB access multi-threading (creation may happen twice).
         if (_lessonDAO.exists(lessonId)) {
             // Lesson already in local storage, run callback
             getTeacher.run(_lessonDAO.find(lessonId));
@@ -109,7 +112,33 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
     }
 
     @Override
-    public void getSchoolClassPair(int lessonId, Action2<SchoolClass, User> success, Action<SchoolClass> classRefresh, Action<User> teacherRefresh, Action<String> failure) {
+    public void getSchoolClassPair(int lessonId, Action2<SchoolClass, User> success, Action<User> teacherRefresh, Action<String> failure) {
+        tryConnecting(
+            (api) -> {
+                api.getSchoolClass(
+                    lessonId,
+                    new BLLCallback<SchoolClass>(failure) {
+                        @Override
+                        public void success(SchoolClass schoolClass, Response response) {
+                            _userBusiness.find(
+                                schoolClass.getTeacherId(),
+                                (teacher) -> {
+                                    success.run(schoolClass, teacher);
+                                },
+                                teacherRefresh,
+                                failure
+                            );
 
+                            if (_lessonDAO.exists(schoolClass.getId())) {
+                                _lessonDAO.update(schoolClass);
+                            } else {
+                                _lessonDAO.create(schoolClass);
+                            }
+                        }
+                    }
+                );
+            },
+            failure
+        );
     }
 }

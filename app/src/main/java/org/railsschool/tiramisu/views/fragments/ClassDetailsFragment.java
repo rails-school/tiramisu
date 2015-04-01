@@ -15,7 +15,7 @@ import com.daimajia.androidanimations.library.YoYo;
 import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.models.bll.BusinessFactory;
 import org.railsschool.tiramisu.models.bll.structs.SchoolClass;
-import org.railsschool.tiramisu.views.events.ClassDetailsRequestedEvent;
+import org.railsschool.tiramisu.views.events.ClassDetailsInitEvent;
 import org.railsschool.tiramisu.views.events.ErrorEvent;
 import org.railsschool.tiramisu.views.utils.PicassoHelper;
 
@@ -28,6 +28,8 @@ import de.greenrobot.event.EventBus;
  * @brief
  */
 public class ClassDetailsFragment extends Fragment {
+
+    private ClassDetailsInitEvent _initArgs;
 
     @InjectView(R.id.fragment_class_details_headline)
     TextView _headline;
@@ -83,7 +85,7 @@ public class ClassDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragment;
 
-        fragment = inflater.inflate(R.layout.fragment_class_details, container, true);
+        fragment = inflater.inflate(R.layout.fragment_class_details, container, false);
         ButterKnife.inject(this, fragment);
 
         return fragment;
@@ -99,9 +101,12 @@ public class ClassDetailsFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        EventBus.getDefault().postSticky(_initArgs);
     }
 
-    public void onEventMainThread(ClassDetailsRequestedEvent event) {
+    public void onEventMainThread(ClassDetailsInitEvent event) {
+        _initArgs = event;
+
         BusinessFactory
             .provideLesson(getActivity())
             .getSchoolClassPair(
@@ -115,12 +120,6 @@ public class ClassDetailsFragment extends Fragment {
 
                     _setAttendeeNumber(schoolClass);
                     _description.setText(schoolClass.getDescription());
-                },
-                (newSchoolClass) -> {
-                    _refreshContent(_headline, newSchoolClass.getTitle());
-                    _refreshContent(_summary, newSchoolClass.getSummary());
-                    _refreshContent(_description, newSchoolClass.getDescription());
-                    _setAttendeeNumber(newSchoolClass);
                 },
                 (newTeacher) -> {
                     _refreshContent(_teacher, newTeacher.getDisplayName());

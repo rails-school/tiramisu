@@ -23,12 +23,43 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class MainActivity extends BaseActivity {
 
+    private enum CurrentDisplay {
+        LANDING,
+        CLASS_DETAILS
+    }
+
+    private static class RestoreDisplayEvent {
+        private CurrentDisplay _previousDisplay;
+
+        public RestoreDisplayEvent(CurrentDisplay display) {
+            this._previousDisplay = display;
+        }
+
+        public CurrentDisplay getPreviousDisplay() {
+            return _previousDisplay;
+        }
+    }
+
+    private CurrentDisplay _currentDisplay;
+
     private void _setLandingContent() {
         Map<Integer, Fragment> fragmentMap = new HashMap<>();
 
         fragmentMap.put(R.id.main_activity_header, new LandingHeaderFragment());
         fragmentMap.put(R.id.main_activity_body, new ClassListFragment());
         setFragments(fragmentMap);
+
+        _currentDisplay = CurrentDisplay.LANDING;
+    }
+
+    private void _setClassDetailsContent() {
+        Map<Integer, Fragment> fragmentMap = new HashMap<>();
+
+        fragmentMap.put(R.id.main_activity_header, new ClassDetailsHeaderFragment());
+        fragmentMap.put(R.id.main_activity_body, new ClassDetailsFragment());
+        setFragments(fragmentMap);
+
+        _currentDisplay = CurrentDisplay.CLASS_DETAILS;
     }
 
     @Override
@@ -38,7 +69,7 @@ public class MainActivity extends BaseActivity {
         ButterKnife.inject(this);
 
         _setLandingContent();
-        EventBus.getDefault().register(this);
+        EventBus.getDefault().registerSticky(this);
     }
 
     @Override
@@ -46,6 +77,11 @@ public class MainActivity extends BaseActivity {
         super.onDestroy();
 
         EventBus.getDefault().unregister(this);
+        EventBus.getDefault().postSticky(new RestoreDisplayEvent(_currentDisplay));
+    }
+
+    public void onEventMainThread(RestoreDisplayEvent event) {
+        _setClassDetailsContent();
     }
 
     public void onEventMainThread(ErrorEvent event) {
@@ -55,12 +91,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public void onEventMainThread(ClassDetailsRequestedEvent event) {
-        Map<Integer, Fragment> fragmentMap = new HashMap<>();
-
-        fragmentMap.put(R.id.main_activity_header, new ClassDetailsHeaderFragment());
-        fragmentMap.put(R.id.main_activity_body, new ClassDetailsFragment());
-        setFragments(fragmentMap);
-
+        _setClassDetailsContent();
         EventBus.getDefault()
                 .postSticky(new ClassDetailsInitEvent(event.getLessonSlug()));
     }

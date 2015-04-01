@@ -11,6 +11,7 @@ public class User extends RealmObject {
     @PrimaryKey
     private int     id;
     private String  name;
+    private String  email;
     private boolean isTeacher;
     private boolean hideLastName;
 
@@ -30,6 +31,14 @@ public class User extends RealmObject {
         name = value;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String value) {
+        email = value;
+    }
+
     public boolean isTeacher() {
         return isTeacher;
     }
@@ -38,7 +47,7 @@ public class User extends RealmObject {
         isTeacher = value;
     }
 
-    public boolean hideLastName() {
+    public boolean getHideLastName() {
         return hideLastName;
     }
 

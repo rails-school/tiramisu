@@ -5,6 +5,16 @@
         <item name="android:padding">@dimen/layout_margin</item>
     </style>
 
+    <style name="AdapterClassAvatar">
+        <item name="android:layout_width">@dimen/avatar_size</item>
+        <item name="android:layout_height">@dimen/avatar_size</item>
+
+        <item name="android:layout_marginRight">@dimen/vertical_layout_margin</item>
+
+        <item name="riv_corner_radius">@dimen/avatar_size</item>
+        <item name="riv_border_width">0dp</item>
+    </style>
+
     <style name="AdapterClassHeadline" parent="MatchParentWrapContent">
         <item name="android:layout_marginBottom">@dimen/small_margin</item>
 
@@ -12,17 +22,19 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="AdapterClassDigest" parent="MatchParentWrapContent">
+    <style name="AdapterClassTeacher" parent="MatchParentWrapContent">
         <item name="android:layout_marginBottom">@dimen/medium_margin</item>
+
+        <item name="android:textSize">@dimen/subhead</item>
+        <item name="android:textColor">@color/black</item>s
+    </style>
+
+    <style name="AdapterClassDigest" parent="MatchParentWrapContent">
+        <item name="android:layout_marginTop">@dimen/horizontal_layout_margin</item>
 
         <item name="android:textSize">@dimen/body</item>
         <item name="android:textColor">@color/grey</item>
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">3</item>
-    </style>
-
-    <style name="AdapterClassTeacher" parent="MatchParentWrapContent">
-        <item name="android:textSize">@dimen/subhead</item>
-        <item name="android:textColor">@color/black</item>s
     </style>
 </resources>

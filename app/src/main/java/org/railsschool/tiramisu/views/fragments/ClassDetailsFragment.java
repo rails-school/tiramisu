@@ -17,6 +17,7 @@ import org.railsschool.tiramisu.models.bll.BusinessFactory;
 import org.railsschool.tiramisu.models.bll.structs.SchoolClass;
 import org.railsschool.tiramisu.views.events.ClassDetailsInitEvent;
 import org.railsschool.tiramisu.views.events.ErrorEvent;
+import org.railsschool.tiramisu.views.helpers.UserHelper;
 import org.railsschool.tiramisu.views.utils.PicassoHelper;
 
 import butterknife.ButterKnife;
@@ -74,6 +75,7 @@ public class ClassDetailsFragment extends Fragment {
                 String.format(getString(R.string.multi_attendees), attendeeNb)
             );
         }
+        _attendees.setVisibility(View.VISIBLE);
         YoYo
             .with(Techniques.FadeIn)
             .duration(500)
@@ -124,13 +126,13 @@ public class ClassDetailsFragment extends Fragment {
                     _summary.setText(schoolClass.getLesson().getSummary());
 
                     PicassoHelper.loadAvatar(getActivity(), teacher, _avatar);
-                    _teacher.setText(teacher.getDisplayName());
+                    _teacher.setText(UserHelper.getDisplayedName(teacher));
 
                     _setAttendeeNumber(schoolClass);
                     _description.setText(schoolClass.getLesson().getDescription());
                 },
                 (newTeacher) -> {
-                    _refreshContent(_teacher, newTeacher.getDisplayName());
+                    _refreshContent(_teacher, UserHelper.getDisplayedName(newTeacher));
                     PicassoHelper.loadAvatar(getActivity(), newTeacher, _avatar);
                 },
                 (error) -> {

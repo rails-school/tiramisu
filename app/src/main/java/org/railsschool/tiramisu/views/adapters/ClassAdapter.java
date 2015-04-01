@@ -15,6 +15,7 @@ import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.models.bll.BusinessFactory;
 import org.railsschool.tiramisu.views.events.ClassDetailsRequestedEvent;
 import org.railsschool.tiramisu.views.events.ErrorEvent;
+import org.railsschool.tiramisu.views.helpers.UserHelper;
 import org.railsschool.tiramisu.views.utils.PicassoHelper;
 
 import java.util.List;
@@ -64,16 +65,16 @@ public class ClassAdapter extends SmartAdapter<String> {
                 (lesson, teacher) -> {
                     headline.setText(lesson.getTitle());
                     digest.setText(lesson.getSummary());
-                    teacherIntro.setText(teacher.getDisplayName());
+                    teacherIntro.setText(UserHelper.getDisplayedName(teacher));
                     PicassoHelper.loadAvatar(getContext(), teacher, avatar);
                 },
                 (newLesson) -> {
                     _refreshContent(headline, newLesson.getTitle());
                     _refreshContent(digest, newLesson.getSummary());
                 },
-                (newUser) -> {
-                    _refreshContent(teacherIntro, newUser.getDisplayName());
-                    PicassoHelper.loadAvatar(getContext(), newUser, avatar);
+                (newTeacher) -> {
+                    _refreshContent(teacherIntro, UserHelper.getDisplayedName(newTeacher));
+                    PicassoHelper.loadAvatar(getContext(), newTeacher, avatar);
                 },
                 (error) -> {
                     EventBus.getDefault().post(new ErrorEvent(error));

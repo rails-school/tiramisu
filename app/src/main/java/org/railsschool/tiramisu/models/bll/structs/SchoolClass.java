@@ -9,6 +9,25 @@ import java.util.List;
  * @class SchoolClass
  * @brief
  */
-public class SchoolClass extends Lesson {
-    public List<User> students;
+public class SchoolClass {
+    private Lesson     _lesson;
+    private List<User> _students;
+
+    public Lesson getLesson() {
+        return _lesson;
+    }
+
+    public SchoolClass setLesson(Lesson value) {
+        _lesson = value;
+        return this;
+    }
+
+    public List<User> getStudents() {
+        return _students;
+    }
+
+    public SchoolClass setStudents(List<User> value) {
+        _students = value;
+        return this;
+    }
 }

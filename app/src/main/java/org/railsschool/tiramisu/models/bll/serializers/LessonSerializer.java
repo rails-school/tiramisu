@@ -20,7 +20,7 @@ public class LessonSerializer implements JsonDeserializer<Lesson> {
         Lesson outcome = new Lesson();
         JsonObject o = json.getAsJsonObject();
 
-        outcome.setId(o.get("id").getAsInt());
+        outcome.setSlug(o.get("slug").getAsString());
         outcome.setTitle(o.get("title").getAsString());
         outcome.setSummary(o.get("summary").getAsString());
         outcome.setDescription(o.get("description").getAsString());

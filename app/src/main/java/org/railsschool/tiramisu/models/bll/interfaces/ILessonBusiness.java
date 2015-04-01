@@ -14,11 +14,11 @@ import java.util.List;
  * @brief
  */
 public interface ILessonBusiness {
-    public void sortIdsByDate(Action<List<Integer>> success, Action<String> failure);
+    public void sortIdsByDate(Action<List<String>> success, Action<String> failure);
 
-    public void getPair(int lessonId, Action2<Lesson, User> success,
+    public void getPair(String lessonSlug, Action2<Lesson, User> success,
                         Action<Lesson> lessonRefresh, Action<User> teacherRefresh, Action<String> failure);
 
-    public void getSchoolClassPair(int lessonId, Action2<SchoolClass, User> success,
+    public void getSchoolClassPair(String lessonSlug, Action2<SchoolClass, User> success,
                                    Action<User> teacherRefresh, Action<String> failure);
 }

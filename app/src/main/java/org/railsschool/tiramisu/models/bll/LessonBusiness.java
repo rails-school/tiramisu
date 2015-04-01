@@ -35,14 +35,14 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
     }
 
     @Override
-    public void sortIdsByDate(Action<List<Integer>> success, Action<String> failure) {
+    public void sortIdsByDate(Action<List<String>> success, Action<String> failure) {
         tryConnecting(
             (api) -> {
-                api.getLessonIds(
-                    new BLLCallback<List<Integer>>(failure) {
+                api.getLessonSlugs(
+                    new BLLCallback<List<String>>(failure) {
                         @Override
-                        public void success(List<Integer> lessonIds, Response response) {
-                            success.run(lessonIds);
+                        public void success(List<String> lessonSlugs, Response response) {
+                            success.run(lessonSlugs);
                         }
                     }
                 );
@@ -53,7 +53,7 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
 
     @Override
     public void getPair(
-        int lessonId, Action2<Lesson, User> success,
+        String lessonSlug, Action2<Lesson, User> success,
         Action<Lesson> lessonRefresh, Action<User> teacherRefresh,
         Action<String> failure) {
 
@@ -71,15 +71,15 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
         // Warning: this function assumes there is no duplicate in
         // input list. Otherwise, this method must crash due to
         // DB access multi-threading (creation may happen twice).
-        if (_lessonDAO.exists(lessonId)) {
+        if (_lessonDAO.exists(lessonSlug)) {
             // Lesson already in local storage, run callback
-            getTeacher.run(_lessonDAO.find(lessonId));
+            getTeacher.run(_lessonDAO.find(lessonSlug));
 
             // Refresh lesson details
             tryConnecting(
                 (api) -> {
                     api.getLesson(
-                        lessonId,
+                        lessonSlug,
                         new BLLCallback<Lesson>(failure) {
                             @Override
                             public void success(Lesson lesson, Response response) {
@@ -96,7 +96,7 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
             tryConnecting(
                 (api) -> {
                     api.getLesson(
-                        lessonId,
+                        lessonSlug,
                         new BLLCallback<Lesson>(failure) {
                             @Override
                             public void success(Lesson lesson, Response response) {
@@ -112,16 +112,16 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
     }
 
     @Override
-    public void getSchoolClassPair(int lessonId, Action2<SchoolClass, User> success, Action<User> teacherRefresh, Action<String> failure) {
+    public void getSchoolClassPair(String lessonSlug, Action2<SchoolClass, User> success, Action<User> teacherRefresh, Action<String> failure) {
         tryConnecting(
             (api) -> {
                 api.getSchoolClass(
-                    lessonId,
+                    lessonSlug,
                     new BLLCallback<SchoolClass>(failure) {
                         @Override
                         public void success(SchoolClass schoolClass, Response response) {
                             _userBusiness.find(
-                                schoolClass.getTeacherId(),
+                                schoolClass.getLesson().getTeacherId(),
                                 (teacher) -> {
                                     success.run(schoolClass, teacher);
                                 },
@@ -129,10 +129,10 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
                                 failure
                             );
 
-                            if (_lessonDAO.exists(schoolClass.getId())) {
-                                _lessonDAO.update(schoolClass);
+                            if (_lessonDAO.exists(schoolClass.getLesson().getSlug())) {
+                                _lessonDAO.update(schoolClass.getLesson());
                             } else {
-                                _lessonDAO.create(schoolClass);
+                                _lessonDAO.create(schoolClass.getLesson());
                             }
                         }
                     }

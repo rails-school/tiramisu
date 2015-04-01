@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="FragmentLandingHeaderWrapper">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/landing_header_size</item>
+    </style>
+
+    <style name="FragmentLandingHeader">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/landing_header_size</item>
+
+        <item name="android:padding">10dp</item>
+
+        <item name="android:background">@color/red</item>
+    </style>
+
+    <style name="FragmentLandingHeaderIcon">
+        <item name="android:layout_width">@dimen/landing_header_size</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+</resources>

@@ -9,6 +9,7 @@ import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.models.bll.remote.IRailsSchoolAPI;
 import org.railsschool.tiramisu.models.bll.remote.interfaces.IRailsSchoolAPIOutlet;
 
+import retrofit.Callback;
 import retrofit.RetrofitError;
 
 /**
@@ -19,7 +20,7 @@ abstract class BaseBusiness {
     private Context               _context;
     private IRailsSchoolAPIOutlet _outlet;
 
-    abstract class BLLCallback<T> implements retrofit.Callback<T> {
+    abstract class BLLCallback<T> implements Callback<T> {
         private Action<String> _failure;
 
         public BLLCallback(Action<String> failure) {

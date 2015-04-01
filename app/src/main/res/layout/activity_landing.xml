@@ -1,11 +1,21 @@
 <LinearLayout
+    xmlns:tools="http://schemas.android.com/tools"
     style="@style/MatchParent.Vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     >
 
     <fragment
-        style="@style/MatchParentWrapContent" />
+        android:id="@+id/landing_activity_header"
+        android:name="org.railsschool.tiramisu.views.fragments.LandingHeaderFragment"
+        tools:layout="@layout/fragment_landing_header"
+        style="@style/FragmentLandingHeaderWrapper"
+        />
 
     <fragment
-        style="@style/MatchParentWrapContent" />
+        android:id="@+id/landing_activity_body"
+        android:name="org.railsschool.tiramisu.views.fragments.ClassListFragment"
+        style="@style/FullVerticalStretchable"
+        tools:layout="@layout/fragment_class_list"
+        />
 
 </LinearLayout>

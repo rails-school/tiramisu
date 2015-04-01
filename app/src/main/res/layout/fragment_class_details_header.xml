@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    style="@style/Header"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <ImageView
+        android:id="@+id/fragment_class_details_header_back"
+        android:src="@drawable/ic_back"
+        style="@style/HeaderIcon"
+        />
+
+    <ImageView
+        android:id="@+id/fragment_class_details_header_back_separator"
+        android:layout_toRightOf="@id/fragment_class_details_header_back"
+        style="@style/FragmentClassDetailsHeaderSeparator"
+        />
+
+    <ImageView
+        android:id="@+id/fragment_class_details_header_calendar"
+        android:layout_toRightOf="@id/fragment_class_details_header_back_separator"
+        android:src="@drawable/ic_calendar"
+        style="@style/HeaderIcon"
+        />
+
+    <ImageView
+        android:id="@+id/fragment_class_details_header_share"
+        android:layout_toRightOf="@id/fragment_class_details_header_calendar"
+        android:src="@drawable/ic_share"
+        style="@style/HeaderIcon"
+        />
+
+    <ImageView
+        android:id="@+id/fragment_class_details_header_map"
+        android:layout_toRightOf="@id/fragment_class_details_header_share"
+        android:src="@drawable/ic_map_pin"
+        style="@style/HeaderIcon"
+        />
+
+    <ImageView
+        android:id="@+id/fragment_class_details_header_attendance"
+        android:layout_alignParentRight="true"
+        tools:src="@drawable/ic_rsvp"
+        style="@style/HeaderIcon"
+        />
+
+</RelativeLayout>

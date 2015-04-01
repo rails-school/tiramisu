@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    style="@style/FragmentLandingHeader"
+    style="@style/Header"
     xmlns:android="http://schemas.android.com/apk/res/android"
     >
 
@@ -8,14 +8,14 @@
         android:id="@+id/fragment_landing_header_menu"
         android:src="@drawable/ic_action_overflow"
         android:layout_alignParentRight="true"
-        style="@style/FragmentLandingHeaderIcon"
+        style="@style/HeaderIcon"
         />
 
     <ImageView
         android:id="@+id/fragment_landing_header_refresh"
         android:src="@drawable/ic_action_refresh"
         android:layout_toLeftOf="@id/fragment_landing_header_menu"
-        style="@style/FragmentLandingHeaderIcon"
+        style="@style/HeaderIcon"
         />
 
 </RelativeLayout>

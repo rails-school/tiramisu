@@ -8,7 +8,7 @@
         android:id="@+id/landing_activity_header"
         android:name="org.railsschool.tiramisu.views.fragments.LandingHeaderFragment"
         tools:layout="@layout/fragment_landing_header"
-        style="@style/FragmentLandingHeaderWrapper"
+        style="@style/HeaderWrapper"
         />
 
     <fragment

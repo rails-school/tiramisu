@@ -7,6 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
+
 import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.views.events.RefreshClassListEvent;
 
@@ -33,6 +36,10 @@ public class LandingHeaderFragment extends Fragment {
 
     @OnClick(R.id.fragment_landing_header_refresh)
     public void onRefresh(View view) {
+        YoYo
+            .with(Techniques.Pulse)
+            .duration(500)
+            .playOn(view);
         EventBus.getDefault().post(new RefreshClassListEvent());
     }
 

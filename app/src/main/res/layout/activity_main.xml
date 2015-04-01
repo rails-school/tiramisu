@@ -5,14 +5,14 @@
     >
 
     <fragment
-        android:id="@+id/landing_activity_header"
+        android:id="@+id/main_activity_header"
         android:name="org.railsschool.tiramisu.views.fragments.LandingHeaderFragment"
         tools:layout="@layout/fragment_landing_header"
         style="@style/HeaderWrapper"
         />
 
     <fragment
-        android:id="@+id/landing_activity_body"
+        android:id="@+id/main_activity_body"
         android:name="org.railsschool.tiramisu.views.fragments.ClassListFragment"
         style="@style/FullVerticalStretchable"
         tools:layout="@layout/fragment_class_list"

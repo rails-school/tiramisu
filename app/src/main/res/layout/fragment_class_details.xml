@@ -25,6 +25,42 @@
             style="@style/FragmentClassDetailsSeparator"
             />
 
+        <RelativeLayout
+            style="@style/MatchParentWrapContent">
+
+            <com.makeramen.RoundedImageView
+                android:id="@+id/fragment_class_details_avatar"
+                android:layout_centerVertical="true"
+                style="@style/FragmentClassDetailsAvatar"
+                tools:src="@drawable/default_avatar"
+                />
+
+            <TextView
+                android:id="@+id/fragment_class_details_teacher"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/fragment_class_details_avatar"
+                style="@style/FragmentClassDetailsTeacher"
+                tools:text="@string/app_name"
+                />
+
+        </RelativeLayout>
+
+        <ImageView
+            style="@style/FragmentClassDetailsSeparator"
+            />
+
+        <TextView
+            android:id="@+id/fragment_class_details_attendees"
+            style="@style/FragmentClassDetailsAttendees"
+            tools:text="@string/no_attendee"
+            />
+
+        <TextView
+            android:id="@+id/fragment_class_details_description"
+            style="@style/FragmentClassDetailsDescription"
+            tools:text="@string/error_no_connection"
+            />
+
     </LinearLayout>
 
 </ScrollView>

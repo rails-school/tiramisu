@@ -12,12 +12,12 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 import io.realm.Realm;
 
-public class LandingActivity extends BaseActivity {
+public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_landing);
+        setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
 
         Log.d("FOO", Realm.getInstance(getApplicationContext()).getPath());
@@ -34,7 +34,7 @@ public class LandingActivity extends BaseActivity {
 
     public void onEventMainThread(ErrorEvent event) {
         Crouton
-            .makeText(this, event.message, Style.ALERT)
+            .makeText(this, event.getMessage(), Style.ALERT)
             .show();
     }
 }

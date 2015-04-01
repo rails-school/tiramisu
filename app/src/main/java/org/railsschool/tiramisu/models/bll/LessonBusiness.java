@@ -10,6 +10,7 @@ import org.railsschool.tiramisu.models.beans.User;
 import org.railsschool.tiramisu.models.bll.interfaces.ILessonBusiness;
 import org.railsschool.tiramisu.models.bll.interfaces.IUserBusiness;
 import org.railsschool.tiramisu.models.bll.remote.interfaces.IRailsSchoolAPIOutlet;
+import org.railsschool.tiramisu.models.bll.structs.SchoolClass;
 import org.railsschool.tiramisu.models.dao.interfaces.ILessonDAO;
 
 import java.util.List;
@@ -40,8 +41,8 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
                 api.getLessonIds(
                     new BLLCallback<List<Integer>>(failure) {
                         @Override
-                        public void success(List<Integer> lessons, Response response) {
-                            success.run(lessons);
+                        public void success(List<Integer> lessonIds, Response response) {
+                            success.run(lessonIds);
                         }
                     }
                 );
@@ -80,7 +81,7 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
                             @Override
                             public void success(Lesson lesson, Response response) {
                                 lessonRefresh.run(lesson);
-//                                _lessonDAO.update(lesson);
+                                _lessonDAO.update(lesson);
                             }
                         }
                     );
@@ -97,7 +98,7 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
                             @Override
                             public void success(Lesson lesson, Response response) {
                                 getTeacher.run(lesson);
-//                                _lessonDAO.create(lesson);
+                                _lessonDAO.create(lesson);
                             }
                         }
                     );
@@ -105,5 +106,10 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
                 failure
             );
         }
+    }
+
+    @Override
+    public void getSchoolClassPair(int lessonId, Action2<SchoolClass, User> success, Action<SchoolClass> classRefresh, Action<User> teacherRefresh, Action<String> failure) {
+
     }
 }

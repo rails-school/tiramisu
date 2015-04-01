@@ -23,8 +23,6 @@
     </style>
 
     <style name="AdapterClassTeacher" parent="MatchParentWrapContent">
-        <item name="android:layout_marginBottom">@dimen/medium_margin</item>
-
         <item name="android:textSize">@dimen/subhead</item>
         <item name="android:textColor">@color/black</item>s
     </style>

@@ -8,8 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.railsschool.tiramisu.R;
+import org.railsschool.tiramisu.views.events.RefreshClassListEvent;
 
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 
 /**
  * @class LandingHeaderFragment
@@ -26,5 +29,15 @@ public class LandingHeaderFragment extends Fragment {
         ButterKnife.inject(this, fragment);
 
         return fragment;
+    }
+
+    @OnClick(R.id.fragment_landing_header_refresh)
+    public void onRefresh(View view) {
+        EventBus.getDefault().post(new RefreshClassListEvent());
+    }
+
+    @OnClick(R.id.fragment_landing_header_menu)
+    public void onMenuSelected(View view) {
+
     }
 }

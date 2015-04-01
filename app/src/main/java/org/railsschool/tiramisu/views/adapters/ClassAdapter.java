@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import com.coshx.chocolatine.helpers.ViewHelper;
 import com.coshx.chocolatine.widgets.SmartAdapter;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 
 import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.models.beans.User;
@@ -33,6 +35,18 @@ public class ClassAdapter extends SmartAdapter<Integer> {
         );
     }
 
+    private void _refreshContent(TextView textView, String value) {
+        if (!textView.getText().equals(value)) {
+            textView.setVisibility(View.INVISIBLE);
+            textView.setText(value);
+            textView.setVisibility(View.VISIBLE);
+            YoYo
+                .with(Techniques.FadeIn)
+                .duration(500)
+                .playOn(textView);
+        }
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View adapter;
@@ -53,18 +67,11 @@ public class ClassAdapter extends SmartAdapter<Integer> {
                     teacherIntro.setText(_getTeacherIntro(teacher));
                 },
                 (newLesson) -> {
-                    if (!headline.getText().equals(newLesson.getTitle())) {
-                        headline.setText(newLesson.getTitle());
-                    }
-
-                    if (!digest.getText().equals(newLesson.getSummary())) {
-                        headline.setText(newLesson.getSummary());
-                    }
+                    _refreshContent(headline, newLesson.getTitle());
+                    _refreshContent(digest, newLesson.getSummary());
                 },
                 (newUser) -> {
-                    if (!teacherIntro.getText().equals(newUser.getName())) {
-                        teacherIntro.setText(_getTeacherIntro(newUser));
-                    }
+                    _refreshContent(teacherIntro, newUser.getName());
                 },
                 (error) -> {
                     EventBus.getDefault().post(new ErrorEvent(error));

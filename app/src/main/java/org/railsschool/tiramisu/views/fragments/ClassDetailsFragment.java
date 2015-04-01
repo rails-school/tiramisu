@@ -87,9 +87,14 @@ public class ClassDetailsFragment extends Fragment {
 
         fragment = inflater.inflate(R.layout.fragment_class_details, container, false);
         ButterKnife.inject(this, fragment);
-        EventBus.getDefault().registerSticky(this);
 
         return fragment;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        EventBus.getDefault().registerSticky(this);
     }
 
     @Override
@@ -101,7 +106,10 @@ public class ClassDetailsFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().postSticky(_initArgs);
+
+        if (_initArgs != null) {
+            EventBus.getDefault().postSticky(_initArgs);
+        }
     }
 
     public void onEventMainThread(ClassDetailsInitEvent event) {

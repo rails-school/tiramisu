@@ -46,7 +46,6 @@ public class ClassListFragment extends Fragment {
 
         fragment = inflater.inflate(R.layout.fragment_class_list, container, false);
         ButterKnife.inject(this, fragment);
-        EventBus.getDefault().register(this);
 
         return fragment;
     }
@@ -56,12 +55,12 @@ public class ClassListFragment extends Fragment {
         super.onResume();
 
         _setContent();
+        EventBus.getDefault().register(this);
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-
+    public void onPause() {
+        super.onPause();
         EventBus.getDefault().unregister(this);
     }
 

@@ -11,7 +11,6 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 
 import org.railsschool.tiramisu.R;
-import org.railsschool.tiramisu.models.beans.User;
 import org.railsschool.tiramisu.models.bll.BusinessFactory;
 import org.railsschool.tiramisu.views.events.ErrorEvent;
 
@@ -26,13 +25,6 @@ import de.greenrobot.event.EventBus;
 public class ClassAdapter extends SmartAdapter<Integer> {
     public ClassAdapter(List<Integer> items, Context context) {
         super(items, context);
-    }
-
-    private String _getTeacherIntro(User teacher) {
-        return String.format(
-            getContext().getString(R.string.class_teacher_introduction),
-            teacher.getName()
-        );
     }
 
     private void _refreshContent(TextView textView, String value) {
@@ -64,14 +56,14 @@ public class ClassAdapter extends SmartAdapter<Integer> {
                 (lesson, teacher) -> {
                     headline.setText(lesson.getTitle());
                     digest.setText(lesson.getSummary());
-                    teacherIntro.setText(_getTeacherIntro(teacher));
+                    teacherIntro.setText(teacher.getDisplayName());
                 },
                 (newLesson) -> {
                     _refreshContent(headline, newLesson.getTitle());
                     _refreshContent(digest, newLesson.getSummary());
                 },
                 (newUser) -> {
-                    _refreshContent(teacherIntro, newUser.getName());
+                    _refreshContent(teacherIntro, newUser.getDisplayName());
                 },
                 (error) -> {
                     EventBus.getDefault().post(new ErrorEvent(error));

@@ -2,6 +2,9 @@ package org.railsschool.tiramisu.views.activities;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
+
+import java.util.Map;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
@@ -17,11 +20,21 @@ public abstract class BaseActivity extends Activity {
         Crouton.cancelAllCroutons();
     }
 
-    public void setFragment(int id, Fragment fragment) {
+    public void setFragment(int resourceId, Fragment fragment) {
         getFragmentManager()
             .beginTransaction()
-            .replace(id, fragment)
+            .replace(resourceId, fragment)
             .addToBackStack(fragment.getClass().getSimpleName())
             .commit();
+    }
+
+    public void setFragments(Map<Integer, Fragment> fragments) {
+        FragmentTransaction t = getFragmentManager().beginTransaction();
+
+        for (Map.Entry<Integer, Fragment> e : fragments.entrySet()) {
+            t.replace(e.getKey().intValue(), e.getValue());
+        }
+
+        t.addToBackStack(null).commit();
     }
 }

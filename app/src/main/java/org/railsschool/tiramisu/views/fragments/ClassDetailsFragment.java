@@ -62,7 +62,7 @@ public class ClassDetailsFragment extends Fragment {
     }
 
     private void _setAttendeeNumber(SchoolClass schoolClass) {
-        int attendeeNb = schoolClass.students.size();
+        int attendeeNb = schoolClass.getStudents().size();
 
         _attendees.setVisibility(View.INVISIBLE);
         if (attendeeNb == 0) {
@@ -87,14 +87,9 @@ public class ClassDetailsFragment extends Fragment {
 
         fragment = inflater.inflate(R.layout.fragment_class_details, container, false);
         ButterKnife.inject(this, fragment);
+        EventBus.getDefault().registerSticky(this);
 
         return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EventBus.getDefault().registerSticky(this);
     }
 
     @Override
@@ -112,14 +107,14 @@ public class ClassDetailsFragment extends Fragment {
             .getSchoolClassPair(
                 event.getLessonId(),
                 (schoolClass, teacher) -> {
-                    _headline.setText(schoolClass.getTitle());
-                    _summary.setText(schoolClass.getSummary());
+                    _headline.setText(schoolClass.getLesson().getTitle());
+                    _summary.setText(schoolClass.getLesson().getSummary());
 
                     PicassoHelper.loadAvatar(getActivity(), teacher, _avatar);
                     _teacher.setText(teacher.getDisplayName());
 
                     _setAttendeeNumber(schoolClass);
-                    _description.setText(schoolClass.getDescription());
+                    _description.setText(schoolClass.getLesson().getDescription());
                 },
                 (newTeacher) -> {
                     _refreshContent(_teacher, newTeacher.getDisplayName());

@@ -5,13 +5,13 @@ package org.railsschool.tiramisu.views.events;
  * @brief
  */
 public class ClassDetailsRequestedEvent {
-    private int _lessonId;
+    private String _lessonSlug;
 
-    public ClassDetailsRequestedEvent(int lessonId) {
-        this._lessonId = lessonId;
+    public ClassDetailsRequestedEvent(String lessonSlug) {
+        this._lessonSlug = lessonSlug;
     }
 
-    public int getLessonId() {
-        return _lessonId;
+    public String getLessonSlug() {
+        return _lessonSlug;
     }
 }

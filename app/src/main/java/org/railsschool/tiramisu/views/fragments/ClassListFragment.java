@@ -46,15 +46,9 @@ public class ClassListFragment extends Fragment {
 
         fragment = inflater.inflate(R.layout.fragment_class_list, container, false);
         ButterKnife.inject(this, fragment);
+        EventBus.getDefault().register(this);
 
         return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        EventBus.getDefault().register(this);
     }
 
     @Override

@@ -25,8 +25,8 @@ import de.greenrobot.event.EventBus;
  * @class ClassAdapter
  * @brief
  */
-public class ClassAdapter extends SmartAdapter<Integer> {
-    public ClassAdapter(List<Integer> items, Context context) {
+public class ClassAdapter extends SmartAdapter<String> {
+    public ClassAdapter(List<String> items, Context context) {
         super(items, context);
     }
 
@@ -47,7 +47,7 @@ public class ClassAdapter extends SmartAdapter<Integer> {
         View adapter;
         TextView headline, digest, teacherIntro;
         ImageView avatar;
-        Integer lessonId;
+        String lessonSlug;
 
         adapter = recycle(convertView, R.layout.adapter_class, parent);
         headline = ViewHelper.findById(adapter, R.id.adapter_class_headline);
@@ -55,12 +55,12 @@ public class ClassAdapter extends SmartAdapter<Integer> {
         teacherIntro = ViewHelper.findById(adapter, R.id.adapter_class_teacher);
         avatar = ViewHelper.findById(adapter, R.id.adapter_class_avatar);
 
-        lessonId = itemAt(position);
+        lessonSlug = itemAt(position);
 
         BusinessFactory
             .provideLesson(getContext())
             .getPair(
-                lessonId,
+                lessonSlug,
                 (lesson, teacher) -> {
                     headline.setText(lesson.getTitle());
                     digest.setText(lesson.getSummary());
@@ -82,7 +82,7 @@ public class ClassAdapter extends SmartAdapter<Integer> {
 
         adapter.setOnClickListener(
             (v) -> {
-                EventBus.getDefault().post(new ClassDetailsRequestedEvent(lessonId));
+                EventBus.getDefault().post(new ClassDetailsRequestedEvent(lessonSlug));
             }
         );
 

@@ -1,7 +1,7 @@
 package org.railsschool.tiramisu.views.activities;
 
+import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 
 import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.views.events.ClassDetailsHeaderBackEvent;
@@ -13,13 +13,23 @@ import org.railsschool.tiramisu.views.fragments.ClassDetailsHeaderFragment;
 import org.railsschool.tiramisu.views.fragments.ClassListFragment;
 import org.railsschool.tiramisu.views.fragments.LandingHeaderFragment;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
-import io.realm.Realm;
 
 public class MainActivity extends BaseActivity {
+
+    private void _setLandingContent() {
+        Map<Integer, Fragment> fragmentMap = new HashMap<>();
+
+        fragmentMap.put(R.id.main_activity_header, new LandingHeaderFragment());
+        fragmentMap.put(R.id.main_activity_body, new ClassListFragment());
+        setFragments(fragmentMap);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +37,7 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
 
-        Log.d("FOO", Realm.getInstance(getApplicationContext()).getPath());
-
+        _setLandingContent();
         EventBus.getDefault().register(this);
     }
 
@@ -46,14 +55,17 @@ public class MainActivity extends BaseActivity {
     }
 
     public void onEventMainThread(ClassDetailsRequestedEvent event) {
-        setFragment(R.id.main_activity_header, new ClassDetailsHeaderFragment());
-        setFragment(R.id.main_activity_body, new ClassDetailsFragment());
+        Map<Integer, Fragment> fragmentMap = new HashMap<>();
 
-        EventBus.getDefault().postSticky(new ClassDetailsInitEvent(event.getLessonId()));
+        fragmentMap.put(R.id.main_activity_header, new ClassDetailsHeaderFragment());
+        fragmentMap.put(R.id.main_activity_body, new ClassDetailsFragment());
+        setFragments(fragmentMap);
+
+        EventBus.getDefault()
+                .postSticky(new ClassDetailsInitEvent(event.getLessonSlug()));
     }
 
     public void onEventMainThread(ClassDetailsHeaderBackEvent event) {
-        setFragment(R.id.main_activity_header, new LandingHeaderFragment());
-        setFragment(R.id.main_activity_body, new ClassListFragment());
+        _setLandingContent();
     }
 }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="FragmentClassDetails" parent="MatchParent">
+        <item name="android:layout_margin">@dimen/layout_margin</item>
+    </style>
+
+    <style name="FragmentClassDetailsHeadline" parent="MatchParentWrapContent">
+        <item name="android:textSize">@dimen/headline</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="FragmentClassDetailsSummary" parent="MatchParentWrapContent">
+        <item name="android:layout_marginTop">@dimen/medium_margin</item>
+
+        <item name="android:textSize">@dimen/title</item>
+        <item name="android:textColor">@color/grey</item>
+    </style>
+
+    <style name="FragmentClassDetailsSeparator">
+        <item name="android:layout_width">150dp</item>
+        <item name="android:layout_height">3dp</item>
+        <item name="android:layout_gravity">center</item>
+
+        <item name="android:layout_margin">@dimen/large_margin</item>
+
+        <item name="android:background">@color/light_grey</item>
+    </style>
+</resources>

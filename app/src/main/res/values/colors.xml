@@ -3,4 +3,5 @@
     <color name="red">#A7000A</color>
     <color name="black">#1c1c1c</color>
     <color name="grey">#7A7A7A</color>
+    <color name="light_grey">#eee</color>
 </resources>

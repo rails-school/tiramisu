@@ -39,18 +39,8 @@ public class ClassDetailsHeaderFragment extends BaseFragment {
         EventBus.getDefault().post(new ClassDetailsHeaderBackEvent());
     }
 
-    @OnClick(R.id.fragment_class_details_header_calendar)
-    public void onCalendarAdd(View view) {
-
-    }
-
     @OnClick(R.id.fragment_class_details_header_share)
     public void onShare(View view) {
-
-    }
-
-    @OnClick(R.id.fragment_class_details_header_map)
-    public void onDirections(View view) {
 
     }
 }

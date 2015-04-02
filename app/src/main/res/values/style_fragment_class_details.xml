@@ -20,6 +20,27 @@
         <item name="android:textColor">@color/light_white</item>
     </style>
 
+    <style name="FragmentClassDetailsExtra" parent="MatchParentWrapContent.Horizontal">
+        <item name="android:layout_marginTop">@dimen/medium_margin</item>
+    </style>
+
+    <style name="FragmentClassDetailsIcon">
+        <item name="android:layout_width">@dimen/small_ic</item>
+        <item name="android:layout_height">@dimen/small_ic</item>
+
+        <item name="android:layout_margin">@dimen/small_margin</item>
+    </style>
+
+    <style name="FragmentClassDetailsIconLabel" parent="WrapContent">
+        <item name="android:layout_gravity">center_vertical</item>
+
+        <item name="android:layout_margin">@dimen/small_margin</item>
+
+        <item name="android:textSize">@dimen/body</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">left</item>
+    </style>
+
     <style name="FragmentClassDetailsTeacherWrapper" parent="MatchParentWrapContent">
         <item name="android:padding">@dimen/layout_margin</item>
 

@@ -4,6 +4,7 @@
 
     <dimen name="regular_avatar_size">75dp</dimen>
 
+    <dimen name="small_ic">35dp</dimen>
     <dimen name="medium_ic">50dp</dimen>
 
     <dimen name="small_margin">10dp</dimen>

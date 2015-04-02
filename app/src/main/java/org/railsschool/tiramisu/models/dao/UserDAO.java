@@ -48,8 +48,12 @@ class UserDAO extends BaseDAO implements IUserDAO {
     public void update(User user) {
         getDAL().executeTransaction(
             (dal) -> {
-                find(user.getId()).removeFromRealm();
-                dal.copyToRealm(user);
+                User entry = find(user.getId());
+
+                entry.setName(user.getName());
+                entry.setEmail(user.getEmail());
+                entry.setTeacher(user.getTeacher());
+                entry.setHideLastName(user.getHideLastName());
             }
         );
     }

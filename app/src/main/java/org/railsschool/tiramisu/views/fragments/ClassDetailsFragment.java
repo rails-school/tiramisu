@@ -1,5 +1,7 @@
 package org.railsschool.tiramisu.views.fragments;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -13,10 +15,12 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.squareup.picasso.Picasso;
 
 import org.railsschool.tiramisu.R;
+import org.railsschool.tiramisu.models.beans.Venue;
 import org.railsschool.tiramisu.models.bll.BusinessFactory;
 import org.railsschool.tiramisu.models.bll.structs.SchoolClass;
 import org.railsschool.tiramisu.views.events.ClassDetailsInitEvent;
 import org.railsschool.tiramisu.views.helpers.UserHelper;
+import org.railsschool.tiramisu.views.utils.DateHelper;
 import org.railsschool.tiramisu.views.utils.PicassoHelper;
 
 import butterknife.ButterKnife;
@@ -32,6 +36,7 @@ public class ClassDetailsFragment extends BaseFragment {
 
     private ClassDetailsInitEvent _initArgs;
     private SchoolClass           _currentSchoolClass;
+    private Venue                 _currentVenue;
     private boolean               _isAttending;
 
     @InjectView(R.id.fragment_class_details_headline)
@@ -39,6 +44,12 @@ public class ClassDetailsFragment extends BaseFragment {
 
     @InjectView(R.id.fragment_class_details_summary)
     TextView _summary;
+
+    @InjectView(R.id.fragment_class_details_calendar_label)
+    TextView _date;
+
+    @InjectView(R.id.fragment_class_details_location_label)
+    TextView _location;
 
     @InjectView(R.id.fragment_class_details_avatar)
     ImageView _avatar;
@@ -145,6 +156,15 @@ public class ClassDetailsFragment extends BaseFragment {
 
                     _headline.setText(schoolClass.getLesson().getTitle());
                     _summary.setText(schoolClass.getLesson().getSummary());
+                    _date.setText(
+                        DateHelper.makeFriendly(
+                            getActivity(),
+                            schoolClass.getLesson().getStartTime()
+                        )
+                    );
+
+                    _currentVenue = venue;
+                    _location.setText(venue.getName());
 
                     PicassoHelper.loadAvatar(getActivity(), teacher, _avatar);
                     _teacher.setText(UserHelper.getDisplayedName(teacher));
@@ -189,5 +209,26 @@ public class ClassDetailsFragment extends BaseFragment {
                 },
                 this::publishError
             );
+    }
+
+    @OnClick(R.id.fragment_class_details_calendar)
+    public void onAddToCalendar(View view) {
+        
+    }
+
+    @OnClick(R.id.fragment_class_details_location)
+    public void onDirectionsRequested(View view) {
+        Intent i;
+
+        i = new Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse(
+                "http://maps.google.com/maps?q=" +
+                _currentVenue.getLatitude() + "," +
+                _currentVenue.getLongitude()
+            )
+        );
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
     }
 }

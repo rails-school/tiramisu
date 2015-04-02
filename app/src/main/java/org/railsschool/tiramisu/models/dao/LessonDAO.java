@@ -22,16 +22,18 @@ class LessonDAO extends BaseDAO implements ILessonDAO {
 
     @Override
     public Lesson find(String slug) {
-        Lesson l;
-
-        getDAL().beginTransaction();
-        l = getDAL().where(Lesson.class).equalTo("slug", slug).findFirst();
-        getDAL().commitTransaction();
-
-        return l;
+        return getDAL().where(Lesson.class).equalTo("slug", slug).findFirst();
     }
 
     @Override
+    public void save(Lesson lesson) {
+        if (exists(lesson.getSlug())) {
+            update(lesson);
+        } else {
+            create(lesson);
+        }
+    }
+
     public void create(Lesson lesson) {
         getDAL().executeTransaction(
             (dal) -> {
@@ -40,7 +42,6 @@ class LessonDAO extends BaseDAO implements ILessonDAO {
         );
     }
 
-    @Override
     public void update(Lesson lesson) {
         delete(lesson);
         create(lesson);

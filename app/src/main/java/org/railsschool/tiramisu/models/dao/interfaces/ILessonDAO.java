@@ -11,7 +11,5 @@ public interface ILessonDAO {
 
     public Lesson find(String slug);
 
-    public void create(Lesson lesson);
-
-    public void update(Lesson lesson);
+    public void save(Lesson lesson);
 }

@@ -32,6 +32,14 @@ class UserDAO extends BaseDAO implements IUserDAO {
     }
 
     @Override
+    public void save(User user) {
+        if (exists(user.getId())) {
+            update(user);
+        } else {
+            create(user);
+        }
+    }
+
     public void create(User user) {
         getDAL().executeTransaction(
             (dal) -> {
@@ -40,7 +48,6 @@ class UserDAO extends BaseDAO implements IUserDAO {
         );
     }
 
-    @Override
     public void update(User user) {
         delete(user);
         create(user);

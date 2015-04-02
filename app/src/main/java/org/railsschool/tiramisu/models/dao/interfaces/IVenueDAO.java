@@ -11,7 +11,5 @@ public interface IVenueDAO {
 
     public Venue find(int id);
 
-    public void create(Venue venue);
-
-    public void update(Venue venue);
+    public void save(Venue venue);
 }

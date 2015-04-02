@@ -11,7 +11,5 @@ public interface IUserDAO {
 
     public User find(int id);
 
-    public void create(User user);
-
-    public void update(User user);
+    public void save(User user);
 }

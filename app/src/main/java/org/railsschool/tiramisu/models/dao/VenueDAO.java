@@ -31,6 +31,14 @@ class VenueDAO extends BaseDAO implements IVenueDAO {
     }
 
     @Override
+    public void save(Venue venue) {
+        if (exists(venue.getId())) {
+            update(venue);
+        } else {
+            create(venue);
+        }
+    }
+
     public void create(Venue venue) {
         getDAL().executeTransaction(
             (dal) -> {
@@ -39,7 +47,6 @@ class VenueDAO extends BaseDAO implements IVenueDAO {
         );
     }
 
-    @Override
     public void update(Venue venue) {
         delete(venue);
         create(venue);

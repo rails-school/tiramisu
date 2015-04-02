@@ -1,7 +1,9 @@
 <resources>
     <dimen name="landing_header_size">50dp</dimen>
 
-    <dimen name="avatar_size">50dp</dimen>
+    <dimen name="regular_avatar_size">50dp</dimen>
+
+    <dimen name="large_ic">35dp</dimen>
 
     <dimen name="small_margin">5dp</dimen>
     <dimen name="medium_margin">10dp</dimen>

@@ -45,21 +45,21 @@ public class MainActivity extends BaseActivity {
     private void _setLandingContent() {
         Map<Integer, Fragment> fragmentMap = new HashMap<>();
 
+        _currentDisplay = CurrentDisplay.LANDING;
+
         fragmentMap.put(R.id.main_activity_header, new LandingHeaderFragment());
         fragmentMap.put(R.id.main_activity_body, new ClassListFragment());
         setFragments(fragmentMap);
-
-        _currentDisplay = CurrentDisplay.LANDING;
     }
 
     private void _setClassDetailsContent() {
         Map<Integer, Fragment> fragmentMap = new HashMap<>();
 
+        _currentDisplay = CurrentDisplay.CLASS_DETAILS;
+
         fragmentMap.put(R.id.main_activity_header, new ClassDetailsHeaderFragment());
         fragmentMap.put(R.id.main_activity_body, new ClassDetailsFragment());
         setFragments(fragmentMap);
-
-        _currentDisplay = CurrentDisplay.CLASS_DETAILS;
     }
 
     @Override
@@ -81,7 +81,11 @@ public class MainActivity extends BaseActivity {
     }
 
     public void onEventMainThread(RestoreDisplayEvent event) {
-        _setClassDetailsContent();
+        if (event.getPreviousDisplay() == CurrentDisplay.LANDING) {
+            _setLandingContent();
+        } else {
+            _setClassDetailsContent();
+        }
     }
 
     public void onEventMainThread(ErrorEvent event) {

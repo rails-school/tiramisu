@@ -54,9 +54,4 @@ public class ClassDetailsHeaderFragment extends Fragment {
     public void onDirections(View view) {
 
     }
-
-    @OnClick(R.id.fragment_class_details_header_attendance)
-    public void onAttendanceToggle(View view) {
-
-    }
 }

@@ -6,12 +6,12 @@
     </style>
 
     <style name="AdapterClassAvatar">
-        <item name="android:layout_width">@dimen/avatar_size</item>
-        <item name="android:layout_height">@dimen/avatar_size</item>
+        <item name="android:layout_width">@dimen/regular_avatar_size</item>
+        <item name="android:layout_height">@dimen/regular_avatar_size</item>
 
         <item name="android:layout_marginRight">@dimen/vertical_layout_margin</item>
 
-        <item name="riv_corner_radius">@dimen/avatar_size</item>
+        <item name="riv_corner_radius">@dimen/regular_avatar_size</item>
         <item name="riv_border_width">0dp</item>
     </style>
 

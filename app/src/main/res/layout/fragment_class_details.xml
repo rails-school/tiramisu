@@ -1,67 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/FragmentClassDetails"
-    android:fillViewport="true"
+    style="@style/MatchParent.Vertical"
     >
 
-    <LinearLayout
-        style="@style/MatchParentWrapContent.Vertical"
+    <ScrollView
+        style="@style/FullVerticalStretchable"
         >
 
-        <TextView
-            android:id="@+id/fragment_class_details_headline"
-            style="@style/FragmentClassDetailsHeadline"
-            tools:text="@string/error_default"
-            />
+        <LinearLayout
+            style="@style/MatchParentWrapContent.Vertical"
+            >
 
-        <TextView
-            android:id="@+id/fragment_class_details_summary"
-            style="@style/FragmentClassDetailsSummary"
-            tools:text="@string/error_default"
-            />
+            <LinearLayout
+                style="@style/FragmentClassDetailsIntro"
+                >
 
-        <ImageView
-            style="@style/FragmentClassDetailsSeparator"
-            />
+                <TextView
+                    android:id="@+id/fragment_class_details_headline"
+                    style="@style/FragmentClassDetailsHeadline"
+                    tools:text="Sed dapibus est id enim facilisis, at posuere turpis adipiscing."
+                    />
 
-        <RelativeLayout
-            style="@style/MatchParentWrapContent">
+                <TextView
+                    android:id="@+id/fragment_class_details_summary"
+                    style="@style/FragmentClassDetailsSummary"
+                    tools:text="Proin feugiat, leo in sagittis suscipit, enim lorem adipiscing magna, id pellentesque ante quam nec quam."
+                    />
 
-            <com.makeramen.RoundedImageView
-                android:id="@+id/fragment_class_details_avatar"
-                android:layout_centerVertical="true"
-                style="@style/FragmentClassDetailsAvatar"
-                tools:src="@drawable/default_avatar"
+            </LinearLayout>
+
+            <RelativeLayout
+                style="@style/FragmentClassDetailsTeacherWrapper">
+
+                <RelativeLayout
+                    style="@style/WrapContent"
+                    android:layout_centerHorizontal="true"
+                    >
+
+                    <com.makeramen.RoundedImageView
+                        android:id="@+id/fragment_class_details_avatar"
+                        android:layout_centerVertical="true"
+                        style="@style/FragmentClassDetailsAvatar"
+                        tools:src="@drawable/default_avatar"
+                        />
+
+                    <TextView
+                        android:id="@+id/fragment_class_details_teacher"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/fragment_class_details_avatar"
+                        style="@style/FragmentClassDetailsTeacher"
+                        tools:text="@string/app_name"
+                        />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/fragment_class_details_attendees"
+                style="@style/FragmentClassDetailsAttendees"
+                tools:text="@string/no_attendee"
                 />
 
             <TextView
-                android:id="@+id/fragment_class_details_teacher"
+                android:id="@+id/fragment_class_details_description"
+                style="@style/FragmentClassDetailsDescription"
+                tools:text="Proin feugiat, leo in sagittis suscipit, enim lorem adipiscing magna, id pellentesque ante quam nec quam. Morbi lacus mi, pretium quis dolor viverra, imperdiet imperdiet ligula."
+                />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/fragment_class_details_attendance_toggle"
+        style="@style/FragmentClassDetailsAttendanceToggle"
+        >
+
+        <RelativeLayout
+            style="@style/WrapContent"
+            android:layout_centerHorizontal="true"
+            >
+
+            <ImageView
+                android:id="@+id/fragment_class_details_attendance_toggle_icon"
+                style="@style/FragmentClassDetailsToggleIcon"
                 android:layout_centerVertical="true"
-                android:layout_toRightOf="@id/fragment_class_details_avatar"
-                style="@style/FragmentClassDetailsTeacher"
-                tools:text="@string/app_name"
+                tools:src="@drawable/ic_rsvp"
+                />
+
+            <TextView
+                android:id="@+id/fragment_class_details_attendance_toggle_label"
+                android:layout_toRightOf="@id/fragment_class_details_attendance_toggle_icon"
+                android:layout_centerVertical="true"
+                style="@style/FragmentClassDetailsAttendanceToggleLabel"
+                tools:text="@string/attend_class"
                 />
 
         </RelativeLayout>
 
-        <ImageView
-            style="@style/FragmentClassDetailsSeparator"
-            />
-
-        <TextView
-            android:id="@+id/fragment_class_details_attendees"
-            style="@style/FragmentClassDetailsAttendees"
-            tools:text="@string/no_attendee"
-            />
-
-        <TextView
-            android:id="@+id/fragment_class_details_description"
-            style="@style/FragmentClassDetailsDescription"
-            tools:text="@string/error_no_connection"
-            />
-
-    </LinearLayout>
-
-</ScrollView>
+    </RelativeLayout>
+</LinearLayout>

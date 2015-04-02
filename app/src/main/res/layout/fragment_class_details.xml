@@ -59,20 +59,15 @@
             </RelativeLayout>
 
             <TextView
-                android:id="@+id/fragment_class_details_description"
-                style="@style/FragmentClassDetailsDescription"
-                tools:text="Proin feugiat, leo in sagittis suscipit, enim lorem adipiscing magna, id pellentesque ante quam nec quam. Morbi lacus mi, pretium quis dolor viverra, imperdiet imperdiet ligula."
-                />
-
-            <TextView
                 android:id="@+id/fragment_class_details_attendee_count"
                 style="@style/FragmentClassDetailsAttendeeCount"
                 tools:text="@string/no_attendee"
                 />
 
-            <GridView
-                android:id="@+id/fragment_class_details_attendee_grid"
-                style="@style/FragmentClassDetailsAttendeeGrid"
+            <TextView
+                android:id="@+id/fragment_class_details_description"
+                style="@style/FragmentClassDetailsDescription"
+                tools:text="Proin feugiat, leo in sagittis suscipit, enim lorem adipiscing magna, id pellentesque ante quam nec quam. Morbi lacus mi, pretium quis dolor viverra, imperdiet imperdiet ligula."
                 />
 
         </LinearLayout>

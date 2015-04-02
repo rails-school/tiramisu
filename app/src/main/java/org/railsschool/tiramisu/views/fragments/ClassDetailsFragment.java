@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,7 +15,6 @@ import com.squareup.picasso.Picasso;
 import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.models.bll.BusinessFactory;
 import org.railsschool.tiramisu.models.bll.structs.SchoolClass;
-import org.railsschool.tiramisu.views.adapters.AttendeeAdapter;
 import org.railsschool.tiramisu.views.events.ClassDetailsInitEvent;
 import org.railsschool.tiramisu.views.events.ErrorEvent;
 import org.railsschool.tiramisu.views.helpers.UserHelper;
@@ -49,14 +47,11 @@ public class ClassDetailsFragment extends BaseFragment {
     @InjectView(R.id.fragment_class_details_teacher)
     TextView _teacher;
 
-    @InjectView(R.id.fragment_class_details_description)
-    TextView _description;
-
     @InjectView(R.id.fragment_class_details_attendee_count)
     TextView _attendeeCount;
 
-    @InjectView(R.id.fragment_class_details_attendee_grid)
-    GridView _attendeeGrid;
+    @InjectView(R.id.fragment_class_details_description)
+    TextView _description;
 
     @InjectView(R.id.fragment_class_details_attendance_toggle)
     ViewGroup _toggleButton;
@@ -97,13 +92,6 @@ public class ClassDetailsFragment extends BaseFragment {
             .with(Techniques.FadeIn)
             .duration(500)
             .playOn(_attendeeCount);
-
-        _attendeeGrid.setAdapter(
-            new AttendeeAdapter(
-                _currentSchoolClass.getStudents(),
-                getActivity()
-            )
-        );
     }
 
     private void _setAttendanceToggle() {

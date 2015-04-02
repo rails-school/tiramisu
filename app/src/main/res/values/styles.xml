@@ -5,4 +5,23 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="HeaderWrapper">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/landing_header_size</item>
+    </style>
+
+    <style name="Header">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/landing_header_size</item>
+
+        <item name="android:padding">10dp</item>
+
+        <item name="android:background">@color/red</item>
+    </style>
+
+    <style name="HeaderIcon">
+        <item name="android:layout_width">@dimen/landing_header_size</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
 </resources>

@@ -1,8 +1,10 @@
 package org.railsschool.tiramisu.models.bll;
 
 import android.content.Context;
+import android.os.Handler;
 
 import com.coshx.chocolatine.utils.actions.Action;
+import com.coshx.chocolatine.utils.actions.Action0;
 
 import org.railsschool.tiramisu.models.beans.User;
 import org.railsschool.tiramisu.models.bll.interfaces.IUserBusiness;
@@ -65,5 +67,17 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
                 failure
             );
         }
+    }
+
+    @Override
+    public void isCurrentUserAttendingTo(String lessonSlug, Action<Boolean> success, Action<String> failure) {
+        //TODO
+        success.run(false);
+    }
+
+    @Override
+    public void toggleAttendance(String lessonSlug, boolean isAttending, Action0 success, Action<String> failure) {
+        //TODO
+        new Handler().postDelayed(() -> success.run(), 2000);
     }
 }

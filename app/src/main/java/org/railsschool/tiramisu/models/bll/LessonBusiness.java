@@ -10,6 +10,7 @@ import org.railsschool.tiramisu.models.beans.User;
 import org.railsschool.tiramisu.models.bll.interfaces.ILessonBusiness;
 import org.railsschool.tiramisu.models.bll.interfaces.IUserBusiness;
 import org.railsschool.tiramisu.models.bll.remote.interfaces.IRailsSchoolAPIOutlet;
+import org.railsschool.tiramisu.models.bll.structs.SchoolClass;
 import org.railsschool.tiramisu.models.dao.interfaces.ILessonDAO;
 
 import java.util.List;
@@ -34,14 +35,14 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
     }
 
     @Override
-    public void sortIdsByDate(Action<List<Integer>> success, Action<String> failure) {
+    public void sortIdsByDate(Action<List<String>> success, Action<String> failure) {
         tryConnecting(
             (api) -> {
-                api.getLessonIds(
-                    new BLLCallback<List<Integer>>(failure) {
+                api.getLessonSlugs(
+                    new BLLCallback<List<String>>(failure) {
                         @Override
-                        public void success(List<Integer> lessons, Response response) {
-                            success.run(lessons);
+                        public void success(List<String> lessonSlugs, Response response) {
+                            success.run(lessonSlugs);
                         }
                     }
                 );
@@ -52,7 +53,7 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
 
     @Override
     public void getPair(
-        int lessonId, Action2<Lesson, User> success,
+        String lessonSlug, Action2<Lesson, User> success,
         Action<Lesson> lessonRefresh, Action<User> teacherRefresh,
         Action<String> failure) {
 
@@ -67,20 +68,23 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
             );
         };
 
-        if (_lessonDAO.exists(lessonId)) {
+        // Warning: this function assumes there is no duplicate in
+        // input list. Otherwise, this method must crash due to
+        // DB access multi-threading (creation may happen twice).
+        if (_lessonDAO.exists(lessonSlug)) {
             // Lesson already in local storage, run callback
-            getTeacher.run(_lessonDAO.find(lessonId));
+            getTeacher.run(_lessonDAO.find(lessonSlug));
 
             // Refresh lesson details
             tryConnecting(
                 (api) -> {
                     api.getLesson(
-                        lessonId,
+                        lessonSlug,
                         new BLLCallback<Lesson>(failure) {
                             @Override
                             public void success(Lesson lesson, Response response) {
                                 lessonRefresh.run(lesson);
-//                                _lessonDAO.update(lesson);
+                                _lessonDAO.update(lesson);
                             }
                         }
                     );
@@ -92,12 +96,12 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
             tryConnecting(
                 (api) -> {
                     api.getLesson(
-                        lessonId,
+                        lessonSlug,
                         new BLLCallback<Lesson>(failure) {
                             @Override
                             public void success(Lesson lesson, Response response) {
                                 getTeacher.run(lesson);
-//                                _lessonDAO.create(lesson);
+                                _lessonDAO.create(lesson);
                             }
                         }
                     );
@@ -105,5 +109,36 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
                 failure
             );
         }
+    }
+
+    @Override
+    public void getSchoolClassPair(String lessonSlug, Action2<SchoolClass, User> success, Action<User> teacherRefresh, Action<String> failure) {
+        tryConnecting(
+            (api) -> {
+                api.getSchoolClass(
+                    lessonSlug,
+                    new BLLCallback<SchoolClass>(failure) {
+                        @Override
+                        public void success(SchoolClass schoolClass, Response response) {
+                            _userBusiness.find(
+                                schoolClass.getLesson().getTeacherId(),
+                                (teacher) -> {
+                                    success.run(schoolClass, teacher);
+                                },
+                                teacherRefresh,
+                                failure
+                            );
+
+                            if (_lessonDAO.exists(schoolClass.getLesson().getSlug())) {
+                                _lessonDAO.update(schoolClass.getLesson());
+                            } else {
+                                _lessonDAO.create(schoolClass.getLesson());
+                            }
+                        }
+                    }
+                );
+            },
+            failure
+        );
     }
 }

@@ -7,9 +7,9 @@ import org.railsschool.tiramisu.models.beans.Lesson;
  * @brief
  */
 public interface ILessonDAO {
-    public boolean exists(int id);
+    public boolean exists(String slug);
 
-    public Lesson find(int id);
+    public Lesson find(String slug);
 
     public void create(Lesson lesson);
 

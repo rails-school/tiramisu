@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="FragmentClassDetailsIntro" parent="MatchParent.Vertical">
+        <item name="android:padding">@dimen/layout_margin</item>
+
+        <item name="android:background">@color/black</item>
+    </style>
+
+    <style name="FragmentClassDetailsHeadline" parent="MatchParentWrapContent">
+        <item name="android:textSize">@dimen/headline</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="FragmentClassDetailsSummary" parent="MatchParentWrapContent">
+        <item name="android:layout_marginTop">@dimen/medium_margin</item>
+
+        <item name="android:textSize">@dimen/subhead</item>
+        <item name="android:textColor">@color/soft_white</item>
+    </style>
+
+    <style name="FragmentClassDetailsTeacherWrapper" parent="MatchParentWrapContent">
+        <item name="android:padding">@dimen/layout_margin</item>
+
+        <item name="android:background">@color/light_grey</item>
+    </style>
+
+    <style name="FragmentClassDetailsAvatar">
+        <item name="android:layout_width">@dimen/regular_avatar_size</item>
+        <item name="android:layout_height">@dimen/regular_avatar_size</item>
+
+        <item name="android:layout_marginRight">@dimen/layout_margin</item>
+
+        <item name="riv_corner_radius">@dimen/regular_avatar_size</item>
+        <item name="riv_border_width">0dp</item>
+    </style>
+
+    <style name="FragmentClassDetailsTeacher" parent="WrapContent">
+        <item name="android:textSize">@dimen/title</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="FragmentClassDetailsAttendeeCount" parent="MatchParentWrapContent">
+        <item name="android:layout_marginTop">@dimen/layout_margin</item>
+        <item name="android:layout_marginLeft">@dimen/layout_margin</item>
+        <item name="android:layout_marginRight">@dimen/layout_margin</item>
+        <item name="android:layout_marginBottom">@dimen/medium_margin</item>
+
+        <item name="android:textSize">@dimen/body</item>
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="FragmentClassDetailsDescription" parent="MatchParentWrapContent">
+        <item name="android:layout_marginLeft">@dimen/layout_margin</item>
+        <item name="android:layout_marginRight">@dimen/layout_margin</item>
+        <item name="android:layout_marginBottom">@dimen/medium_margin</item>
+
+        <item name="android:textSize">@dimen/body</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="FragmentClassDetailsAttendanceToggle" parent="MatchParentWrapContent">
+        <item name="android:padding">@dimen/medium_margin</item>
+
+        <item name="android:background">@color/red</item>
+    </style>
+
+    <style name="FragmentClassDetailsToggleIcon">
+        <item name="android:layout_width">@dimen/large_ic</item>
+        <item name="android:layout_height">@dimen/large_ic</item>
+
+        <item name="android:layout_marginRight">@dimen/large_margin</item>
+    </style>
+
+    <style name="FragmentClassDetailsAttendanceToggleLabel" parent="WrapContent">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/title</item>
+    </style>
+</resources>

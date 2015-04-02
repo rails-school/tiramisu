@@ -15,13 +15,13 @@ class LessonDAO extends BaseDAO implements ILessonDAO {
     }
 
     @Override
-    public boolean exists(int id) {
-        return find(id) != null;
+    public boolean exists(String slug) {
+        return find(slug) != null;
     }
 
     @Override
-    public Lesson find(int id) {
-        return getDAL().where(Lesson.class).equalTo("id", id).findFirst();
+    public Lesson find(String slug) {
+        return getDAL().where(Lesson.class).equalTo("slug", slug).findFirst();
     }
 
     @Override
@@ -42,7 +42,7 @@ class LessonDAO extends BaseDAO implements ILessonDAO {
     public void delete(Lesson lesson) {
         getDAL().executeTransaction(
             (dal) -> {
-                find(lesson.getId()).removeFromRealm();
+                find(lesson.getSlug()).removeFromRealm();
             }
         );
     }

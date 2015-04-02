@@ -9,7 +9,7 @@ import io.realm.annotations.PrimaryKey;
  */
 public class Lesson extends RealmObject {
     @PrimaryKey
-    private int    id;
+    private String slug;
     private String title;
     private String summary;
     private String description;
@@ -17,12 +17,12 @@ public class Lesson extends RealmObject {
     private String endTime;
     private int    teacherId;
 
-    public int getId() {
-        return id;
+    public String getSlug() {
+        return slug;
     }
 
-    public void setId(int value) {
-        id = value;
+    public void setSlug(String value) {
+        slug = value;
     }
 
     public String getTitle() {

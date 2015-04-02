@@ -13,7 +13,9 @@ import com.daimajia.androidanimations.library.YoYo;
 
 import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.models.bll.BusinessFactory;
+import org.railsschool.tiramisu.views.events.ClassDetailsRequestedEvent;
 import org.railsschool.tiramisu.views.events.ErrorEvent;
+import org.railsschool.tiramisu.views.helpers.UserHelper;
 import org.railsschool.tiramisu.views.utils.PicassoHelper;
 
 import java.util.List;
@@ -24,8 +26,8 @@ import de.greenrobot.event.EventBus;
  * @class ClassAdapter
  * @brief
  */
-public class ClassAdapter extends SmartAdapter<Integer> {
-    public ClassAdapter(List<Integer> items, Context context) {
+public class ClassAdapter extends SmartAdapter<String> {
+    public ClassAdapter(List<String> items, Context context) {
         super(items, context);
     }
 
@@ -46,6 +48,7 @@ public class ClassAdapter extends SmartAdapter<Integer> {
         View adapter;
         TextView headline, digest, teacherIntro;
         ImageView avatar;
+        String lessonSlug;
 
         adapter = recycle(convertView, R.layout.adapter_class, parent);
         headline = ViewHelper.findById(adapter, R.id.adapter_class_headline);
@@ -53,28 +56,36 @@ public class ClassAdapter extends SmartAdapter<Integer> {
         teacherIntro = ViewHelper.findById(adapter, R.id.adapter_class_teacher);
         avatar = ViewHelper.findById(adapter, R.id.adapter_class_avatar);
 
+        lessonSlug = itemAt(position);
+
         BusinessFactory
             .provideLesson(getContext())
             .getPair(
-                itemAt(position),
+                lessonSlug,
                 (lesson, teacher) -> {
                     headline.setText(lesson.getTitle());
                     digest.setText(lesson.getSummary());
-                    teacherIntro.setText(teacher.getDisplayName());
+                    teacherIntro.setText(UserHelper.getDisplayedName(teacher));
                     PicassoHelper.loadAvatar(getContext(), teacher, avatar);
                 },
                 (newLesson) -> {
                     _refreshContent(headline, newLesson.getTitle());
                     _refreshContent(digest, newLesson.getSummary());
                 },
-                (newUser) -> {
-                    _refreshContent(teacherIntro, newUser.getDisplayName());
-                    PicassoHelper.loadAvatar(getContext(), newUser, avatar);
+                (newTeacher) -> {
+                    _refreshContent(teacherIntro, UserHelper.getDisplayedName(newTeacher));
+                    PicassoHelper.loadAvatar(getContext(), newTeacher, avatar);
                 },
                 (error) -> {
                     EventBus.getDefault().post(new ErrorEvent(error));
                 }
             );
+
+        adapter.setOnClickListener(
+            (v) -> {
+                EventBus.getDefault().post(new ClassDetailsRequestedEvent(lessonSlug));
+            }
+        );
 
         return adapter;
     }

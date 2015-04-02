@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.views.events.ClassDetailsHeaderBackEvent;
-import org.railsschool.tiramisu.views.utils.AnimationHelper;
+import org.railsschool.tiramisu.views.helpers.AnimationHelper;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;

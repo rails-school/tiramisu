@@ -1,6 +1,5 @@
-package org.railsschool.tiramisu.views.utils;
+package org.railsschool.tiramisu.views.helpers;
 
-import android.content.Context;
 import android.text.format.DateUtils;
 
 import org.joda.time.DateTime;
@@ -11,7 +10,7 @@ import org.joda.time.DateTime;
  */
 public class DateHelper {
 
-    public static String makeFriendly(Context context, String rawDate) {
+    public static String makeFriendly(String rawDate) {
         DateTime date = new DateTime(rawDate);
 
         return DateUtils
@@ -21,5 +20,9 @@ public class DateHelper {
                 DateUtils.SECOND_IN_MILLIS
             )
             .toString();
+    }
+
+    public static long inMilliseconds(String rawDate) {
+        return new DateTime(rawDate).toDate().getTime();
     }
 }

@@ -3,6 +3,7 @@ package org.railsschool.tiramisu.views.fragments;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +20,9 @@ import org.railsschool.tiramisu.models.beans.Venue;
 import org.railsschool.tiramisu.models.bll.BusinessFactory;
 import org.railsschool.tiramisu.models.bll.structs.SchoolClass;
 import org.railsschool.tiramisu.views.events.ClassDetailsInitEvent;
+import org.railsschool.tiramisu.views.helpers.DateHelper;
+import org.railsschool.tiramisu.views.helpers.PicassoHelper;
 import org.railsschool.tiramisu.views.helpers.UserHelper;
-import org.railsschool.tiramisu.views.utils.DateHelper;
-import org.railsschool.tiramisu.views.utils.PicassoHelper;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -157,10 +158,7 @@ public class ClassDetailsFragment extends BaseFragment {
                     _headline.setText(schoolClass.getLesson().getTitle());
                     _summary.setText(schoolClass.getLesson().getSummary());
                     _date.setText(
-                        DateHelper.makeFriendly(
-                            getActivity(),
-                            schoolClass.getLesson().getStartTime()
-                        )
+                        DateHelper.makeFriendly(schoolClass.getLesson().getStartTime())
                     );
 
                     _currentVenue = venue;
@@ -213,14 +211,44 @@ public class ClassDetailsFragment extends BaseFragment {
 
     @OnClick(R.id.fragment_class_details_calendar)
     public void onAddToCalendar(View view) {
-        
+        Intent intent;
+
+        if (_currentSchoolClass == null || _currentVenue == null) {
+            return; // Prevent null exceptions
+        }
+
+        intent = new Intent(Intent.ACTION_EDIT);
+
+        intent.setType("vnd.android.cursor.item/event");
+        intent.putExtra(
+            CalendarContract.EXTRA_EVENT_BEGIN_TIME,
+            DateHelper.inMilliseconds(_currentSchoolClass.getLesson().getStartTime())
+        );
+        intent.putExtra(
+            CalendarContract.EXTRA_EVENT_END_TIME,
+            DateHelper.inMilliseconds(_currentSchoolClass.getLesson().getEndTime())
+        );
+        intent.putExtra(
+            CalendarContract.Events.TITLE,
+            _currentSchoolClass.getLesson().getTitle()
+        );
+        intent.putExtra(
+            CalendarContract.Events.EVENT_LOCATION,
+            _currentVenue.getName()
+        );
+
+        startActivity(intent);
     }
 
     @OnClick(R.id.fragment_class_details_location)
     public void onDirectionsRequested(View view) {
-        Intent i;
+        Intent intent;
 
-        i = new Intent(
+        if (_currentVenue == null) {
+            return; // Prevent null exceptions
+        }
+
+        intent = new Intent(
             Intent.ACTION_VIEW,
             Uri.parse(
                 "http://maps.google.com/maps?q=" +
@@ -228,7 +256,7 @@ public class ClassDetailsFragment extends BaseFragment {
                 _currentVenue.getLongitude()
             )
         );
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(i);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }

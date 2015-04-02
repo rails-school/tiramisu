@@ -9,6 +9,5 @@ import org.railsschool.tiramisu.models.beans.Venue;
  * @brief
  */
 public interface IVenueBusiness {
-    public void find(int id, Action<Venue> success, Action<Venue> venueRefresh,
-                     Action<String> failure);
+    public void find(int id, Action<Venue> success, Action<String> failure);
 }

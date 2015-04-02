@@ -7,8 +7,6 @@ import android.widget.TextView;
 
 import com.coshx.chocolatine.helpers.ViewHelper;
 import com.coshx.chocolatine.widgets.SmartAdapter;
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
 
 import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.models.bll.BusinessFactory;
@@ -28,18 +26,6 @@ import de.greenrobot.event.EventBus;
 public class ClassAdapter extends SmartAdapter<String> {
     public ClassAdapter(List<String> items, Context context) {
         super(items, context);
-    }
-
-    private void _refreshContent(TextView textView, String value) {
-        if (!textView.getText().toString().trim().equals(value.trim())) {
-            textView.setVisibility(View.INVISIBLE);
-            textView.setText(value);
-            textView.setVisibility(View.VISIBLE);
-            YoYo
-                .with(Techniques.FadeIn)
-                .duration(500)
-                .playOn(textView);
-        }
     }
 
     @Override
@@ -68,23 +54,6 @@ public class ClassAdapter extends SmartAdapter<String> {
 
                     teacherName.setText(UserHelper.getDisplayedName(teacher));
                     location.setText(venue.getName());
-                },
-                (newLesson) -> {
-                    _refreshContent(headline, newLesson.getTitle());
-                    _refreshContent(digest, newLesson.getSummary());
-                    _refreshContent(
-                        date,
-                        DateHelper.makeFriendly(
-                            getContext(),
-                            newLesson.getStartTime()
-                        )
-                    );
-                },
-                (newTeacher) -> {
-                    _refreshContent(teacherName, UserHelper.getDisplayedName(newTeacher));
-                },
-                (newVenue) -> {
-                    location.setText(newVenue.getName());
                 },
                 (error) -> {
                     EventBus.getDefault().post(new ErrorEvent(error));

@@ -61,18 +61,6 @@ public class ClassDetailsFragment extends BaseFragment {
     @InjectView(R.id.fragment_class_details_attendance_toggle_label)
     TextView _toggleLabel;
 
-    private void _refreshContent(TextView target, String value) {
-        if (!target.getText().toString().trim().equals(value.trim())) {
-            target.setVisibility(View.INVISIBLE);
-            target.setText(value);
-            target.setVisibility(View.VISIBLE);
-            YoYo
-                .with(Techniques.FadeIn)
-                .duration(500)
-                .playOn(target);
-        }
-    }
-
     private void _setAttendees() {
         int attendeeNb = _currentSchoolClass.getStudents().size();
 
@@ -163,13 +151,6 @@ public class ClassDetailsFragment extends BaseFragment {
 
                     _setAttendees();
                     _description.setText(schoolClass.getLesson().getDescription());
-                },
-                (newTeacher) -> {
-                    _refreshContent(_teacher, UserHelper.getDisplayedName(newTeacher));
-                    PicassoHelper.loadAvatar(getActivity(), newTeacher, _avatar);
-                },
-                (newVenue) -> {
-
                 },
                 this::publishError
             );

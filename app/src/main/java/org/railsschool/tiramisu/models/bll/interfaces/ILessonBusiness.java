@@ -19,14 +19,9 @@ public interface ILessonBusiness {
 
     public void getPair(String lessonSlug,
                         Action3<Lesson, User, Venue> success,
-                        Action<Lesson> lessonRefresh,
-                        Action<User> teacherRefresh,
-                        Action<Venue> venueRefresh,
                         Action<String> failure);
 
     public void getSchoolClassPair(String lessonSlug,
                                    Action3<SchoolClass, User, Venue> success,
-                                   Action<User> teacherRefresh,
-                                   Action<Venue> venueRefresh,
                                    Action<String> failure);
 }

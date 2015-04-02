@@ -7,6 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
+
 import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.models.bll.BusinessFactory;
 import org.railsschool.tiramisu.views.adapters.ClassAdapter;
@@ -31,6 +34,10 @@ public class ClassListFragment extends BaseFragment {
             .sortIdsByDate(
                 (ids) -> {
                     _list.setAdapter(new ClassAdapter(ids, getActivity()));
+                    YoYo
+                        .with(Techniques.FadeIn)
+                        .duration(500)
+                        .playOn(_list);
                 },
                 (error) -> {
                     EventBus.getDefault().post(new ErrorEvent(error));

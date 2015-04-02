@@ -61,9 +61,6 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
     public void getPair(
         String lessonSlug,
         Action3<Lesson, User, Venue> success,
-        Action<Lesson> lessonRefresh,
-        Action<User> teacherRefresh,
-        Action<Venue> venueRefresh,
         Action<String> failure) {
 
         Action<Lesson> getTuple = (lesson) -> {
@@ -75,11 +72,9 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
                         (venue) -> {
                             success.run(lesson, teacher, venue);
                         },
-                        venueRefresh,
                         failure
                     );
                 },
-                teacherRefresh,
                 failure
             );
         };
@@ -96,7 +91,6 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
                         new BLLCallback<Lesson>(failure) {
                             @Override
                             public void success(Lesson lesson, Response response) {
-                                lessonRefresh.run(lesson);
                                 _lessonDAO.save(lesson);
                             }
                         }
@@ -128,8 +122,6 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
     public void getSchoolClassPair(
         String lessonSlug,
         Action3<SchoolClass, User, Venue> success,
-        Action<User> teacherRefresh,
-        Action<Venue> venueRefresh,
         Action<String> failure) {
 
         tryConnecting(
@@ -147,11 +139,9 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
                                         (venue) -> {
                                             success.run(schoolClass, teacher, venue);
                                         },
-                                        venueRefresh,
                                         failure
                                     );
                                 },
-                                teacherRefresh,
                                 failure
                             );
 

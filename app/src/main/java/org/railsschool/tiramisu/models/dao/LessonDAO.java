@@ -10,6 +10,7 @@ import io.realm.Realm;
  * @brief
  */
 class LessonDAO extends BaseDAO implements ILessonDAO {
+    private final static Object _saveLock = new Object();
 
     public LessonDAO(Realm dal) {
         super(dal);
@@ -27,10 +28,12 @@ class LessonDAO extends BaseDAO implements ILessonDAO {
 
     @Override
     public void save(Lesson lesson) {
-        if (exists(lesson.getSlug())) {
-            update(lesson);
-        } else {
-            create(lesson);
+        synchronized (_saveLock) {
+            if (exists(lesson.getSlug())) {
+                update(lesson);
+            } else {
+                create(lesson);
+            }
         }
     }
 
@@ -43,8 +46,12 @@ class LessonDAO extends BaseDAO implements ILessonDAO {
     }
 
     public void update(Lesson lesson) {
-        delete(lesson);
-        create(lesson);
+        getDAL().executeTransaction(
+            (dal) -> {
+                find(lesson.getSlug()).removeFromRealm();
+                dal.copyToRealm(lesson);
+            }
+        );
     }
 
     public void delete(Lesson lesson) {

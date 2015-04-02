@@ -10,6 +10,7 @@
     </style>
 
     <style name="AdapterClassHeadline" parent="MatchParentWrapContent">
+        <item name="android:layout_marginTop">@dimen/horizontal_layout_margin</item>
         <item name="android:layout_marginBottom">@dimen/small_margin</item>
         <item name="android:paddingLeft">@dimen/vertical_layout_margin</item>
         <item name="android:paddingRight">@dimen/vertical_layout_margin</item>
@@ -45,6 +46,8 @@
     </style>
 
     <style name="AdapterClassDate" parent="HorizontalStretchable">
+        <item name="android:layout_marginRight">@dimen/medium_margin</item>
+
         <item name="android:textSize">@dimen/body</item>
         <item name="android:textColor">@color/grey</item>
     </style>

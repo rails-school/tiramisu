@@ -10,6 +10,7 @@ import io.realm.Realm;
  * @brief
  */
 class UserDAO extends BaseDAO implements IUserDAO {
+    private final static Object _saveLock = new Object();
 
     public UserDAO(Realm dal) {
         super(dal);
@@ -22,21 +23,17 @@ class UserDAO extends BaseDAO implements IUserDAO {
 
     @Override
     public User find(int id) {
-        User u;
-
-        getDAL().beginTransaction();
-        u = getDAL().where(User.class).equalTo("id", id).findFirst();
-        getDAL().commitTransaction();
-
-        return u;
+        return getDAL().where(User.class).equalTo("id", id).findFirst();
     }
 
     @Override
     public void save(User user) {
-        if (exists(user.getId())) {
-            update(user);
-        } else {
-            create(user);
+        synchronized (_saveLock) {
+            if (exists(user.getId())) {
+                update(user);
+            } else {
+                create(user);
+            }
         }
     }
 
@@ -49,8 +46,12 @@ class UserDAO extends BaseDAO implements IUserDAO {
     }
 
     public void update(User user) {
-        delete(user);
-        create(user);
+        getDAL().executeTransaction(
+            (dal) -> {
+                find(user.getId()).removeFromRealm();
+                dal.copyToRealm(user);
+            }
+        );
     }
 
     public void delete(User user) {

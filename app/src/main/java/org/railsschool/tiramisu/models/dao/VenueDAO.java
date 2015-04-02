@@ -10,6 +10,8 @@ import io.realm.Realm;
  * @brief
  */
 class VenueDAO extends BaseDAO implements IVenueDAO {
+    private final static Object _saveLock = new Object();
+
     public VenueDAO(Realm dal) {
         super(dal);
     }
@@ -21,21 +23,17 @@ class VenueDAO extends BaseDAO implements IVenueDAO {
 
     @Override
     public Venue find(int id) {
-        Venue v;
-
-        getDAL().beginTransaction();
-        v = getDAL().where(Venue.class).equalTo("id", id).findFirst();
-        getDAL().commitTransaction();
-
-        return v;
+        return getDAL().where(Venue.class).equalTo("id", id).findFirst();
     }
 
     @Override
     public void save(Venue venue) {
-        if (exists(venue.getId())) {
-            update(venue);
-        } else {
-            create(venue);
+        synchronized (_saveLock) {
+            if (exists(venue.getId())) {
+                update(venue);
+            } else {
+                create(venue);
+            }
         }
     }
 
@@ -48,8 +46,12 @@ class VenueDAO extends BaseDAO implements IVenueDAO {
     }
 
     public void update(Venue venue) {
-        delete(venue);
-        create(venue);
+        getDAL().executeTransaction(
+            (dal) -> {
+                find(venue.getId()).removeFromRealm();
+                dal.copyToRealm(venue);
+            }
+        );
     }
 
     public void delete(Venue venue) {

@@ -26,7 +26,7 @@ class VenueBusiness extends BaseBusiness implements IVenueBusiness {
     }
 
     @Override
-    public void find(int id, Action<Venue> success, Action<Venue> venueRefresh, Action<String> failure) {
+    public void find(int id, Action<Venue> success, Action<String> failure) {
         if (_venueDAO.exists(id)) {
             success.run(_venueDAO.find(id));
 
@@ -37,7 +37,6 @@ class VenueBusiness extends BaseBusiness implements IVenueBusiness {
                         new BLLCallback<Venue>(failure) {
                             @Override
                             public void success(Venue venue, Response response) {
-                                venueRefresh.run(venue);
                                 _venueDAO.save(venue);
                             }
                         }

@@ -48,8 +48,15 @@ class LessonDAO extends BaseDAO implements ILessonDAO {
     public void update(Lesson lesson) {
         getDAL().executeTransaction(
             (dal) -> {
-                find(lesson.getSlug()).removeFromRealm();
-                dal.copyToRealm(lesson);
+                Lesson entry = find(lesson.getSlug());
+
+                entry.setTitle(lesson.getTitle());
+                entry.setSummary(lesson.getSummary());
+                entry.setDescription(lesson.getDescription());
+                entry.setStartTime(lesson.getStartTime());
+                entry.setEndTime(lesson.getEndTime());
+                entry.setTeacherId(lesson.getTeacherId());
+                entry.setVenueId(lesson.getVenueId());
             }
         );
     }

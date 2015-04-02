@@ -29,6 +29,50 @@
                     tools:text="Proin feugiat, leo in sagittis suscipit, enim lorem adipiscing magna, id pellentesque ante quam nec quam."
                     />
 
+                <LinearLayout
+                    style="@style/FragmentClassDetailsExtra"
+                    >
+
+                    <LinearLayout
+                        android:id="@+id/fragment_class_details_calendar"
+                        style="@style/HorizontalStretchable"
+                        >
+
+                        <ImageView
+                            android:src="@drawable/ic_calendar"
+                            style="@style/FragmentClassDetailsIcon"
+                            />
+
+                        <TextView
+                            android:id="@+id/fragment_class_details_calendar_label"
+                            style="@style/FragmentClassDetailsIconLabel"
+                            tools:text="In 60 minutes"
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/fragment_class_details_location"
+                        style="@style/HorizontalStretchable"
+                        android:gravity="right"
+                        >
+
+                        <ImageView
+                            android:src="@drawable/ic_map_pin"
+                            style="@style/FragmentClassDetailsIcon"
+                            />
+
+                        <TextView
+                            android:id="@+id/fragment_class_details_location_label"
+                            style="@style/FragmentClassDetailsIconLabel"
+                            tools:text="Noisebridge"
+                            />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
             </LinearLayout>
 
             <RelativeLayout
@@ -101,7 +145,7 @@
 
             <ImageView
                 android:layout_width="0dp"
-                android:layout_height="@dimen/large_ic"
+                android:layout_height="@dimen/medium_ic"
                 android:layout_toRightOf="@id/fragment_class_details_attendance_toggle_label"
                 />
 

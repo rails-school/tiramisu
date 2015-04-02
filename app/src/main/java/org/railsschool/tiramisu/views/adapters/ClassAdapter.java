@@ -13,7 +13,7 @@ import org.railsschool.tiramisu.models.bll.BusinessFactory;
 import org.railsschool.tiramisu.views.events.ClassDetailsRequestedEvent;
 import org.railsschool.tiramisu.views.events.ErrorEvent;
 import org.railsschool.tiramisu.views.helpers.UserHelper;
-import org.railsschool.tiramisu.views.utils.DateHelper;
+import org.railsschool.tiramisu.views.helpers.DateHelper;
 
 import java.util.List;
 
@@ -50,7 +50,7 @@ public class ClassAdapter extends SmartAdapter<String> {
                 (lesson, teacher, venue) -> {
                     headline.setText(lesson.getTitle());
                     digest.setText(lesson.getSummary());
-                    date.setText(DateHelper.makeFriendly(getContext(), lesson.getStartTime()));
+                    date.setText(DateHelper.makeFriendly(lesson.getStartTime()));
 
                     teacherName.setText(UserHelper.getDisplayedName(teacher));
                     location.setText(venue.getName());

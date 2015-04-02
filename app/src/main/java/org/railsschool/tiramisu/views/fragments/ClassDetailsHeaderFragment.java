@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.views.events.ClassDetailsHeaderBackEvent;
-import org.railsschool.tiramisu.views.utils.AnimationHelper;
+import org.railsschool.tiramisu.views.helpers.AnimationHelper;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -39,18 +39,8 @@ public class ClassDetailsHeaderFragment extends BaseFragment {
         EventBus.getDefault().post(new ClassDetailsHeaderBackEvent());
     }
 
-    @OnClick(R.id.fragment_class_details_header_calendar)
-    public void onCalendarAdd(View view) {
-
-    }
-
     @OnClick(R.id.fragment_class_details_header_share)
     public void onShare(View view) {
-
-    }
-
-    @OnClick(R.id.fragment_class_details_header_map)
-    public void onDirections(View view) {
 
     }
 }

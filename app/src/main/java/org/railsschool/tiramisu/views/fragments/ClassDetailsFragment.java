@@ -1,6 +1,9 @@
 package org.railsschool.tiramisu.views.fragments;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,11 +16,13 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.squareup.picasso.Picasso;
 
 import org.railsschool.tiramisu.R;
+import org.railsschool.tiramisu.models.beans.Venue;
 import org.railsschool.tiramisu.models.bll.BusinessFactory;
 import org.railsschool.tiramisu.models.bll.structs.SchoolClass;
 import org.railsschool.tiramisu.views.events.ClassDetailsInitEvent;
+import org.railsschool.tiramisu.views.helpers.DateHelper;
+import org.railsschool.tiramisu.views.helpers.PicassoHelper;
 import org.railsschool.tiramisu.views.helpers.UserHelper;
-import org.railsschool.tiramisu.views.utils.PicassoHelper;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -32,6 +37,7 @@ public class ClassDetailsFragment extends BaseFragment {
 
     private ClassDetailsInitEvent _initArgs;
     private SchoolClass           _currentSchoolClass;
+    private Venue                 _currentVenue;
     private boolean               _isAttending;
 
     @InjectView(R.id.fragment_class_details_headline)
@@ -39,6 +45,12 @@ public class ClassDetailsFragment extends BaseFragment {
 
     @InjectView(R.id.fragment_class_details_summary)
     TextView _summary;
+
+    @InjectView(R.id.fragment_class_details_calendar_label)
+    TextView _date;
+
+    @InjectView(R.id.fragment_class_details_location_label)
+    TextView _location;
 
     @InjectView(R.id.fragment_class_details_avatar)
     ImageView _avatar;
@@ -145,6 +157,12 @@ public class ClassDetailsFragment extends BaseFragment {
 
                     _headline.setText(schoolClass.getLesson().getTitle());
                     _summary.setText(schoolClass.getLesson().getSummary());
+                    _date.setText(
+                        DateHelper.makeFriendly(schoolClass.getLesson().getStartTime())
+                    );
+
+                    _currentVenue = venue;
+                    _location.setText(venue.getName());
 
                     PicassoHelper.loadAvatar(getActivity(), teacher, _avatar);
                     _teacher.setText(UserHelper.getDisplayedName(teacher));
@@ -189,5 +207,56 @@ public class ClassDetailsFragment extends BaseFragment {
                 },
                 this::publishError
             );
+    }
+
+    @OnClick(R.id.fragment_class_details_calendar)
+    public void onAddToCalendar(View view) {
+        Intent intent;
+
+        if (_currentSchoolClass == null || _currentVenue == null) {
+            return; // Prevent null exceptions
+        }
+
+        intent = new Intent(Intent.ACTION_EDIT);
+
+        intent.setType("vnd.android.cursor.item/event");
+        intent.putExtra(
+            CalendarContract.EXTRA_EVENT_BEGIN_TIME,
+            DateHelper.inMilliseconds(_currentSchoolClass.getLesson().getStartTime())
+        );
+        intent.putExtra(
+            CalendarContract.EXTRA_EVENT_END_TIME,
+            DateHelper.inMilliseconds(_currentSchoolClass.getLesson().getEndTime())
+        );
+        intent.putExtra(
+            CalendarContract.Events.TITLE,
+            _currentSchoolClass.getLesson().getTitle()
+        );
+        intent.putExtra(
+            CalendarContract.Events.EVENT_LOCATION,
+            _currentVenue.getName()
+        );
+
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.fragment_class_details_location)
+    public void onDirectionsRequested(View view) {
+        Intent intent;
+
+        if (_currentVenue == null) {
+            return; // Prevent null exceptions
+        }
+
+        intent = new Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse(
+                "http://maps.google.com/maps?q=" +
+                _currentVenue.getLatitude() + "," +
+                _currentVenue.getLongitude()
+            )
+        );
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }

@@ -1,4 +1,4 @@
-package org.railsschool.tiramisu.views.utils;
+package org.railsschool.tiramisu.views.helpers;
 
 import android.view.View;
 

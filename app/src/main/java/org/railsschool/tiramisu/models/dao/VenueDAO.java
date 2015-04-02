@@ -48,8 +48,16 @@ class VenueDAO extends BaseDAO implements IVenueDAO {
     public void update(Venue venue) {
         getDAL().executeTransaction(
             (dal) -> {
-                find(venue.getId()).removeFromRealm();
-                dal.copyToRealm(venue);
+                Venue entry = find(venue.getId());
+
+                entry.setZip(venue.getZip());
+                entry.setLatitude(venue.getLatitude());
+                entry.setLongitude(venue.getLongitude());
+                entry.setName(venue.getName());
+                entry.setAddress(venue.getAddress());
+                entry.setCity(venue.getCity());
+                entry.setState(venue.getState());
+                entry.setCountry(venue.getCountry());
             }
         );
     }

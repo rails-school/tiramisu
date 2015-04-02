@@ -11,7 +11,7 @@ public class ClassDetailsInitEvent {
         this._lessonSlug = lessonSlug;
     }
 
-    public String getLessonId() {
+    public String getLessonSlug() {
         return _lessonSlug;
     }
 }

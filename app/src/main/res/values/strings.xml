@@ -9,6 +9,8 @@
     <string name="one_attendee">1 student attends this class</string>
     <string name="multi_attendees">%1$d students attend this class</string>
 
+    <string name="processing">Processing...</string>
+
     <string name="attend_class">I\'m in!</string>
-    <string name="remove_attendance">Nah, I have another thing to do.</string>
+    <string name="remove_attendance">I came over.</string>
 </resources>

@@ -1,6 +1,5 @@
 package org.railsschool.tiramisu.views.fragments;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -22,7 +21,7 @@ import de.greenrobot.event.EventBus;
  * @class ClassListFragment
  * @brief
  */
-public class ClassListFragment extends Fragment {
+public class ClassListFragment extends BaseFragment {
     @InjectView(R.id.fragment_class_list)
     ListView _list;
 

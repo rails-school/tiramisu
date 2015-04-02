@@ -99,6 +99,12 @@
                 tools:text="@string/attend_class"
                 />
 
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="@dimen/large_ic"
+                android:layout_toRightOf="@id/fragment_class_details_attendance_toggle_label"
+                />
+
         </RelativeLayout>
 
     </RelativeLayout>

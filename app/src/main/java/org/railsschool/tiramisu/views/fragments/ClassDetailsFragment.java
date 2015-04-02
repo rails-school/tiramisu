@@ -1,6 +1,5 @@
 package org.railsschool.tiramisu.views.fragments;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -11,6 +10,7 @@ import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.squareup.picasso.Picasso;
 
 import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.models.bll.BusinessFactory;
@@ -22,15 +22,18 @@ import org.railsschool.tiramisu.views.utils.PicassoHelper;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
 /**
  * @class ClassDetailsFragment
  * @brief
  */
-public class ClassDetailsFragment extends Fragment {
+public class ClassDetailsFragment extends BaseFragment {
 
     private ClassDetailsInitEvent _initArgs;
+    private String                _currentSchoolClassSlug;
+    private boolean               _isAttending;
 
     @InjectView(R.id.fragment_class_details_headline)
     TextView _headline;
@@ -49,6 +52,15 @@ public class ClassDetailsFragment extends Fragment {
 
     @InjectView(R.id.fragment_class_details_description)
     TextView _description;
+
+    @InjectView(R.id.fragment_class_details_attendance_toggle)
+    ViewGroup _toggleButton;
+
+    @InjectView(R.id.fragment_class_details_attendance_toggle_icon)
+    ImageView _toggleIcon;
+
+    @InjectView(R.id.fragment_class_details_attendance_toggle_label)
+    TextView _toggleLabel;
 
     private void _refreshContent(TextView target, String value) {
         if (!target.getText().toString().trim().equals(value.trim())) {
@@ -80,6 +92,26 @@ public class ClassDetailsFragment extends Fragment {
             .with(Techniques.FadeIn)
             .duration(500)
             .playOn(_attendees);
+    }
+
+    private void _setAttendance() {
+        if (_isAttending) {
+            _toggleButton.setBackgroundColor(getResources().getColor(R.color.red));
+            Picasso
+                .with(getActivity())
+                .load(R.drawable.ic_unrsvp)
+                .fit()
+                .into(_toggleIcon);
+            _toggleLabel.setText(getString(R.string.remove_attendance));
+        } else {
+            _toggleButton.setBackgroundColor(getResources().getColor(R.color.green));
+            Picasso
+                .with(getActivity())
+                .load(R.drawable.ic_rsvp)
+                .fit()
+                .into(_toggleIcon);
+            _toggleLabel.setText(getString(R.string.attend_class));
+        }
     }
 
     @Nullable
@@ -116,11 +148,12 @@ public class ClassDetailsFragment extends Fragment {
 
     public void onEventMainThread(ClassDetailsInitEvent event) {
         _initArgs = event;
+        _currentSchoolClassSlug = event.getLessonSlug();
 
         BusinessFactory
             .provideLesson(getActivity())
             .getSchoolClassPair(
-                event.getLessonId(),
+                event.getLessonSlug(),
                 (schoolClass, teacher) -> {
                     _headline.setText(schoolClass.getLesson().getTitle());
                     _summary.setText(schoolClass.getLesson().getSummary());
@@ -138,6 +171,36 @@ public class ClassDetailsFragment extends Fragment {
                 (error) -> {
                     EventBus.getDefault().post(new ErrorEvent(error));
                 }
+            );
+
+        BusinessFactory
+            .provideUser(getActivity())
+            .isCurrentUserAttendingTo(
+                event.getLessonSlug(),
+                (isAttending) -> {
+                    _isAttending = isAttending;
+                    _setAttendance();
+                },
+                this::publishError
+            );
+    }
+
+    @OnClick(R.id.fragment_class_details_attendance_toggle)
+    public void onAttendanceToggle(View view) {
+        _toggleIcon.setVisibility(View.GONE);
+        _toggleLabel.setText(getString(R.string.processing));
+
+        BusinessFactory
+            .provideUser(getActivity())
+            .toggleAttendance(
+                _currentSchoolClassSlug,
+                _isAttending,
+                () -> {
+                    _toggleIcon.setVisibility(View.VISIBLE);
+                    _isAttending = !_isAttending;
+                    _setAttendance();
+                },
+                this::publishError
             );
     }
 }

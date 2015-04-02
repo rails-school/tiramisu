@@ -16,6 +16,7 @@ public class Lesson extends RealmObject {
     private String startTime;
     private String endTime;
     private int    teacherId;
+    private int    venueId;
 
     public String getSlug() {
         return slug;
@@ -71,5 +72,13 @@ public class Lesson extends RealmObject {
 
     public void setTeacherId(int value) {
         teacherId = value;
+    }
+
+    public int getVenueId() {
+        return venueId;
+    }
+
+    public void setVenueId(int venueId) {
+        this.venueId = venueId;
     }
 }

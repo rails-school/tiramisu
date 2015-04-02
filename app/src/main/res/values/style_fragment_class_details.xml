@@ -41,8 +41,17 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="FragmentClassDetailsAttendees" parent="MatchParentWrapContent">
-        <item name="android:layout_marginTop">@dimen/layout_margin</item>
+    <style name="FragmentClassDetailsDescription" parent="MatchParentWrapContent">
+        <item name="android:layout_marginLeft">@dimen/layout_margin</item>
+        <item name="android:layout_marginRight">@dimen/layout_margin</item>
+        <item name="android:layout_marginTop">@dimen/medium_margin</item>
+
+        <item name="android:textSize">@dimen/body</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="FragmentClassDetailsAttendeeCount" parent="MatchParentWrapContent">
+        <item name="android:layout_marginTop">@dimen/medium_margin</item>
         <item name="android:layout_marginLeft">@dimen/layout_margin</item>
         <item name="android:layout_marginRight">@dimen/layout_margin</item>
         <item name="android:layout_marginBottom">@dimen/medium_margin</item>
@@ -52,13 +61,10 @@
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="FragmentClassDetailsDescription" parent="MatchParentWrapContent">
+    <style name="FragmentClassDetailsAttendeeGrid" parent="MatchParentWrapContent">
         <item name="android:layout_marginLeft">@dimen/layout_margin</item>
         <item name="android:layout_marginRight">@dimen/layout_margin</item>
         <item name="android:layout_marginBottom">@dimen/layout_margin</item>
-
-        <item name="android:textSize">@dimen/body</item>
-        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="FragmentClassDetailsAttendanceToggle" parent="MatchParentWrapContent">

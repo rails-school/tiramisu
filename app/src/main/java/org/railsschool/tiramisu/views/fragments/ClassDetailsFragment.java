@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,6 +16,7 @@ import com.squareup.picasso.Picasso;
 import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.models.bll.BusinessFactory;
 import org.railsschool.tiramisu.models.bll.structs.SchoolClass;
+import org.railsschool.tiramisu.views.adapters.AttendeeAdapter;
 import org.railsschool.tiramisu.views.events.ClassDetailsInitEvent;
 import org.railsschool.tiramisu.views.events.ErrorEvent;
 import org.railsschool.tiramisu.views.helpers.UserHelper;
@@ -32,7 +34,7 @@ import de.greenrobot.event.EventBus;
 public class ClassDetailsFragment extends BaseFragment {
 
     private ClassDetailsInitEvent _initArgs;
-    private String                _currentSchoolClassSlug;
+    private SchoolClass           _currentSchoolClass;
     private boolean               _isAttending;
 
     @InjectView(R.id.fragment_class_details_headline)
@@ -47,11 +49,14 @@ public class ClassDetailsFragment extends BaseFragment {
     @InjectView(R.id.fragment_class_details_teacher)
     TextView _teacher;
 
-    @InjectView(R.id.fragment_class_details_attendees)
-    TextView _attendees;
-
     @InjectView(R.id.fragment_class_details_description)
     TextView _description;
+
+    @InjectView(R.id.fragment_class_details_attendee_count)
+    TextView _attendeeCount;
+
+    @InjectView(R.id.fragment_class_details_attendee_grid)
+    GridView _attendeeGrid;
 
     @InjectView(R.id.fragment_class_details_attendance_toggle)
     ViewGroup _toggleButton;
@@ -74,27 +79,34 @@ public class ClassDetailsFragment extends BaseFragment {
         }
     }
 
-    private void _setAttendeeNumber(SchoolClass schoolClass) {
-        int attendeeNb = schoolClass.getStudents().size();
+    private void _setAttendees() {
+        int attendeeNb = _currentSchoolClass.getStudents().size();
 
-        _attendees.setVisibility(View.INVISIBLE);
+        _attendeeCount.setVisibility(View.INVISIBLE);
         if (attendeeNb == 0) {
-            _attendees.setText(getString(R.string.no_attendee));
+            _attendeeCount.setText(getString(R.string.no_attendee));
         } else if (attendeeNb == 1) {
-            _attendees.setText(getString(R.string.one_attendee));
+            _attendeeCount.setText(getString(R.string.one_attendee));
         } else {
-            _attendees.setText(
+            _attendeeCount.setText(
                 String.format(getString(R.string.multi_attendees), attendeeNb)
             );
         }
-        _attendees.setVisibility(View.VISIBLE);
+        _attendeeCount.setVisibility(View.VISIBLE);
         YoYo
             .with(Techniques.FadeIn)
             .duration(500)
-            .playOn(_attendees);
+            .playOn(_attendeeCount);
+
+        _attendeeGrid.setAdapter(
+            new AttendeeAdapter(
+                _currentSchoolClass.getStudents(),
+                getActivity()
+            )
+        );
     }
 
-    private void _setAttendance() {
+    private void _setAttendanceToggle() {
         if (_isAttending) {
             _toggleButton.setBackgroundColor(getResources().getColor(R.color.red));
             Picasso
@@ -148,20 +160,21 @@ public class ClassDetailsFragment extends BaseFragment {
 
     public void onEventMainThread(ClassDetailsInitEvent event) {
         _initArgs = event;
-        _currentSchoolClassSlug = event.getLessonSlug();
 
         BusinessFactory
             .provideLesson(getActivity())
             .getSchoolClassPair(
                 event.getLessonSlug(),
                 (schoolClass, teacher) -> {
+                    _currentSchoolClass = schoolClass;
+
                     _headline.setText(schoolClass.getLesson().getTitle());
                     _summary.setText(schoolClass.getLesson().getSummary());
 
                     PicassoHelper.loadAvatar(getActivity(), teacher, _avatar);
                     _teacher.setText(UserHelper.getDisplayedName(teacher));
 
-                    _setAttendeeNumber(schoolClass);
+                    _setAttendees();
                     _description.setText(schoolClass.getLesson().getDescription());
                 },
                 (newTeacher) -> {
@@ -179,7 +192,7 @@ public class ClassDetailsFragment extends BaseFragment {
                 event.getLessonSlug(),
                 (isAttending) -> {
                     _isAttending = isAttending;
-                    _setAttendance();
+                    _setAttendanceToggle();
                 },
                 this::publishError
             );
@@ -187,18 +200,22 @@ public class ClassDetailsFragment extends BaseFragment {
 
     @OnClick(R.id.fragment_class_details_attendance_toggle)
     public void onAttendanceToggle(View view) {
+        if (_currentSchoolClass == null) { // Prevent null pointer
+            return;
+        }
         _toggleIcon.setVisibility(View.GONE);
         _toggleLabel.setText(getString(R.string.processing));
 
         BusinessFactory
             .provideUser(getActivity())
             .toggleAttendance(
-                _currentSchoolClassSlug,
+                _currentSchoolClass.getLesson().getSlug(),
                 _isAttending,
                 () -> {
                     _toggleIcon.setVisibility(View.VISIBLE);
                     _isAttending = !_isAttending;
-                    _setAttendance();
+                    _setAttendanceToggle();
+                    _setAttendees();
                 },
                 this::publishError
             );

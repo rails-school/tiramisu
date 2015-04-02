@@ -33,6 +33,7 @@ android {
     }
 
     productFlavors {
+        app
         unitTest // Creates a new scope which wraps only unit tests
     }
 

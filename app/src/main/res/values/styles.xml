@@ -10,18 +10,19 @@
         <item name="android:layout_height">@dimen/landing_header_size</item>
     </style>
 
-    <style name="Header">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/landing_header_size</item>
-
-        <item name="android:padding">10dp</item>
+    <style name="Header" parent="MatchParentWrapContent">
+        <item name="android:padding">@dimen/medium_margin</item>
 
         <item name="android:background">@color/red</item>
     </style>
 
     <style name="HeaderIcon">
-        <item name="android:layout_width">@dimen/landing_header_size</item>
-        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">@dimen/medium_ic</item>
+        <item name="android:layout_height">@dimen/medium_ic</item>
+        <item name="android:layout_centerVertical">true</item>
+
+        <item name="android:layout_marginLeft">@dimen/medium_margin</item>
+        <item name="android:layout_marginRight">@dimen/medium_margin</item>
     </style>
 
 </resources>

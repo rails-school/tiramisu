@@ -101,7 +101,7 @@
 
             <ImageView
                 android:layout_width="0dp"
-                android:layout_height="@dimen/large_ic"
+                android:layout_height="@dimen/medium_ic"
                 android:layout_toRightOf="@id/fragment_class_details_attendance_toggle_label"
                 />
 

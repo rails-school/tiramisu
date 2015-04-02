@@ -5,38 +5,41 @@
     style="@style/AdapterClass"
     >
 
-    <RelativeLayout
-        style="@style/MatchParentWrapContent"
-        >
+    <TextView
+        android:id="@+id/adapter_class_headline"
+        style="@style/AdapterClassHeadline"
+        tools:text="In accumsan aliquam facilisis."
+        />
 
-        <com.makeramen.RoundedImageView
-            android:id="@+id/adapter_class_avatar"
-            android:layout_centerVertical="true"
-            style="@style/AdapterClassAvatar"
-            tools:src="@drawable/default_avatar"
-            />
-
-        <TextView
-            android:id="@+id/adapter_class_headline"
-            android:layout_toRightOf="@id/adapter_class_avatar"
-            style="@style/AdapterClassHeadline"
-            tools:text="@string/app_name"
-            />
-
-        <TextView
-            android:id="@+id/adapter_class_teacher"
-            android:layout_below="@id/adapter_class_headline"
-            android:layout_toRightOf="@id/adapter_class_avatar"
-            style="@style/AdapterClassTeacher"
-            tools:text="@string/app_name"
-            />
-
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/adapter_class_teacher"
+        android:layout_below="@id/adapter_class_headline"
+        style="@style/AdapterClassTeacher"
+        tools:text="@string/app_name"
+        />
 
     <TextView
         android:id="@+id/adapter_class_digest"
         style="@style/AdapterClassDigest"
-        tools:text="@string/error_default"
+        tools:text="In accumsan aliquam facilisis. Maecenas odio erat, elementum sit amet laoreet id, egestas nec velit."
         />
+
+    <LinearLayout
+        style="@style/AdapterClassFooter"
+        >
+
+        <TextView
+            android:id="@+id/adapter_class_date"
+            style="@style/AdapterClassDate"
+            tools:text="In 45 minutes"
+            />
+
+        <TextView
+            android:id="@+id/adapter_class_location"
+            style="@style/AdapterClassLocation"
+            tools:text="Mission St"
+            />
+
+    </LinearLayout>
 
 </LinearLayout>

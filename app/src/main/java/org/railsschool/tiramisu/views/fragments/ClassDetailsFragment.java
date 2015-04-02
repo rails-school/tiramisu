@@ -16,7 +16,6 @@ import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.models.bll.BusinessFactory;
 import org.railsschool.tiramisu.models.bll.structs.SchoolClass;
 import org.railsschool.tiramisu.views.events.ClassDetailsInitEvent;
-import org.railsschool.tiramisu.views.events.ErrorEvent;
 import org.railsschool.tiramisu.views.helpers.UserHelper;
 import org.railsschool.tiramisu.views.utils.PicassoHelper;
 
@@ -61,18 +60,6 @@ public class ClassDetailsFragment extends BaseFragment {
 
     @InjectView(R.id.fragment_class_details_attendance_toggle_label)
     TextView _toggleLabel;
-
-    private void _refreshContent(TextView target, String value) {
-        if (!target.getText().toString().trim().equals(value.trim())) {
-            target.setVisibility(View.INVISIBLE);
-            target.setText(value);
-            target.setVisibility(View.VISIBLE);
-            YoYo
-                .with(Techniques.FadeIn)
-                .duration(500)
-                .playOn(target);
-        }
-    }
 
     private void _setAttendees() {
         int attendeeNb = _currentSchoolClass.getStudents().size();
@@ -153,7 +140,7 @@ public class ClassDetailsFragment extends BaseFragment {
             .provideLesson(getActivity())
             .getSchoolClassPair(
                 event.getLessonSlug(),
-                (schoolClass, teacher) -> {
+                (schoolClass, teacher, venue) -> {
                     _currentSchoolClass = schoolClass;
 
                     _headline.setText(schoolClass.getLesson().getTitle());
@@ -165,13 +152,7 @@ public class ClassDetailsFragment extends BaseFragment {
                     _setAttendees();
                     _description.setText(schoolClass.getLesson().getDescription());
                 },
-                (newTeacher) -> {
-                    _refreshContent(_teacher, UserHelper.getDisplayedName(newTeacher));
-                    PicassoHelper.loadAvatar(getActivity(), newTeacher, _avatar);
-                },
-                (error) -> {
-                    EventBus.getDefault().post(new ErrorEvent(error));
-                }
+                this::publishError
             );
 
         BusinessFactory
@@ -194,6 +175,7 @@ public class ClassDetailsFragment extends BaseFragment {
         _toggleIcon.setVisibility(View.GONE);
         _toggleLabel.setText(getString(R.string.processing));
 
+        //TODO: error handling
         BusinessFactory
             .provideUser(getActivity())
             .toggleAttendance(

@@ -33,6 +33,7 @@ android {
     }
 
     productFlavors {
+        app
         unitTest // Creates a new scope which wraps only unit tests
     }
 
@@ -120,6 +121,7 @@ dependencies {
     compile 'io.realm:realm-android:0.80.0'
     compile 'com.makeramen:roundedimageview:1.5.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'joda-time:joda-time:2.7'
 }
 
 // Using lambda functions

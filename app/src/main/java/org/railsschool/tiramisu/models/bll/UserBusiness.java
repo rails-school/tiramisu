@@ -28,7 +28,7 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
 
 
     @Override
-    public void find(int id, Action<User> success, Action<User> refresh, Action<String> failure) {
+    public void find(int id, Action<User> success, Action<String> failure) {
         if (_userDAO.exists(id)) {
             // Already an entry, use local data first
             success.run(_userDAO.find(id));
@@ -41,8 +41,7 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
                         new BLLCallback<User>(failure) {
                             @Override
                             public void success(User user, Response response) {
-                                refresh.run(user);
-                                _userDAO.update(user);
+                                _userDAO.save(user);
                             }
                         }
                     );
@@ -59,7 +58,7 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
                             @Override
                             public void success(User user, Response response) {
                                 success.run(user);
-                                _userDAO.create(user);
+                                _userDAO.save(user);
                             }
                         }
                     );

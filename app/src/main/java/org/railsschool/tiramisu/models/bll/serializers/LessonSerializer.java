@@ -27,6 +27,7 @@ public class LessonSerializer implements JsonDeserializer<Lesson> {
         outcome.setStartTime(o.get("start_time").getAsString());
         outcome.setEndTime(o.get("end_time").getAsString());
         outcome.setTeacherId(o.get("teacher_id").getAsInt());
+        outcome.setVenueId(o.get("venue_id").getAsInt());
 
         return outcome;
     }

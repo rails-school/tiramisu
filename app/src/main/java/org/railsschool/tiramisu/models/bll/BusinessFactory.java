@@ -4,6 +4,7 @@ import android.content.Context;
 
 import org.railsschool.tiramisu.models.bll.interfaces.ILessonBusiness;
 import org.railsschool.tiramisu.models.bll.interfaces.IUserBusiness;
+import org.railsschool.tiramisu.models.bll.interfaces.IVenueBusiness;
 import org.railsschool.tiramisu.models.bll.remote.RailsSchoolAPIOutletFactory;
 import org.railsschool.tiramisu.models.dao.DAOFactory;
 
@@ -14,6 +15,7 @@ import org.railsschool.tiramisu.models.dao.DAOFactory;
 public class BusinessFactory {
     private static IUserBusiness   _user;
     private static ILessonBusiness _lesson;
+    private static IVenueBusiness  _venue;
 
     public static IUserBusiness provideUser(Context context) {
         if (_user == null) {
@@ -33,10 +35,23 @@ public class BusinessFactory {
                 context,
                 RailsSchoolAPIOutletFactory.provide(context),
                 provideUser(context),
+                provideVenue(context),
                 DAOFactory.provideLesson(context)
             );
         }
 
         return _lesson;
+    }
+
+    public static IVenueBusiness provideVenue(Context context) {
+        if (_venue == null) {
+            _venue = new VenueBusiness(
+                context,
+                RailsSchoolAPIOutletFactory.provide(context),
+                DAOFactory.provideVenue(context)
+            );
+        }
+
+        return _venue;
     }
 }

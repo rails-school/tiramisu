@@ -17,7 +17,7 @@
         <item name="android:layout_marginTop">@dimen/medium_margin</item>
 
         <item name="android:textSize">@dimen/subhead</item>
-        <item name="android:textColor">@color/soft_white</item>
+        <item name="android:textColor">@color/light_white</item>
     </style>
 
     <style name="FragmentClassDetailsTeacherWrapper" parent="MatchParentWrapContent">

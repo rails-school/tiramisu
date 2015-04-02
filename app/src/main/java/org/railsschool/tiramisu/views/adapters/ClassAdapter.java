@@ -3,20 +3,17 @@ package org.railsschool.tiramisu.views.adapters;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.coshx.chocolatine.helpers.ViewHelper;
 import com.coshx.chocolatine.widgets.SmartAdapter;
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
 
 import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.models.bll.BusinessFactory;
 import org.railsschool.tiramisu.views.events.ClassDetailsRequestedEvent;
 import org.railsschool.tiramisu.views.events.ErrorEvent;
 import org.railsschool.tiramisu.views.helpers.UserHelper;
-import org.railsschool.tiramisu.views.utils.PicassoHelper;
+import org.railsschool.tiramisu.views.utils.DateHelper;
 
 import java.util.List;
 
@@ -31,30 +28,18 @@ public class ClassAdapter extends SmartAdapter<String> {
         super(items, context);
     }
 
-    private void _refreshContent(TextView textView, String value) {
-        if (!textView.getText().toString().trim().equals(value.trim())) {
-            textView.setVisibility(View.INVISIBLE);
-            textView.setText(value);
-            textView.setVisibility(View.VISIBLE);
-            YoYo
-                .with(Techniques.FadeIn)
-                .duration(500)
-                .playOn(textView);
-        }
-    }
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View adapter;
-        TextView headline, digest, teacherIntro;
-        ImageView avatar;
+        TextView headline, digest, teacherName, date, location;
         String lessonSlug;
 
         adapter = recycle(convertView, R.layout.adapter_class, parent);
         headline = ViewHelper.findById(adapter, R.id.adapter_class_headline);
         digest = ViewHelper.findById(adapter, R.id.adapter_class_digest);
-        teacherIntro = ViewHelper.findById(adapter, R.id.adapter_class_teacher);
-        avatar = ViewHelper.findById(adapter, R.id.adapter_class_avatar);
+        teacherName = ViewHelper.findById(adapter, R.id.adapter_class_teacher);
+        date = ViewHelper.findById(adapter, R.id.adapter_class_date);
+        location = ViewHelper.findById(adapter, R.id.adapter_class_location);
 
         lessonSlug = itemAt(position);
 
@@ -62,19 +47,13 @@ public class ClassAdapter extends SmartAdapter<String> {
             .provideLesson(getContext())
             .getPair(
                 lessonSlug,
-                (lesson, teacher) -> {
+                (lesson, teacher, venue) -> {
                     headline.setText(lesson.getTitle());
                     digest.setText(lesson.getSummary());
-                    teacherIntro.setText(UserHelper.getDisplayedName(teacher));
-                    PicassoHelper.loadAvatar(getContext(), teacher, avatar);
-                },
-                (newLesson) -> {
-                    _refreshContent(headline, newLesson.getTitle());
-                    _refreshContent(digest, newLesson.getSummary());
-                },
-                (newTeacher) -> {
-                    _refreshContent(teacherIntro, UserHelper.getDisplayedName(newTeacher));
-                    PicassoHelper.loadAvatar(getContext(), newTeacher, avatar);
+                    date.setText(DateHelper.makeFriendly(getContext(), lesson.getStartTime()));
+
+                    teacherName.setText(UserHelper.getDisplayedName(teacher));
+                    location.setText(venue.getName());
                 },
                 (error) -> {
                     EventBus.getDefault().post(new ErrorEvent(error));

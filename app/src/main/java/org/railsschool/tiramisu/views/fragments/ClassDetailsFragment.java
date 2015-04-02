@@ -16,7 +16,6 @@ import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.models.bll.BusinessFactory;
 import org.railsschool.tiramisu.models.bll.structs.SchoolClass;
 import org.railsschool.tiramisu.views.events.ClassDetailsInitEvent;
-import org.railsschool.tiramisu.views.events.ErrorEvent;
 import org.railsschool.tiramisu.views.helpers.UserHelper;
 import org.railsschool.tiramisu.views.utils.PicassoHelper;
 
@@ -153,7 +152,7 @@ public class ClassDetailsFragment extends BaseFragment {
             .provideLesson(getActivity())
             .getSchoolClassPair(
                 event.getLessonSlug(),
-                (schoolClass, teacher) -> {
+                (schoolClass, teacher, venue) -> {
                     _currentSchoolClass = schoolClass;
 
                     _headline.setText(schoolClass.getLesson().getTitle());
@@ -169,9 +168,10 @@ public class ClassDetailsFragment extends BaseFragment {
                     _refreshContent(_teacher, UserHelper.getDisplayedName(newTeacher));
                     PicassoHelper.loadAvatar(getActivity(), newTeacher, _avatar);
                 },
-                (error) -> {
-                    EventBus.getDefault().post(new ErrorEvent(error));
-                }
+                (newVenue) -> {
+
+                },
+                this::publishError
             );
 
         BusinessFactory
@@ -194,6 +194,7 @@ public class ClassDetailsFragment extends BaseFragment {
         _toggleIcon.setVisibility(View.GONE);
         _toggleLabel.setText(getString(R.string.processing));
 
+        //TODO: error handling
         BusinessFactory
             .provideUser(getActivity())
             .toggleAttendance(

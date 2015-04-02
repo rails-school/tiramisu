@@ -2,44 +2,51 @@
 <LinearLayout
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/AdapterClass"
+    style="@style/AdapterClassWrapper"
     >
 
-    <TextView
-        android:id="@+id/adapter_class_headline"
-        style="@style/AdapterClassHeadline"
-        tools:text="In accumsan aliquam facilisis."
-        />
-
-    <TextView
-        android:id="@+id/adapter_class_teacher"
-        android:layout_below="@id/adapter_class_headline"
-        style="@style/AdapterClassTeacher"
-        tools:text="@string/app_name"
-        />
-
-    <TextView
-        android:id="@+id/adapter_class_digest"
-        style="@style/AdapterClassDigest"
-        tools:text="In accumsan aliquam facilisis. Maecenas odio erat, elementum sit amet laoreet id, egestas nec velit."
-        />
-
     <LinearLayout
-        style="@style/AdapterClassFooter"
+        style="@style/AdapterClass"
         >
 
         <TextView
-            android:id="@+id/adapter_class_date"
-            style="@style/AdapterClassDate"
-            tools:text="In 45 minutes"
+            android:id="@+id/adapter_class_headline"
+            style="@style/AdapterClassHeadline"
+            tools:text="In accumsan aliquam facilisis."
             />
 
         <TextView
-            android:id="@+id/adapter_class_location"
-            style="@style/AdapterClassLocation"
-            tools:text="Mission St"
+            android:id="@+id/adapter_class_teacher"
+            style="@style/AdapterClassTeacher"
+            tools:text="@string/app_name"
             />
+
+        <TextView
+            android:id="@+id/adapter_class_digest"
+            style="@style/AdapterClassDigest"
+            tools:text="In accumsan aliquam facilisis. Maecenas odio erat, elementum sit amet laoreet id, egestas nec velit."
+            />
+
+        <LinearLayout
+            style="@style/AdapterClassFooter"
+            >
+
+            <TextView
+                android:id="@+id/adapter_class_date"
+                style="@style/AdapterClassDate"
+                tools:text="In 45 minutes"
+                />
+
+            <TextView
+                android:id="@+id/adapter_class_location"
+                style="@style/AdapterClassLocation"
+                tools:text="Mission St"
+                />
+
+        </LinearLayout>
 
     </LinearLayout>
 
 </LinearLayout>
+
+

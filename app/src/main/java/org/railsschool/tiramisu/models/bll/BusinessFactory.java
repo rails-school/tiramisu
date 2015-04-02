@@ -35,6 +35,7 @@ public class BusinessFactory {
                 context,
                 RailsSchoolAPIOutletFactory.provide(context),
                 provideUser(context),
+                provideVenue(context),
                 DAOFactory.provideLesson(context)
             );
         }

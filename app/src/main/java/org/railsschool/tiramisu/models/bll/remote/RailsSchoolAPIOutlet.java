@@ -12,10 +12,12 @@ import com.google.gson.GsonBuilder;
 import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.models.beans.Lesson;
 import org.railsschool.tiramisu.models.beans.User;
+import org.railsschool.tiramisu.models.beans.Venue;
 import org.railsschool.tiramisu.models.bll.remote.interfaces.IRailsSchoolAPIOutlet;
 import org.railsschool.tiramisu.models.bll.serializers.LessonSerializer;
 import org.railsschool.tiramisu.models.bll.serializers.SchoolClassSerializer;
 import org.railsschool.tiramisu.models.bll.serializers.UserSerializer;
+import org.railsschool.tiramisu.models.bll.serializers.VenueSerializer;
 import org.railsschool.tiramisu.models.bll.structs.SchoolClass;
 
 import retrofit.RestAdapter;
@@ -36,6 +38,7 @@ class RailsSchoolAPIOutlet implements IRailsSchoolAPIOutlet {
             .registerTypeAdapter(User.class, new UserSerializer())
             .registerTypeAdapter(Lesson.class, new LessonSerializer())
             .registerTypeAdapter(SchoolClass.class, new SchoolClassSerializer())
+            .registerTypeAdapter(Venue.class, new VenueSerializer())
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .create();
 

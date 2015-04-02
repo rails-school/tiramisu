@@ -42,7 +42,7 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
                             @Override
                             public void success(User user, Response response) {
                                 refresh.run(user);
-                                _userDAO.update(user);
+                                _userDAO.save(user);
                             }
                         }
                     );
@@ -59,7 +59,7 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
                             @Override
                             public void success(User user, Response response) {
                                 success.run(user);
-                                _userDAO.create(user);
+                                _userDAO.save(user);
                             }
                         }
                     );

@@ -7,6 +7,7 @@
     <ListView
         android:id="@+id/fragment_class_list"
         style="@style/MatchParentWrapContent"
+        android:divider="@null"
         />
 
 </LinearLayout>

@@ -38,7 +38,7 @@ class VenueBusiness extends BaseBusiness implements IVenueBusiness {
                             @Override
                             public void success(Venue venue, Response response) {
                                 venueRefresh.run(venue);
-                                _venueDAO.update(venue);
+                                _venueDAO.save(venue);
                             }
                         }
                     );
@@ -54,7 +54,7 @@ class VenueBusiness extends BaseBusiness implements IVenueBusiness {
                             @Override
                             public void success(Venue venue, Response response) {
                                 success.run(venue);
-                                _venueDAO.create(venue);
+                                _venueDAO.save(venue);
                             }
                         }
                     );

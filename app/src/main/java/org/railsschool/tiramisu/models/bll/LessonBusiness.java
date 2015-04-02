@@ -68,9 +68,6 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
             );
         };
 
-        // Warning: this function assumes there is no duplicate in
-        // input list. Otherwise, this method must crash due to
-        // DB access multi-threading (creation may happen twice).
         if (_lessonDAO.exists(lessonSlug)) {
             // Lesson already in local storage, run callback
             getTeacher.run(_lessonDAO.find(lessonSlug));

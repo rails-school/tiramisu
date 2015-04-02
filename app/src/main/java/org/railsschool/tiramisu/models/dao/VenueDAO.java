@@ -9,7 +9,7 @@ import io.realm.Realm;
  * @class VenueDAO
  * @brief
  */
-public class VenueDAO extends BaseDAO implements IVenueDAO {
+class VenueDAO extends BaseDAO implements IVenueDAO {
     public VenueDAO(Realm dal) {
         super(dal);
     }
@@ -21,7 +21,13 @@ public class VenueDAO extends BaseDAO implements IVenueDAO {
 
     @Override
     public Venue find(int id) {
-        return getDAL().where(Venue.class).equalTo("id", id).findFirst();
+        Venue v;
+
+        getDAL().beginTransaction();
+        v = getDAL().where(Venue.class).equalTo("id", id).findFirst();
+        getDAL().commitTransaction();
+
+        return v;
     }
 
     @Override

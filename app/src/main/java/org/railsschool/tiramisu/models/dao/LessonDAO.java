@@ -10,6 +10,7 @@ import io.realm.Realm;
  * @brief
  */
 class LessonDAO extends BaseDAO implements ILessonDAO {
+
     public LessonDAO(Realm dal) {
         super(dal);
     }
@@ -21,7 +22,13 @@ class LessonDAO extends BaseDAO implements ILessonDAO {
 
     @Override
     public Lesson find(String slug) {
-        return getDAL().where(Lesson.class).equalTo("slug", slug).findFirst();
+        Lesson l;
+
+        getDAL().beginTransaction();
+        l = getDAL().where(Lesson.class).equalTo("slug", slug).findFirst();
+        getDAL().commitTransaction();
+
+        return l;
     }
 
     @Override

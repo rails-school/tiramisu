@@ -10,6 +10,7 @@ import io.realm.Realm;
  * @brief
  */
 class UserDAO extends BaseDAO implements IUserDAO {
+
     public UserDAO(Realm dal) {
         super(dal);
     }
@@ -21,7 +22,13 @@ class UserDAO extends BaseDAO implements IUserDAO {
 
     @Override
     public User find(int id) {
-        return getDAL().where(User.class).equalTo("id", id).findFirst();
+        User u;
+
+        getDAL().beginTransaction();
+        u = getDAL().where(User.class).equalTo("id", id).findFirst();
+        getDAL().commitTransaction();
+
+        return u;
     }
 
     @Override

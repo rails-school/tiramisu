@@ -42,10 +42,10 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
     }
 
     @Override
-    public void sortIdsByDate(Action<List<String>> success, Action<String> failure) {
+    public void sortFutureSlugsByDate(Action<List<String>> success, Action<String> failure) {
         tryConnecting(
             (api) -> {
-                api.getLessonSlugs(
+                api.getFutureLessonSlugs(
                     new BLLCallback<List<String>>(failure) {
                         @Override
                         public void success(List<String> lessonSlugs, Response response) {
@@ -156,14 +156,14 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
     }
 
     @Override
-    public void getNextLesson(Action<Lesson> success) {
+    public void getUpcoming(Action<Lesson> success) {
         Action<String> failure = (error) -> {
             Log.e(getClass().getSimpleName(), error);
         };
 
         tryConnecting(
             (api) -> {
-                api.getNextLesson(
+                api.getUpcomingLesson(
                     new BLLCallback<Lesson>(failure) {
                         @Override
                         public void success(Lesson lesson, Response response) {

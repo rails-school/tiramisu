@@ -22,8 +22,8 @@ public interface IRailsSchoolAPI {
 
     public final static String FORMAT = ".json";
 
-    @GET(LESSON_ROOT + "/slugs" + FORMAT)
-    public void getLessonSlugs(Callback<List<String>> callback);
+    @GET(LESSON_ROOT + "/future/slugs" + FORMAT)
+    public void getFutureLessonSlugs(Callback<List<String>> callback);
 
     @GET(LESSON_ROOT + "/{slug}" + FORMAT)
     public void getLesson(@Path("slug") String slug, Callback<Lesson> callback);
@@ -31,8 +31,8 @@ public interface IRailsSchoolAPI {
     @GET(LESSON_ROOT + "/{slug}" + FORMAT)
     public void getSchoolClass(@Path("slug") String slug, Callback<SchoolClass> callback);
 
-    @GET(LESSON_ROOT + "/next" + FORMAT)
-    public void getNextLesson(Callback<Lesson> callback);
+    @GET(LESSON_ROOT + "/upcoming" + FORMAT)
+    public void getUpcomingLesson(Callback<Lesson> callback);
 
     @GET(USER_ROOT + "/{id}" + FORMAT)
     public void getUser(@Path("id") int id, Callback<User> callback);

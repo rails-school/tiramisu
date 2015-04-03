@@ -54,7 +54,7 @@ public class RemindSchedulerReceiver extends BroadcastReceiver {
 
         BusinessFactory
             .provideLesson(context)
-            .getNextLesson(
+            .getUpcoming(
                 (lesson) -> {
                     // 2 hours before notification
                     if (_shouldBeNotified(lesson, Hours.TWO)) {

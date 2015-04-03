@@ -18,7 +18,7 @@ public class DayReminderReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         BusinessFactory
             .provideLesson(context)
-            .getNextLesson(
+            .getUpcoming(
                 (lesson) -> {
                     new PushNotificationSystem(context).notify(
                         context.getString(R.string.reminder_next_day),

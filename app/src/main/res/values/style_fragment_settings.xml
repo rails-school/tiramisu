@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="FragmentSettings" parent="MatchParentWrapContent.Vertical">
+        <item name="android:padding">@dimen/layout_margin</item>
+    </style>
+
+    <style name="FragmentSettingsFieldset" parent="MatchParentWrapContent.Horizontal">
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="FragmentSettingsIcon">
+        <item name="android:layout_width">@dimen/medium_ic</item>
+        <item name="android:layout_height">@dimen/medium_ic</item>
+
+        <item name="android:layout_margin">@dimen/medium_margin</item>
+    </style>
+
+    <style name="FragmentSettingsLabel" parent="WrapContent">
+        <item name="android:textSize">@dimen/title</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+</resources>

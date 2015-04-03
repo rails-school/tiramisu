@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    style="@style/MatchParent.Vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <ScrollView
+        style="@style/MatchParent"
+        >
+
+        <LinearLayout
+            style="@style/FragmentSettings"
+            >
+
+            <LinearLayout
+                style="@style/FragmentSettingsFieldset"
+                >
+
+                <ImageView
+                    android:src="@drawable/ic_account"
+                    style="@style/FragmentSettingsIcon"
+                    />
+
+                <TextView
+                    android:text="@string/settings_account_label"
+                    style="@style/FragmentSettingsLabel"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/FragmentSettingsFieldset"
+                >
+
+                <ImageView
+                    android:src="@drawable/ic_settings"
+                    style="@style/FragmentSettingsIcon"
+                    />
+
+                <TextView
+                    android:text="@string/settings_reminder_label"
+                    style="@style/FragmentSettingsLabel"
+                    />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

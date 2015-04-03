@@ -49,7 +49,7 @@ public class MainActivity extends BaseActivity {
 
         fragmentMap.put(R.id.main_activity_header, new LandingHeaderFragment());
         fragmentMap.put(R.id.main_activity_body, new ClassListFragment());
-        setFragments(fragmentMap);
+        setFragments(fragmentMap, false);
     }
 
     private void _setClassDetailsContent() {

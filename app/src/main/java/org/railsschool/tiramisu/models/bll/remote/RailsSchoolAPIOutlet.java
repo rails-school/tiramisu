@@ -43,7 +43,7 @@ class RailsSchoolAPIOutlet implements IRailsSchoolAPIOutlet {
             .create();
 
         this._adapterBuilder = new RestAdapter.Builder()
-            .setLogLevel(RestAdapter.LogLevel.FULL)
+            //.setLogLevel(RestAdapter.LogLevel.FULL)
             .setEndpoint(this._context.getString(R.string.api_endpoint))
             .setConverter(new GsonConverter(gson));
     }

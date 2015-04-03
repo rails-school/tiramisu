@@ -24,4 +24,9 @@ public interface ILessonBusiness {
     public void getSchoolClassPair(String lessonSlug,
                                    Action3<SchoolClass, User, Venue> success,
                                    Action<String> failure);
+
+    //    public void isTimeForNotification(Minutes period, Action<Lesson> inLessThanTwoHours,
+    //                                      Action<Lesson> inADay);
+
+    public void getNextLesson(Action<Lesson> success);
 }

@@ -28,6 +28,23 @@
 
             </LinearLayout>
 
+            <EditText
+                android:id="@+id/fragment_settings_username"
+                style="@style/FragmentSettingsField"
+                android:hint="@string/settings_username_placeholder"
+                />
+
+            <EditText
+                android:id="@+id/fragment_settings_password"
+                style="@style/FragmentSettingsField"
+                android:hint="@string/settings_password_placeholder"
+                android:inputType="textPassword"
+                />
+
+            <ImageView
+                style="@style/FragmentSettingsSeparator"
+                />
+
             <LinearLayout
                 style="@style/FragmentSettingsFieldset"
                 >
@@ -44,6 +61,40 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                style="@style/MatchParentWrapContent.Horizontal"
+                >
+
+                <TextView
+                    android:text="@string/settings_reminder_two_hour"
+                    style="@style/FragmentSettingsSpinnerLabel"
+                    />
+
+                <Spinner
+                    android:id="@+id/fragment_settings_two_day_reminder"
+                    android:entries="@array/settings_reminder_frequencies"
+                    style="@style/FragmentSettingsSpinner"
+                    />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                style="@style/MatchParentWrapContent.Horizontal"
+                >
+
+                <TextView
+                    android:text="@string/settings_reminder_day"
+                    style="@style/FragmentSettingsSpinnerLabel"
+                    />
+
+                <Spinner
+                    android:id="@+id/fragment_settings_day_reminder"
+                    android:entries="@array/settings_reminder_frequencies"
+                    style="@style/FragmentSettingsSpinner"
+                    />
+
+            </LinearLayout>
 
         </LinearLayout>
 

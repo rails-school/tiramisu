@@ -44,7 +44,7 @@
     <style name="FragmentClassDetailsTeacherWrapper" parent="MatchParentWrapContent">
         <item name="android:padding">@dimen/layout_margin</item>
 
-        <item name="android:background">@color/light_grey</item>
+        <item name="android:background">@color/super_soft_gray</item>
     </style>
 
     <style name="FragmentClassDetailsAvatar">
@@ -69,7 +69,7 @@
         <item name="android:layout_marginBottom">@dimen/medium_margin</item>
 
         <item name="android:textSize">@dimen/body</item>
-        <item name="android:textColor">@color/grey</item>
+        <item name="android:textColor">@color/gray</item>
         <item name="android:gravity">center</item>
     </style>
 

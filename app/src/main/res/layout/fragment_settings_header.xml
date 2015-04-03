@@ -5,7 +5,7 @@
     >
 
     <ImageView
-        android:id="@+id/fragment_class_details_header_back"
+        android:id="@+id/fragment_settings_header_back"
         android:src="@drawable/ic_back"
         style="@style/HeaderIcon"
         />

@@ -20,4 +20,46 @@
         <item name="android:textSize">@dimen/title</item>
         <item name="android:textColor">@color/black</item>
     </style>
+
+    <style name="FragmentSettingsField" parent="MatchParentWrapContent">
+        <item name="android:layout_marginTop">@dimen/medium_margin</item>
+        <item name="android:layout_marginBottom">@dimen/medium_margin</item>
+        <item name="android:padding">@dimen/medium_margin</item>
+
+        <item name="android:textSize">@dimen/subhead</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorHint">@color/gray</item>
+
+        <item name="android:background">@color/soft_gray</item>
+    </style>
+
+    <style name="FragmentSettingsSeparator">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">2dp</item>
+
+        <item name="android:layout_marginTop">@dimen/medium_margin</item>
+        <item name="android:layout_marginBottom">@dimen/medium_margin</item>
+
+        <item name="android:background">@color/soft_gray</item>
+    </style>
+
+    <style name="FragmentSettingsSpinnerLabel" parent="HorizontalStretchable">
+        <item name="android:layout_gravity">center_vertical</item>
+
+        <item name="android:layout_marginLeft">@dimen/medium_margin</item>
+        <item name="android:layout_marginRight">@dimen/medium_margin</item>
+
+        <item name="android:textSize">@dimen/subhead</item>
+        <item name="android:textColor">@color/gray</item>
+    </style>
+
+    <style name="FragmentSettingsSpinner" parent="HorizontalStretchable">
+        <item name="android:layout_gravity">center_vertical</item>
+
+        <item name="android:layout_marginTop">@dimen/small_margin</item>
+        <item name="android:layout_marginBottom">@dimen/small_margin</item>
+        <item name="android:padding">@dimen/small_margin</item>
+
+        <item name="android:textSize">@dimen/subhead</item>
+    </style>
 </resources>

@@ -7,8 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.railsschool.tiramisu.R;
-import org.railsschool.tiramisu.views.events.RefreshClassListEvent;
-import org.railsschool.tiramisu.views.events.SettingsRequestedEvent;
+import org.railsschool.tiramisu.views.events.SettingsHeaderBackEvent;
 import org.railsschool.tiramisu.views.helpers.AnimationHelper;
 
 import butterknife.ButterKnife;
@@ -16,31 +15,24 @@ import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
 /**
- * @class LandingHeaderFragment
+ * @class SettingsHeaderFragment
  * @brief
  */
-public class LandingHeaderFragment extends BaseFragment {
-
+public class SettingsHeaderFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragment;
 
-        fragment = inflater.inflate(R.layout.fragment_landing_header, container, false);
+        fragment = inflater.inflate(R.layout.fragment_settings_header, container, false);
         ButterKnife.inject(this, fragment);
 
         return fragment;
     }
 
-    @OnClick(R.id.fragment_landing_header_refresh)
-    public void onRefresh(View view) {
+    @OnClick(R.id.fragment_settings_header_back)
+    public void onBack(View view) {
         AnimationHelper.pressed(view);
-        EventBus.getDefault().post(new RefreshClassListEvent());
-    }
-
-    @OnClick(R.id.fragment_landing_header_menu)
-    public void onMenuSelected(View view) {
-        AnimationHelper.pressed(view);
-        EventBus.getDefault().post(new SettingsRequestedEvent());
+        EventBus.getDefault().post(new SettingsHeaderBackEvent());
     }
 }

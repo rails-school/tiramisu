@@ -15,7 +15,7 @@
         android:id="@+id/main_activity_body"
         android:name="org.railsschool.tiramisu.views.fragments.ClassListFragment"
         style="@style/FullVerticalStretchable"
-        tools:background="@color/grey"
+        tools:background="@color/gray"
         />
 
 </LinearLayout>

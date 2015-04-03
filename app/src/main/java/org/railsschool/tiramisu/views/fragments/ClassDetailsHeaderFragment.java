@@ -57,7 +57,8 @@ public class ClassDetailsHeaderFragment extends BaseFragment {
         } else if (itemId == R.id.dialog_share_twitter) {
             intent.setData(
                 Uri.parse(
-                    "https://twitter.com/intent/tweet?text=" + lesson.getTitle() + url
+                    "https://twitter.com/intent/tweet?text=" + lesson.getTitle() + " "
+                    + url
                 )
             );
         }

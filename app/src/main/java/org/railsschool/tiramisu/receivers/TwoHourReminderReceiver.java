@@ -7,6 +7,7 @@ import android.content.Intent;
 import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.models.bll.BusinessFactory;
 import org.railsschool.tiramisu.utils.PushNotificationSystem;
+import org.railsschool.tiramisu.views.activities.MainActivity;
 
 /**
  * @class TwoHourReminderReceiver
@@ -21,10 +22,11 @@ public class TwoHourReminderReceiver extends BroadcastReceiver {
                 (lesson) -> {
                     new PushNotificationSystem(context).notify(
                         String.format(
-                            context.getString(
-                                R.string.reminder_two_hours, lesson.getTitle()
-                            )
-                        )
+                            context.getString(R.string.reminder_two_hours),
+                            context.getString(R.string.app_name)
+                        ),
+                        lesson.getTitle(),
+                        MainActivity.class
                     );
                 }
             );

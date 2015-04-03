@@ -2,7 +2,9 @@ package org.railsschool.tiramisu.utils;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 
@@ -21,7 +23,7 @@ public class PushNotificationSystem {
         this._context = context;
     }
 
-    public void notify(String message) {
+    public void notify(String title, String message, Class onClickActivity) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(_context);
         NotificationManager manager;
 
@@ -37,7 +39,15 @@ public class PushNotificationSystem {
                 Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND |
                 Notification.VISIBILITY_PUBLIC | Notification.FLAG_AUTO_CANCEL
             )
-            .setContentTitle(_context.getString(R.string.app_name))
+            .setContentIntent(
+                PendingIntent.getActivity(
+                    _context,
+                    0,
+                    new Intent(_context, onClickActivity),
+                    0
+                )
+            )
+            .setContentTitle(title)
             .setContentText(message)
             .setOnlyAlertOnce(true)
             .setAutoCancel(true);

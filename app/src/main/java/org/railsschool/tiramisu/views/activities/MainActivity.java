@@ -7,6 +7,7 @@ import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.views.events.ClassDetailsHeaderBackEvent;
 import org.railsschool.tiramisu.views.events.ClassDetailsInitEvent;
 import org.railsschool.tiramisu.views.events.ClassDetailsRequestedEvent;
+import org.railsschool.tiramisu.views.events.ConfirmationEvent;
 import org.railsschool.tiramisu.views.events.ErrorEvent;
 import org.railsschool.tiramisu.views.events.SettingsHeaderBackEvent;
 import org.railsschool.tiramisu.views.events.SettingsRequestedEvent;
@@ -132,6 +133,12 @@ public class MainActivity extends BaseActivity {
     public void onEventMainThread(ErrorEvent event) {
         Crouton
             .makeText(this, event.getMessage(), Style.ALERT)
+            .show();
+    }
+
+    public void onEventMainThread(ConfirmationEvent event) {
+        Crouton
+            .makeText(this, event.getMessage(), Style.CONFIRM)
             .show();
     }
 

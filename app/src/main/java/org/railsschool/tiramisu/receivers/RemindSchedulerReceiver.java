@@ -56,7 +56,6 @@ public class RemindSchedulerReceiver extends BroadcastReceiver {
             .provideLesson(context)
             .getNextLesson(
                 (lesson) -> {
-
                     // 2 hours before notification
                     if (_shouldBeNotified(lesson, Hours.TWO)) {
                         PendingIntent twoHourIntent;

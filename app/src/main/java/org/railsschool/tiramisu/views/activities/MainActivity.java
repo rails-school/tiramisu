@@ -1,6 +1,8 @@
 package org.railsschool.tiramisu.views.activities;
 
 import android.app.Fragment;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import org.railsschool.tiramisu.R;
@@ -28,6 +30,7 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class MainActivity extends BaseActivity {
+    private final static String INTENT_LESSON_SLUG = "lesson_slug";
 
     private enum Display {
         LANDING,
@@ -105,6 +108,21 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    protected void onResume() {
+        Bundle extras;
+
+        super.onResume();
+
+        extras = getIntent().getExtras();
+        if (extras != null && extras.containsKey(INTENT_LESSON_SLUG)) {
+            String slug = extras.getString(INTENT_LESSON_SLUG);
+
+            getIntent().getExtras().remove(INTENT_LESSON_SLUG);
+            EventBus.getDefault().post(new ClassDetailsRequestedEvent(slug));
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
 
@@ -164,5 +182,13 @@ public class MainActivity extends BaseActivity {
 
     public void onEventMainThread(SettingsRequestedEvent event) {
         _setSettingsContent();
+    }
+
+    public static Intent startOnClassDetails(Context context, String slug) {
+        Intent intent = new Intent(context, MainActivity.class);
+
+        intent.putExtra(INTENT_LESSON_SLUG, slug);
+
+        return intent;
     }
 }

@@ -23,7 +23,7 @@ public class TwoHourReminderReceiver extends BroadcastReceiver {
                     new PushNotificationSystem(context).notify(
                         context.getString(R.string.reminder_two_hours),
                         lesson.getTitle(),
-                        MainActivity.class
+                        MainActivity.startOnClassDetails(context, lesson.getSlug())
                     );
                 }
             );

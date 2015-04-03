@@ -131,6 +131,10 @@ public class ClassDetailsHeaderFragment extends BaseFragment {
                         .get(
                             _initEvent.getLessonSlug(),
                             (lesson) -> {
+                                if (!isAdded()) {
+                                    return; // Prevent asynchronous conflicts
+                                }
+
                                 _engineShareAction(lesson, item.getId());
                                 dialogPlus.dismiss();
                             },

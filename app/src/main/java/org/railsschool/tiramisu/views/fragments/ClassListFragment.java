@@ -33,6 +33,10 @@ public class ClassListFragment extends BaseFragment {
             .provideLesson(getActivity())
             .sortFutureSlugsByDate(
                 (ids) -> {
+                    if (!isAdded()) {
+                        return; // Prevent asynchronous conflicts
+                    }
+
                     _list.setAdapter(new ClassAdapter(ids, getActivity()));
                     YoYo
                         .with(Techniques.FadeIn)

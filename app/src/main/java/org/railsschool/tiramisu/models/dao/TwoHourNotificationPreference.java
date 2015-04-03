@@ -17,12 +17,12 @@ public enum TwoHourNotificationPreference {
 
     public static TwoHourNotificationPreference fromInt(int value) {
         switch (value) {
-            case 1:
-                return IF_ATTENDING;
+            case 0:
+                return ALWAYS;
             case 2:
                 return NEVER;
             default:
-                return ALWAYS;
+                return IF_ATTENDING;
         }
     }
 

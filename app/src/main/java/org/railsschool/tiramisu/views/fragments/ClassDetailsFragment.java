@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.coshx.chocolatine.helpers.DeviceHelper;
+import com.coshx.chocolatine.utils.actions.Action0;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.squareup.picasso.Picasso;
@@ -40,6 +41,7 @@ public class ClassDetailsFragment extends BaseFragment {
     private SchoolClass           _currentSchoolClass;
     private Venue                 _currentVenue;
     private boolean               _isAttending;
+    private boolean               _isTogglingAttendance;
 
     @InjectView(R.id.fragment_class_details_headline)
     TextView _headline;
@@ -126,6 +128,13 @@ public class ClassDetailsFragment extends BaseFragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        _isTogglingAttendance = false;
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         EventBus.getDefault().registerSticky(this);
@@ -188,11 +197,24 @@ public class ClassDetailsFragment extends BaseFragment {
 
     @OnClick(R.id.fragment_class_details_attendance_toggle)
     public void onAttendanceToggle(View view) {
+        final Action0 finallyAction;
+
         if (_currentSchoolClass == null) { // Prevent null pointer
             return;
         }
 
+        if (_isTogglingAttendance) {
+            return; // Lock similar operations when already performing
+        }
+
         DeviceHelper.lockOrientation(getActivity());
+        _isTogglingAttendance = true;
+        finallyAction = () -> {
+            DeviceHelper.unlockOrientation(getActivity());
+            _isTogglingAttendance = false;
+            _toggleIcon.setVisibility(View.VISIBLE);
+            _setAttendanceToggle();
+        };
 
         _toggleIcon.setVisibility(View.GONE);
         _toggleLabel.setText(getString(R.string.processing));
@@ -203,16 +225,12 @@ public class ClassDetailsFragment extends BaseFragment {
                 _currentSchoolClass.getLesson().getSlug(),
                 _isAttending,
                 () -> {
-                    DeviceHelper.unlockOrientation(getActivity());
-                    _toggleIcon.setVisibility(View.VISIBLE);
                     _isAttending = !_isAttending;
-                    _setAttendanceToggle();
+                    finallyAction.run();
                     _setAttendees();
                 },
                 (error) -> {
-                    DeviceHelper.unlockOrientation(getActivity());
-                    _toggleIcon.setVisibility(View.VISIBLE);
-                    _setAttendanceToggle();
+                    finallyAction.run();
                     publishError(error);
                 }
             );

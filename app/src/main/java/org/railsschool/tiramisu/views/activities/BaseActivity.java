@@ -30,7 +30,7 @@ public abstract class BaseActivity extends Activity {
             .commit();
     }
 
-    public void setFragments(Map<Integer, Fragment> fragments) {
+    public void setFragments(Map<Integer, Fragment> fragments, boolean keepInStack) {
         FragmentTransaction t = getFragmentManager().beginTransaction();
 
         t.setCustomAnimations(R.animator.fade_in, R.animator.fade_out);
@@ -38,6 +38,14 @@ public abstract class BaseActivity extends Activity {
             t.replace(e.getKey().intValue(), e.getValue());
         }
 
-        t.addToBackStack(null).commit();
+        if (keepInStack) {
+            t.addToBackStack(null);
+        }
+
+        t.commit();
+    }
+
+    public void setFragments(Map<Integer, Fragment> fragments) {
+        setFragments(fragments, true);
     }
 }

@@ -3,6 +3,7 @@ package org.railsschool.tiramisu.models.bll;
 import android.content.Context;
 
 import org.railsschool.tiramisu.models.bll.interfaces.ILessonBusiness;
+import org.railsschool.tiramisu.models.bll.interfaces.IPreferenceBusiness;
 import org.railsschool.tiramisu.models.bll.interfaces.IUserBusiness;
 import org.railsschool.tiramisu.models.bll.interfaces.IVenueBusiness;
 import org.railsschool.tiramisu.models.bll.remote.RailsSchoolAPIOutletFactory;
@@ -13,9 +14,10 @@ import org.railsschool.tiramisu.models.dao.DAOFactory;
  * @brief
  */
 public class BusinessFactory {
-    private static IUserBusiness   _user;
-    private static ILessonBusiness _lesson;
-    private static IVenueBusiness  _venue;
+    private static IUserBusiness       _user;
+    private static ILessonBusiness     _lesson;
+    private static IVenueBusiness      _venue;
+    private static IPreferenceBusiness _preference;
 
     public static IUserBusiness provideUser(Context context) {
         if (_user == null) {
@@ -53,5 +55,13 @@ public class BusinessFactory {
         }
 
         return _venue;
+    }
+
+    public static IPreferenceBusiness providePreference(Context context) {
+        if (_preference == null) {
+            _preference = new PreferenceBusiness(DAOFactory.providePreference(context));
+        }
+
+        return _preference;
     }
 }

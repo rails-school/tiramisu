@@ -12,5 +12,24 @@
     <string name="processing">Processing...</string>
 
     <string name="attend_class">I\'m in!</string>
-    <string name="remove_attendance">I came over.</string>
+    <string name="remove_attendance">Nah, I came around.</string>
+
+    <string name="reminder_two_hours">In two hours</string>
+    <string name="reminder_next_day">Tomorrow</string>
+
+    <string name="settings_account_label">Account</string>
+    <string name="settings_username_placeholder">Username</string>
+    <string name="settings_password_placeholder">Password</string>
+
+    <string name="settings_reminder_label">Reminders</string>
+    <string name="settings_reminder_day">24 hours</string>
+    <string name="settings_reminder_two_hour">2 hours</string>
+
+    <array name="settings_reminder_frequencies">
+        <item>Always</item>
+        <item>Only if attending</item>
+        <item>Never</item>
+    </array>
+
+    <string name="updated_preference">Updated!</string>
 </resources>

@@ -31,6 +31,9 @@ public interface IRailsSchoolAPI {
     @GET(LESSON_ROOT + "/{slug}" + FORMAT)
     public void getSchoolClass(@Path("slug") String slug, Callback<SchoolClass> callback);
 
+    @GET(LESSON_ROOT + "/next" + FORMAT)
+    public void getNextLesson(Callback<Lesson> callback);
+
     @GET(USER_ROOT + "/{id}" + FORMAT)
     public void getUser(@Path("id") int id, Callback<User> callback);
 

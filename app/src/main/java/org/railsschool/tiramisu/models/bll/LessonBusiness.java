@@ -1,6 +1,7 @@
 package org.railsschool.tiramisu.models.bll;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.coshx.chocolatine.utils.actions.Action;
 import com.coshx.chocolatine.utils.actions.Action3;
@@ -146,6 +147,27 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
                             );
 
                             _lessonDAO.save(schoolClass.getLesson());
+                        }
+                    }
+                );
+            },
+            failure
+        );
+    }
+
+    @Override
+    public void getNextLesson(Action<Lesson> success) {
+        Action<String> failure = (error) -> {
+            Log.e(getClass().getSimpleName(), error);
+        };
+
+        tryConnecting(
+            (api) -> {
+                api.getNextLesson(
+                    new BLLCallback<Lesson>(failure) {
+                        @Override
+                        public void success(Lesson lesson, Response response) {
+                            success.run(lesson);
                         }
                     }
                 );

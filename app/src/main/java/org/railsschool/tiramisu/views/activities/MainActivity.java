@@ -7,11 +7,16 @@ import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.views.events.ClassDetailsHeaderBackEvent;
 import org.railsschool.tiramisu.views.events.ClassDetailsInitEvent;
 import org.railsschool.tiramisu.views.events.ClassDetailsRequestedEvent;
+import org.railsschool.tiramisu.views.events.ConfirmationEvent;
 import org.railsschool.tiramisu.views.events.ErrorEvent;
+import org.railsschool.tiramisu.views.events.SettingsHeaderBackEvent;
+import org.railsschool.tiramisu.views.events.SettingsRequestedEvent;
 import org.railsschool.tiramisu.views.fragments.ClassDetailsFragment;
 import org.railsschool.tiramisu.views.fragments.ClassDetailsHeaderFragment;
 import org.railsschool.tiramisu.views.fragments.ClassListFragment;
 import org.railsschool.tiramisu.views.fragments.LandingHeaderFragment;
+import org.railsschool.tiramisu.views.fragments.SettingsFragment;
+import org.railsschool.tiramisu.views.fragments.SettingsHeaderFragment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,42 +28,68 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class MainActivity extends BaseActivity {
 
-    private enum CurrentDisplay {
+    private enum Display {
         LANDING,
-        CLASS_DETAILS
+        CLASS_DETAILS,
+        SETTINGS
     }
 
     private static class RestoreDisplayEvent {
-        private CurrentDisplay _previousDisplay;
+        private Display _previousDisplay;
 
-        public RestoreDisplayEvent(CurrentDisplay display) {
+        public RestoreDisplayEvent(Display display) {
             this._previousDisplay = display;
         }
 
-        public CurrentDisplay getPreviousDisplay() {
+        public Display getPreviousDisplay() {
             return _previousDisplay;
         }
     }
 
-    private CurrentDisplay _currentDisplay;
+    private Display _currentDisplay;
 
     private void _setLandingContent() {
-        Map<Integer, Fragment> fragmentMap = new HashMap<>();
+        Map<Integer, Fragment> fragmentMap;
 
-        _currentDisplay = CurrentDisplay.LANDING;
+        if (_currentDisplay == Display.LANDING) {
+            return;
+        }
+
+        _currentDisplay = Display.LANDING;
+        fragmentMap = new HashMap<>();
 
         fragmentMap.put(R.id.main_activity_header, new LandingHeaderFragment());
         fragmentMap.put(R.id.main_activity_body, new ClassListFragment());
-        setFragments(fragmentMap);
+        setFragments(fragmentMap, false);
     }
 
     private void _setClassDetailsContent() {
-        Map<Integer, Fragment> fragmentMap = new HashMap<>();
+        Map<Integer, Fragment> fragmentMap;
 
-        _currentDisplay = CurrentDisplay.CLASS_DETAILS;
+        if (_currentDisplay == Display.CLASS_DETAILS) {
+            return;
+        }
+
+        _currentDisplay = Display.CLASS_DETAILS;
+        fragmentMap = new HashMap<>();
 
         fragmentMap.put(R.id.main_activity_header, new ClassDetailsHeaderFragment());
         fragmentMap.put(R.id.main_activity_body, new ClassDetailsFragment());
+        setFragments(fragmentMap);
+    }
+
+    private void _setSettingsContent() {
+        Map<Integer, Fragment> fragmentMap;
+
+        if (_currentDisplay == Display.SETTINGS) {
+            return;
+        }
+
+        _currentDisplay = Display.SETTINGS;
+        fragmentMap = new HashMap<>();
+
+        fragmentMap.put(R.id.main_activity_header, new SettingsHeaderFragment());
+        fragmentMap.put(R.id.main_activity_body, new SettingsFragment());
         setFragments(fragmentMap);
     }
 
@@ -81,16 +112,33 @@ public class MainActivity extends BaseActivity {
     }
 
     public void onEventMainThread(RestoreDisplayEvent event) {
-        if (event.getPreviousDisplay() == CurrentDisplay.LANDING) {
+        if (event.getPreviousDisplay() == Display.LANDING) {
             _setLandingContent();
+        } else if (event.getPreviousDisplay() == Display.SETTINGS) {
+            _setSettingsContent();
         } else {
             _setClassDetailsContent();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        if (_currentDisplay == Display.CLASS_DETAILS || _currentDisplay == Display.SETTINGS) {
+            _currentDisplay = Display.LANDING;
         }
     }
 
     public void onEventMainThread(ErrorEvent event) {
         Crouton
             .makeText(this, event.getMessage(), Style.ALERT)
+            .show();
+    }
+
+    public void onEventMainThread(ConfirmationEvent event) {
+        Crouton
+            .makeText(this, event.getMessage(), Style.CONFIRM)
             .show();
     }
 
@@ -102,5 +150,13 @@ public class MainActivity extends BaseActivity {
 
     public void onEventMainThread(ClassDetailsHeaderBackEvent event) {
         _setLandingContent();
+    }
+
+    public void onEventMainThread(SettingsHeaderBackEvent event) {
+        _setLandingContent();
+    }
+
+    public void onEventMainThread(SettingsRequestedEvent event) {
+        _setSettingsContent();
     }
 }

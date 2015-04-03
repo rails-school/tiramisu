@@ -14,6 +14,6 @@
     <string name="attend_class">I\'m in!</string>
     <string name="remove_attendance">I came over.</string>
 
-    <string name="reminder_two_hours">%1$s - in two hours</string>
-    <string name="reminder_next_day">%1$s - tomorrow</string>
+    <string name="reminder_two_hours">In two hours</string>
+    <string name="reminder_next_day">Tomorrow</string>
 </resources>

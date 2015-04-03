@@ -21,10 +21,7 @@ public class DayReminderReceiver extends BroadcastReceiver {
             .getNextLesson(
                 (lesson) -> {
                     new PushNotificationSystem(context).notify(
-                        String.format(
-                            context.getString(R.string.reminder_next_day),
-                            context.getString(R.string.app_name)
-                        ),
+                        context.getString(R.string.reminder_next_day),
                         lesson.getTitle(),
                         MainActivity.class
                     );

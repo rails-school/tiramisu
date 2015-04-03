@@ -21,10 +21,7 @@ public class TwoHourReminderReceiver extends BroadcastReceiver {
             .getNextLesson(
                 (lesson) -> {
                     new PushNotificationSystem(context).notify(
-                        String.format(
-                            context.getString(R.string.reminder_two_hours),
-                            context.getString(R.string.app_name)
-                        ),
+                        context.getString(R.string.reminder_two_hours),
                         lesson.getTitle(),
                         MainActivity.class
                     );

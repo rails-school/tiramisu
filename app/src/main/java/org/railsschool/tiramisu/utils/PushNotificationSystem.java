@@ -28,7 +28,7 @@ public class PushNotificationSystem {
         NotificationManager manager;
 
         builder
-            .setSmallIcon(R.mipmap.ic_launcher)
+            .setSmallIcon(R.drawable.ic_notification_pin)
             .setLargeIcon(
                 BitmapFactory.decodeResource(
                     _context.getResources(),

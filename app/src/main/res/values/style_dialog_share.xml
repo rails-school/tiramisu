@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="DialogShare" parent="MatchParentWrapContent">
+        <item name="android:gravity">center</item>
+
+        <item name="android:layout_margin">@dimen/layout_margin</item>
+    </style>
+
+    <style name="DialogShareIcon">
+        <item name="android:layout_width">@dimen/large_ic</item>
+        <item name="android:layout_height">@dimen/large_ic</item>
+
+        <item name="android:layout_margin">@dimen/large_margin</item>
+    </style>
+</resources>

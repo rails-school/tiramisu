@@ -89,6 +89,7 @@ public class ClassDetailsFragment extends BaseFragment {
                 String.format(getString(R.string.multi_attendees), attendeeNb)
             );
         }
+
         _attendeeCount.setVisibility(View.VISIBLE);
         YoYo
             .with(Techniques.FadeIn)

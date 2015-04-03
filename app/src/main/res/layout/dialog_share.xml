@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    style="@style/DialogShare"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <ImageView
+        android:id="@+id/dialog_share_text"
+        android:src="@drawable/ic_sms"
+        style="@style/DialogShareIcon"
+        />
+
+    <ImageView
+        android:id="@+id/dialog_share_email"
+        android:src="@drawable/ic_email"
+        style="@style/DialogShareIcon"
+        />
+
+    <ImageView
+        android:id="@+id/dialog_share_facebook"
+        android:src="@drawable/ic_facebook"
+        style="@style/DialogShareIcon"
+        />
+
+    <ImageView
+        android:id="@+id/dialog_share_twitter"
+        android:src="@drawable/ic_twitter"
+        style="@style/DialogShareIcon"
+        />
+
+</LinearLayout>

@@ -28,7 +28,7 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
 
 
     @Override
-    public void find(int id, Action<User> success, Action<String> failure) {
+    public void get(int id, Action<User> success, Action<String> failure) {
         if (_userDAO.exists(id)) {
             // Already an entry, use local data first
             success.run(_userDAO.find(id));

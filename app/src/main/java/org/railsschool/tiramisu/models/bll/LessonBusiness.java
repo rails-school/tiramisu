@@ -59,30 +59,10 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
     }
 
     @Override
-    public void getPair(
-        String lessonSlug,
-        Action3<Lesson, User, Venue> success,
-        Action<String> failure) {
-
-        Action<Lesson> getTuple = (lesson) -> {
-            _userBusiness.find(
-                lesson.getTeacherId(),
-                (teacher) -> {
-                    _venueBusiness.find(
-                        lesson.getVenueId(),
-                        (venue) -> {
-                            success.run(lesson, teacher, venue);
-                        },
-                        failure
-                    );
-                },
-                failure
-            );
-        };
-
+    public void get(String lessonSlug, Action<Lesson> success, Action<String> failure) {
         if (_lessonDAO.exists(lessonSlug)) {
             // Lesson already in local storage, run callback
-            getTuple.run(_lessonDAO.find(lessonSlug));
+            success.run(_lessonDAO.find(lessonSlug));
 
             // Refresh lesson details
             tryConnecting(
@@ -108,7 +88,7 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
                         new BLLCallback<Lesson>(failure) {
                             @Override
                             public void success(Lesson lesson, Response response) {
-                                getTuple.run(lesson);
+                                success.run(lesson);
                                 _lessonDAO.save(lesson);
                             }
                         }
@@ -117,6 +97,33 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
                 failure
             );
         }
+    }
+
+    @Override
+    public void getPair(
+        String lessonSlug,
+        Action3<Lesson, User, Venue> success,
+        Action<String> failure) {
+
+        get(
+            lessonSlug,
+            (lesson) -> {
+                _userBusiness.get(
+                    lesson.getTeacherId(),
+                    (teacher) -> {
+                        _venueBusiness.get(
+                            lesson.getVenueId(),
+                            (venue) -> {
+                                success.run(lesson, teacher, venue);
+                            },
+                            failure
+                        );
+                    },
+                    failure
+                );
+            },
+            failure
+        );
     }
 
     @Override
@@ -132,10 +139,10 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
                     new BLLCallback<SchoolClass>(failure) {
                         @Override
                         public void success(SchoolClass schoolClass, Response response) {
-                            _userBusiness.find(
+                            _userBusiness.get(
                                 schoolClass.getLesson().getTeacherId(),
                                 (teacher) -> {
-                                    _venueBusiness.find(
+                                    _venueBusiness.get(
                                         schoolClass.getLesson().getVenueId(),
                                         (venue) -> {
                                             success.run(schoolClass, teacher, venue);

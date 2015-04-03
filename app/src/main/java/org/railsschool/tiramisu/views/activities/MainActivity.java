@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.views.events.ClassDetailsHeaderBackEvent;
+import org.railsschool.tiramisu.views.events.ClassDetailsHeaderInitEvent;
 import org.railsschool.tiramisu.views.events.ClassDetailsInitEvent;
 import org.railsschool.tiramisu.views.events.ClassDetailsRequestedEvent;
 import org.railsschool.tiramisu.views.events.ConfirmationEvent;
@@ -144,8 +145,13 @@ public class MainActivity extends BaseActivity {
 
     public void onEventMainThread(ClassDetailsRequestedEvent event) {
         _setClassDetailsContent();
+
+        // Send lesson slug to fragments
         EventBus.getDefault()
                 .postSticky(new ClassDetailsInitEvent(event.getLessonSlug()));
+
+        EventBus.getDefault()
+                .postSticky(new ClassDetailsHeaderInitEvent(event.getLessonSlug()));
     }
 
     public void onEventMainThread(ClassDetailsHeaderBackEvent event) {

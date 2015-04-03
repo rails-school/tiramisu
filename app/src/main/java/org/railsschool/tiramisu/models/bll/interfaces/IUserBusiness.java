@@ -10,7 +10,7 @@ import org.railsschool.tiramisu.models.beans.User;
  * @brief
  */
 public interface IUserBusiness {
-    public void find(int id, Action<User> success, Action<String> failure);
+    public void get(int id, Action<User> success, Action<String> failure);
 
     public void isCurrentUserAttendingTo(String lessonSlug, Action<Boolean> success,
                                          Action<String> failure);

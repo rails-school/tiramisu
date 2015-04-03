@@ -26,7 +26,7 @@ class VenueBusiness extends BaseBusiness implements IVenueBusiness {
     }
 
     @Override
-    public void find(int id, Action<Venue> success, Action<String> failure) {
+    public void get(int id, Action<Venue> success, Action<String> failure) {
         if (_venueDAO.exists(id)) {
             success.run(_venueDAO.find(id));
 

@@ -17,6 +17,8 @@ import java.util.List;
 public interface ILessonBusiness {
     public void sortFutureSlugsByDate(Action<List<String>> success, Action<String> failure);
 
+    public void get(String lessonSlug, Action<Lesson> success, Action<String> failure);
+
     public void getPair(String lessonSlug,
                         Action3<Lesson, User, Venue> success,
                         Action<String> failure);

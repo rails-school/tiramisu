@@ -89,6 +89,7 @@ public class ClassDetailsFragment extends BaseFragment {
                 String.format(getString(R.string.multi_attendees), attendeeNb)
             );
         }
+
         _attendeeCount.setVisibility(View.VISIBLE);
         YoYo
             .with(Techniques.FadeIn)
@@ -163,6 +164,10 @@ public class ClassDetailsFragment extends BaseFragment {
             .getSchoolClassPair(
                 event.getLessonSlug(),
                 (schoolClass, teacher, venue) -> {
+                    if (!isAdded()) {
+                        return; // Prevent asynchronous conflicts
+                    }
+
                     _currentSchoolClass = schoolClass;
 
                     _headline.setText(schoolClass.getLesson().getTitle());
@@ -188,6 +193,10 @@ public class ClassDetailsFragment extends BaseFragment {
             .isCurrentUserAttendingTo(
                 event.getLessonSlug(),
                 (isAttending) -> {
+                    if (!isAdded()) {
+                        return; // Prevent asynchronous conflicts
+                    }
+
                     _isAttending = isAttending;
                     _setAttendanceToggle();
                 },
@@ -225,6 +234,10 @@ public class ClassDetailsFragment extends BaseFragment {
                 _currentSchoolClass.getLesson().getSlug(),
                 _isAttending,
                 () -> {
+                    if (!isAdded()) {
+                        return; // Prevent asynchronous conflicts
+                    }
+
                     _isAttending = !_isAttending;
                     finallyAction.run();
                     _setAttendees();

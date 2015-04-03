@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 
+import com.coshx.chocolatine.helpers.DeviceHelper;
+
 import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.models.bll.BusinessFactory;
 import org.railsschool.tiramisu.models.dao.DayNotificationPreference;
@@ -32,6 +34,9 @@ public class SettingsFragment extends BaseFragment {
 
     private boolean _twoHourReminderManuallySet;
     private boolean _dayReminderManuallySet;
+
+    private boolean _isCurrentlySettingTwoHourReminder;
+    private boolean _isCurrentlySettingDayReminder;
 
     private void _setTwoHourReminderSpinner() {
         TwoHourNotificationPreference pref =
@@ -58,9 +63,6 @@ public class SettingsFragment extends BaseFragment {
         fragment = inflater.inflate(R.layout.fragment_settings, container, false);
         ButterKnife.inject(this, fragment);
 
-        _twoHourReminderManuallySet = false;
-        _dayReminderManuallySet = false;
-
         _twoHourReminder.setOnItemSelectedListener(
             new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -70,12 +72,20 @@ public class SettingsFragment extends BaseFragment {
                         return;
                     }
 
+                    if (_isCurrentlySettingTwoHourReminder) {
+                        return; // Prevent similar operations
+                    }
+
+                    DeviceHelper.lockOrientation(getActivity());
+                    _isCurrentlySettingTwoHourReminder = true;
                     BusinessFactory
                         .providePreference(getActivity())
                         .updateTwoHourReminderPreference(
                             TwoHourNotificationPreference
                                 .fromInt(position)
                         );
+                    DeviceHelper.unlockOrientation(getActivity());
+                    _isCurrentlySettingTwoHourReminder = false;
 
                     EventBus.getDefault().post(
                         new ConfirmationEvent(getString(R.string.updated_preference))
@@ -97,13 +107,21 @@ public class SettingsFragment extends BaseFragment {
                         _dayReminderManuallySet = false;
                         return;
                     }
-                    
+
+                    if (_isCurrentlySettingDayReminder) {
+                        return; // Prevent similar operations
+                    }
+
+                    DeviceHelper.lockOrientation(getActivity());
+                    _isCurrentlySettingDayReminder = true;
                     BusinessFactory
                         .providePreference(getActivity())
                         .updateDayReminderPreference(
                             DayNotificationPreference
                                 .fromInt(position)
                         );
+                    DeviceHelper.unlockOrientation(getActivity());
+                    _isCurrentlySettingDayReminder = false;
 
                     EventBus.getDefault().post(
                         new ConfirmationEvent(getString(R.string.updated_preference))
@@ -118,6 +136,17 @@ public class SettingsFragment extends BaseFragment {
         );
 
         return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        _twoHourReminderManuallySet = false;
+        _dayReminderManuallySet = false;
+
+        _isCurrentlySettingTwoHourReminder = false;
+        _isCurrentlySettingDayReminder = false;
     }
 
     @Override

@@ -15,7 +15,7 @@ import java.util.List;
  * @brief
  */
 public interface ILessonBusiness {
-    public void sortIdsByDate(Action<List<String>> success, Action<String> failure);
+    public void sortFutureSlugsByDate(Action<List<String>> success, Action<String> failure);
 
     public void getPair(String lessonSlug,
                         Action3<Lesson, User, Venue> success,
@@ -25,8 +25,5 @@ public interface ILessonBusiness {
                                    Action3<SchoolClass, User, Venue> success,
                                    Action<String> failure);
 
-    //    public void isTimeForNotification(Minutes period, Action<Lesson> inLessThanTwoHours,
-    //                                      Action<Lesson> inADay);
-
-    public void getNextLesson(Action<Lesson> success);
+    public void getUpcoming(Action<Lesson> success);
 }

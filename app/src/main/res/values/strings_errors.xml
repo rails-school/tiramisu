@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="error_default">
-        Whoops! An unknown error has occured. Please try again!
+        Whoops! Something wrong happened. Please try again.
     </string>
 
     <string name="error_no_connection">
-        Aw :( There is no Internet connection. Please check that.
+        Aw :( You have no Internet connection.
     </string>
 </resources>

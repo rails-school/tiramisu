@@ -31,7 +31,7 @@ public class ClassListFragment extends BaseFragment {
     private void _setContent() {
         BusinessFactory
             .provideLesson(getActivity())
-            .sortIdsByDate(
+            .sortFutureSlugsByDate(
                 (ids) -> {
                     _list.setAdapter(new ClassAdapter(ids, getActivity()));
                     YoYo

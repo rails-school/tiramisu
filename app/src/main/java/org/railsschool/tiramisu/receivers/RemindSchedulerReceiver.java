@@ -18,6 +18,13 @@ import org.railsschool.tiramisu.models.bll.BusinessFactory;
  */
 public class RemindSchedulerReceiver extends BroadcastReceiver {
 
+    /**
+     * Returns true if user is currently in notification interval
+     *
+     * @param lesson
+     * @param hours
+     * @return
+     */
     private boolean _shouldBeNotified(Lesson lesson, Hours hours) {
         DateTime startTime = new DateTime(lesson.getStartTime());
 
@@ -27,6 +34,13 @@ public class RemindSchedulerReceiver extends BroadcastReceiver {
         ).containsNow();
     }
 
+    /**
+     * Gets time when user should be notified
+     *
+     * @param lesson
+     * @param hours
+     * @return
+     */
     private long _getDelayInMilli(Lesson lesson, Hours hours) {
         return new DateTime(lesson.getStartTime())
             .minusHours(hours.getHours())
@@ -43,6 +57,7 @@ public class RemindSchedulerReceiver extends BroadcastReceiver {
             .getNextLesson(
                 (lesson) -> {
 
+                    // 2 hours before notification
                     if (_shouldBeNotified(lesson, Hours.TWO)) {
                         PendingIntent twoHourIntent;
 
@@ -66,6 +81,7 @@ public class RemindSchedulerReceiver extends BroadcastReceiver {
                         }
                     }
 
+                    // Previous day notification
                     if (_shouldBeNotified(lesson, Hours.hours(24))) {
                         PendingIntent dayIntent;
 

@@ -18,6 +18,7 @@ public class TiramisuApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        // Start puller CRON task
         AlarmManager alarmManager =
             (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 

@@ -23,7 +23,7 @@ public class PushNotificationSystem {
         this._context = context;
     }
 
-    public void notify(String title, String message, Class onClickActivity) {
+    public void notify(String title, String message, Intent intent) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(_context);
         NotificationManager manager;
 
@@ -43,8 +43,8 @@ public class PushNotificationSystem {
                 PendingIntent.getActivity(
                     _context,
                     0,
-                    new Intent(_context, onClickActivity),
-                    0
+                    intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT
                 )
             )
             .setContentTitle(title)

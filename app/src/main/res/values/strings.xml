@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">Tiramisu</string>
+    <string name="app_name">RailsSchool</string>
 
     <!--<string name="api_endpoint">https://www.railsschool.org</string>-->
     <!--<string name="api_endpoint">http://private-fd5c8-tiramisu.apiary-mock.com</string>-->
-    <string name="api_endpoint">http://192.168.50.154:3000/</string>
+    <string name="api_endpoint">http://192.168.50.154:3000</string>
 
     <string name="no_attendee">Be the first join to join this class!</string>
     <string name="one_attendee">1 student attends this class</string>

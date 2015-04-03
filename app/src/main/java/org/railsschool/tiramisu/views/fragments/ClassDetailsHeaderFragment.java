@@ -12,6 +12,7 @@ import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 
 import org.railsschool.tiramisu.R;
+import org.railsschool.tiramisu.models.beans.Lesson;
 import org.railsschool.tiramisu.models.bll.BusinessFactory;
 import org.railsschool.tiramisu.views.events.ClassDetailsHeaderBackEvent;
 import org.railsschool.tiramisu.views.events.ClassDetailsHeaderInitEvent;
@@ -27,6 +28,42 @@ import de.greenrobot.event.EventBus;
  */
 public class ClassDetailsHeaderFragment extends BaseFragment {
     private ClassDetailsHeaderInitEvent _initEvent;
+
+    private void _engineShareAction(Lesson lesson, int itemId) {
+        String msg = "Hey, I am going to that class: " + lesson.getTitle() + ". Join me!";
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        String url = getString(R.string.api_endpoint) + "/l/" + lesson.getSlug();
+
+        if (itemId == R.id.dialog_share_text) {
+            intent.setData(Uri.parse("sms:"));
+
+            if (msg.length() > 150) {
+                msg = msg.substring(0, 150);
+            }
+
+            intent.putExtra("sms_body", msg);
+        } else if (itemId == R.id.dialog_share_email) {
+            intent.setData(
+                Uri.parse(
+                    "mailto:?subject=" +
+                    getString(R.string.app_name) +
+                    "&body=" + msg + "\n\n" + url
+                )
+            );
+        } else if (itemId == R.id.dialog_share_facebook) {
+            intent.setData(
+                Uri.parse("https://www.facebook.com/sharer/sharer.php?u=" + url)
+            );
+        } else if (itemId == R.id.dialog_share_twitter) {
+            intent.setData(
+                Uri.parse(
+                    "https://twitter.com/intent/tweet?text=" + lesson.getTitle() + url
+                )
+            );
+        }
+
+        startActivity(intent);
+    }
 
     @Nullable
     @Override
@@ -93,24 +130,7 @@ public class ClassDetailsHeaderFragment extends BaseFragment {
                         .get(
                             _initEvent.getLessonSlug(),
                             (lesson) -> {
-                                String msg = "Hey, I am going to that class: " + lesson
-                                    .getTitle() + ". Join me!";
-
-                                if (item.getId() == R.id.dialog_share_text) {
-                                    Intent intent = new Intent(Intent.ACTION_VIEW);
-
-                                    intent.setData(Uri.parse("sms:"));
-
-                                    if (msg.length() > 150) {
-                                        msg = msg.substring(0, 150);
-                                    }
-
-                                    intent.putExtra("sms_body", msg);
-                                    startActivity(intent);
-                                } else if (item.getId() == R.id.dialog_share_email) {
-
-                                }
-
+                                _engineShareAction(lesson, item.getId());
                                 dialogPlus.dismiss();
                             },
                             (error) -> {

@@ -77,6 +77,6 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
     @Override
     public void toggleAttendance(String lessonSlug, boolean isAttending, Action0 success, Action<String> failure) {
         //TODO
-        new Handler().postDelayed(() -> success.run(), 2000);
+        new Handler().postDelayed(() -> success.run(), 5000);
     }
 }

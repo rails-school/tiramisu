@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.coshx.chocolatine.helpers.DeviceHelper;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.squareup.picasso.Picasso;
@@ -190,22 +191,30 @@ public class ClassDetailsFragment extends BaseFragment {
         if (_currentSchoolClass == null) { // Prevent null pointer
             return;
         }
+
+        DeviceHelper.lockOrientation(getActivity());
+
         _toggleIcon.setVisibility(View.GONE);
         _toggleLabel.setText(getString(R.string.processing));
 
-        //TODO: error handling
         BusinessFactory
             .provideUser(getActivity())
             .toggleAttendance(
                 _currentSchoolClass.getLesson().getSlug(),
                 _isAttending,
                 () -> {
+                    DeviceHelper.unlockOrientation(getActivity());
                     _toggleIcon.setVisibility(View.VISIBLE);
                     _isAttending = !_isAttending;
                     _setAttendanceToggle();
                     _setAttendees();
                 },
-                this::publishError
+                (error) -> {
+                    DeviceHelper.unlockOrientation(getActivity());
+                    _toggleIcon.setVisibility(View.VISIBLE);
+                    _setAttendanceToggle();
+                    publishError(error);
+                }
             );
     }
 

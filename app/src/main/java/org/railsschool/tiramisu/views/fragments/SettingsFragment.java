@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 
+import com.coshx.chocolatine.helpers.DeviceHelper;
+
 import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.models.bll.BusinessFactory;
 import org.railsschool.tiramisu.models.dao.DayNotificationPreference;
@@ -70,12 +72,14 @@ public class SettingsFragment extends BaseFragment {
                         return;
                     }
 
+                    DeviceHelper.lockOrientation(getActivity());
                     BusinessFactory
                         .providePreference(getActivity())
                         .updateTwoHourReminderPreference(
                             TwoHourNotificationPreference
                                 .fromInt(position)
                         );
+                    DeviceHelper.unlockOrientation(getActivity());
 
                     EventBus.getDefault().post(
                         new ConfirmationEvent(getString(R.string.updated_preference))
@@ -97,13 +101,15 @@ public class SettingsFragment extends BaseFragment {
                         _dayReminderManuallySet = false;
                         return;
                     }
-                    
+
+                    DeviceHelper.lockOrientation(getActivity());
                     BusinessFactory
                         .providePreference(getActivity())
                         .updateDayReminderPreference(
                             DayNotificationPreference
                                 .fromInt(position)
                         );
+                    DeviceHelper.unlockOrientation(getActivity());
 
                     EventBus.getDefault().post(
                         new ConfirmationEvent(getString(R.string.updated_preference))

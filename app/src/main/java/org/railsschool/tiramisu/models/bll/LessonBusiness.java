@@ -51,7 +51,7 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
     }
 
     /**
-     * Returns true if user is currently in notification interval
+     * Returns true if lesson is currently in notification interval
      *
      * @param lesson
      * @param hours
@@ -125,7 +125,7 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
     }
 
     @Override
-    public void getPair(
+    public void getTuple(
         String lessonSlug,
         Action3<Lesson, User, Venue> success,
         Action<String> failure) {
@@ -152,7 +152,7 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
     }
 
     @Override
-    public void getSchoolClassPair(
+    public void getSchoolClassTuple(
         String lessonSlug,
         Action3<SchoolClass, User, Venue> success,
         Action<String> failure) {

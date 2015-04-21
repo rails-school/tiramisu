@@ -9,5 +9,5 @@ import org.railsschool.tiramisu.models.beans.Venue;
  * @brief
  */
 public interface IVenueBusiness {
-    public void get(int id, Action<Venue> success, Action<String> failure);
+    void get(int id, Action<Venue> success, Action<String> failure);
 }

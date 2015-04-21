@@ -16,6 +16,7 @@ import org.railsschool.tiramisu.models.bll.BusinessFactory;
  * @brief
  */
 public class RemindSchedulerReceiver extends BroadcastReceiver {
+
     /**
      * Gets time when user should be notified
      *
@@ -29,10 +30,18 @@ public class RemindSchedulerReceiver extends BroadcastReceiver {
             .getMillis();
     }
 
+    /**
+     * Schedules alarm
+     * @param context
+     * @param processId Alarm process id (should be unique)
+     * @param receiver Alarm receiver
+     * @param lesson
+     * @param date Delay before triggering class
+     */
     private void _scheduleAlarm(
         Context context,
         int processId,
-        Class receiver,
+        Class<? extends BroadcastReceiver> receiver,
         Lesson lesson,
         Hours date) {
 
@@ -48,12 +57,14 @@ public class RemindSchedulerReceiver extends BroadcastReceiver {
         );
 
         try {
+            // Cancel existing similar alarm, then schedule it again
             alarmManager.cancel(alarmIntent);
         } catch (Exception e) {
-
+            // No alarm before, does not matter
         } finally {
+            // Sets alarm, wake up device id needed
             alarmManager.set(
-                AlarmManager.RTC,
+                AlarmManager.RTC_WAKEUP,
                 _getDelayInMilli(lesson, date),
                 alarmIntent
             );

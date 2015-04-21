@@ -33,12 +33,17 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 public class MainActivity extends BaseActivity {
     private final static String INTENT_LESSON_SLUG = "lesson_slug";
 
+    // Existing displays
     private enum Display {
         LANDING,
         CLASS_DETAILS,
         SETTINGS
     }
 
+    /**
+     * @class RestoreDisplayEvent
+     * @brief Raised if device is rotated
+     */
     private static class RestoreDisplayEvent {
         private Display _previousDisplay;
 
@@ -53,6 +58,9 @@ public class MainActivity extends BaseActivity {
 
     private Display _currentDisplay;
 
+    /**
+     * Sets landing screen
+     */
     private void _setLandingContent() {
         Map<Integer, Fragment> fragmentMap;
 
@@ -62,12 +70,14 @@ public class MainActivity extends BaseActivity {
 
         _currentDisplay = Display.LANDING;
         fragmentMap = new HashMap<>();
-
         fragmentMap.put(R.id.main_activity_header, new LandingHeaderFragment());
         fragmentMap.put(R.id.main_activity_body, new ClassListFragment());
         setFragments(fragmentMap, false);
     }
 
+    /**
+     * Sets class details screen
+     */
     private void _setClassDetailsContent() {
         Map<Integer, Fragment> fragmentMap;
 
@@ -77,12 +87,14 @@ public class MainActivity extends BaseActivity {
 
         _currentDisplay = Display.CLASS_DETAILS;
         fragmentMap = new HashMap<>();
-
         fragmentMap.put(R.id.main_activity_header, new ClassDetailsHeaderFragment());
         fragmentMap.put(R.id.main_activity_body, new ClassDetailsFragment());
         setFragments(fragmentMap);
     }
 
+    /**
+     * Sets settings screen
+     */
     private void _setSettingsContent() {
         Map<Integer, Fragment> fragmentMap;
 
@@ -92,7 +104,6 @@ public class MainActivity extends BaseActivity {
 
         _currentDisplay = Display.SETTINGS;
         fragmentMap = new HashMap<>();
-
         fragmentMap.put(R.id.main_activity_header, new SettingsHeaderFragment());
         fragmentMap.put(R.id.main_activity_body, new SettingsFragment());
         setFragments(fragmentMap);
@@ -116,6 +127,7 @@ public class MainActivity extends BaseActivity {
 
         extras = getIntent().getExtras();
         if (extras != null && extras.containsKey(INTENT_LESSON_SLUG)) {
+            // Flag available from alarm, navigate to selected lesson
             String slug = extras.getString(INTENT_LESSON_SLUG);
 
             getIntent().getExtras().remove(INTENT_LESSON_SLUG);
@@ -131,6 +143,13 @@ public class MainActivity extends BaseActivity {
         EventBus.getDefault().postSticky(new RestoreDisplayEvent(_currentDisplay));
     }
 
+    /**
+     * Handled between onCreate and onResume
+     * onCreate sets landing screen
+     * If lesson slug has been provided (from alarm/notif), it will be triggered after
+     * this
+     * @param event
+     */
     public void onEventMainThread(RestoreDisplayEvent event) {
         if (event.getPreviousDisplay() == Display.LANDING) {
             _setLandingContent();
@@ -146,6 +165,7 @@ public class MainActivity extends BaseActivity {
         super.onBackPressed();
 
         if (_currentDisplay == Display.CLASS_DETAILS || _currentDisplay == Display.SETTINGS) {
+            // Back does not trigger any event on bus, var to set manually
             _currentDisplay = Display.LANDING;
         }
     }

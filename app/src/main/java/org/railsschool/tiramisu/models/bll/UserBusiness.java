@@ -29,7 +29,6 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
         this._userDAO = userDAO;
     }
 
-
     @Override
     public void get(int id, Action<User> success, Action<String> failure) {
         if (_userDAO.exists(id)) {
@@ -73,7 +72,7 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
 
     @Override
     public void isCurrentUserAttendingTo(String lessonSlug, Action<Boolean> isAttending, Action0 needToSignIn, Action<String> failure) {
-        if (!_userDAO.hasCurrentUser()) {
+        if (!isSignedIn()) {
             needToSignIn.run();
         } else {
             tryConnecting(
@@ -127,7 +126,7 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
             (api) -> {
                 api.checkCredentials(
                     username,
-                    BCrypt.hashpw(password, BCrypt.gensalt()),
+                    BCrypt.hashpw(password, BCrypt.gensalt()), // Encrypt password
                     new Callback<String>() {
                         @Override
                         public void success(String token, Response response) {

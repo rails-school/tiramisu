@@ -31,6 +31,10 @@ import de.greenrobot.event.EventBus;
  */
 public class SettingsFragment extends BaseFragment {
 
+    /**
+     * @class RestoreCredentialInputEvent
+     * @brief Restores input when device is rotated
+     */
     private static class RestoreCredentialInputEvent {
         private String _username;
         private String _password;
@@ -94,6 +98,7 @@ public class SettingsFragment extends BaseFragment {
 
     private void _setCredentials() {
         if (BusinessFactory.provideUser(getActivity()).isSignedIn()) {
+            // Sets "display" credentials if user has already signed in
             _usernameField.setText(
                 BusinessFactory.provideUser(getActivity()).getCurrentUsername()
             );

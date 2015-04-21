@@ -154,6 +154,7 @@ public class ClassDetailsFragment extends BaseFragment {
         super.onDestroy();
 
         if (_initArgs != null) {
+            // If device is rotated, post same initialization args
             EventBus.getDefault().postSticky(_initArgs);
         }
     }
@@ -163,13 +164,14 @@ public class ClassDetailsFragment extends BaseFragment {
 
         BusinessFactory
             .provideLesson(getActivity())
-            .getSchoolClassPair(
+            .getSchoolClassTuple(
                 event.getLessonSlug(),
                 (schoolClass, teacher, venue) -> {
                     if (!isAdded()) {
-                        return; // Prevent asynchronous conflicts
+                        return; // Fragment has been removed before call and callback
                     }
 
+                    // Hydrate screen
                     _currentSchoolClass = schoolClass;
 
                     _headline.setText(schoolClass.getLesson().getTitle());
@@ -196,7 +198,7 @@ public class ClassDetailsFragment extends BaseFragment {
                 event.getLessonSlug(),
                 (isAttending) -> {
                     if (!isAdded()) {
-                        return; // Prevent asynchronous conflicts
+                        return; // Fragment has been removed before call and callback
                     }
 
                     _isAttending = isAttending;
@@ -213,7 +215,6 @@ public class ClassDetailsFragment extends BaseFragment {
                     publishError(error);
                     _isAttending = false;
                     _setAttendanceToggle();
-                    _toggleButton.setBackgroundColor(getResources().getColor(R.color.gray));
                 }
             );
     }
@@ -228,7 +229,7 @@ public class ClassDetailsFragment extends BaseFragment {
             return;
         }
 
-        if (_currentSchoolClass == null) { // Prevent null pointer
+        if (_currentSchoolClass == null) { // School class not known yet
             return;
         }
 
@@ -270,11 +271,10 @@ public class ClassDetailsFragment extends BaseFragment {
         Intent intent;
 
         if (_currentSchoolClass == null || _currentVenue == null) {
-            return; // Prevent null exceptions
+            return; // Details not known yet
         }
 
         intent = new Intent(Intent.ACTION_EDIT);
-
         intent.setType("vnd.android.cursor.item/event");
         intent.putExtra(
             CalendarContract.EXTRA_EVENT_BEGIN_TIME,
@@ -301,7 +301,7 @@ public class ClassDetailsFragment extends BaseFragment {
         Intent intent;
 
         if (_currentVenue == null) {
-            return; // Prevent null exceptions
+            return; // Venue not known yet
         }
 
         intent = new Intent(

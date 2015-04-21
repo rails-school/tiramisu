@@ -12,9 +12,17 @@ import org.railsschool.tiramisu.models.beans.User;
 public interface IUserBusiness {
     public void get(int id, Action<User> success, Action<String> failure);
 
-    public void isCurrentUserAttendingTo(String lessonSlug, Action<Boolean> success,
+    public void isCurrentUserAttendingTo(String lessonSlug, Action<Boolean> isAttending,
+                                         Action0 needToSignIn,
                                          Action<String> failure);
 
     public void toggleAttendance(String lessonSlug, boolean isAttending,
                                  Action0 success, Action<String> failure);
+
+    public void checkCredentials(String username, String password, Action0 success,
+                                 Action<String> failure);
+
+    public boolean isSignedIn();
+
+    public String getCurrentUsername();
 }

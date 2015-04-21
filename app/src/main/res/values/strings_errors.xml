@@ -5,6 +5,10 @@
     </string>
 
     <string name="error_no_connection">
-        Aw :( You have no Internet connection.
+        You seem to have no Internet connection. Please try again.
+    </string>
+
+    <string name="error_not_signed_in">
+        You need to sign in before attending to any lesson.
     </string>
 </resources>

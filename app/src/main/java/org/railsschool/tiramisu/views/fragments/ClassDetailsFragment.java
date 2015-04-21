@@ -22,6 +22,7 @@ import org.railsschool.tiramisu.models.beans.Venue;
 import org.railsschool.tiramisu.models.bll.BusinessFactory;
 import org.railsschool.tiramisu.models.bll.structs.SchoolClass;
 import org.railsschool.tiramisu.views.events.ClassDetailsInitEvent;
+import org.railsschool.tiramisu.views.events.InformationEvent;
 import org.railsschool.tiramisu.views.helpers.DateHelper;
 import org.railsschool.tiramisu.views.helpers.PicassoHelper;
 import org.railsschool.tiramisu.views.helpers.UserHelper;
@@ -42,6 +43,7 @@ public class ClassDetailsFragment extends BaseFragment {
     private Venue                 _currentVenue;
     private boolean               _isAttending;
     private boolean               _isTogglingAttendance;
+    private boolean               _canToggleAttendance;
 
     @InjectView(R.id.fragment_class_details_headline)
     TextView _headline;
@@ -198,15 +200,33 @@ public class ClassDetailsFragment extends BaseFragment {
                     }
 
                     _isAttending = isAttending;
+                    _canToggleAttendance = true;
                     _setAttendanceToggle();
                 },
-                this::publishError
+                () -> {
+                    _canToggleAttendance = false;
+                    _isAttending = false;
+                    _setAttendanceToggle();
+                    _toggleButton.setBackgroundColor(getResources().getColor(R.color.gray));
+                },
+                (error) -> {
+                    publishError(error);
+                    _isAttending = false;
+                    _setAttendanceToggle();
+                    _toggleButton.setBackgroundColor(getResources().getColor(R.color.gray));
+                }
             );
     }
 
     @OnClick(R.id.fragment_class_details_attendance_toggle)
     public void onAttendanceToggle(View view) {
         final Action0 finallyAction;
+
+        if (!_canToggleAttendance) { // Not signed in
+            EventBus.getDefault()
+                    .post(new InformationEvent(getString(R.string.error_not_signed_in)));
+            return;
+        }
 
         if (_currentSchoolClass == null) { // Prevent null pointer
             return;
@@ -219,10 +239,10 @@ public class ClassDetailsFragment extends BaseFragment {
         DeviceHelper.lockOrientation(getActivity());
         _isTogglingAttendance = true;
         finallyAction = () -> {
-            DeviceHelper.unlockOrientation(getActivity());
             _isTogglingAttendance = false;
             _toggleIcon.setVisibility(View.VISIBLE);
             _setAttendanceToggle();
+            DeviceHelper.unlockOrientation(getActivity());
         };
 
         _toggleIcon.setVisibility(View.GONE);
@@ -234,17 +254,13 @@ public class ClassDetailsFragment extends BaseFragment {
                 _currentSchoolClass.getLesson().getSlug(),
                 _isAttending,
                 () -> {
-                    if (!isAdded()) {
-                        return; // Prevent asynchronous conflicts
-                    }
-
                     _isAttending = !_isAttending;
                     finallyAction.run();
                     _setAttendees();
                 },
                 (error) -> {
-                    finallyAction.run();
                     publishError(error);
+                    finallyAction.run();
                 }
             );
     }

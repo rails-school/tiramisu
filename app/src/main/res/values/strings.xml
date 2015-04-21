@@ -9,6 +9,8 @@
     <string name="multi_attendees">%1$d students attend this class</string>
 
     <string name="processing">Processing...</string>
+    <string name="updated_preference">Updated!</string>
+    <string name="saved_confirmation">Saved!</string>
 
     <string name="attend_class">I\'m in!</string>
     <string name="remove_attendance">Nah, I came around.</string>
@@ -19,6 +21,10 @@
     <string name="settings_account_label">Account</string>
     <string name="settings_username_placeholder">Username</string>
     <string name="settings_password_placeholder">Password</string>
+    <string name="settings_submit_credentials">Remember me</string>
+    <string name="settings_invalid_credentials">
+        Your username or password is invalid.
+    </string>
 
     <string name="settings_reminder_label">Reminders</string>
     <string name="settings_reminder_day">24 hours</string>
@@ -29,6 +35,4 @@
         <item>Only if attending</item>
         <item>Never</item>
     </array>
-
-    <string name="updated_preference">Updated!</string>
 </resources>

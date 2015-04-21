@@ -20,4 +20,6 @@ public interface IUserDAO {
     public String getCurrentUserToken();
 
     public void setCurrentUserToken(String value);
+
+    public boolean hasCurrentUser();
 }

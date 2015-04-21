@@ -12,6 +12,9 @@ import de.greenrobot.event.EventBus;
  */
 public abstract class BaseFragment extends Fragment {
     public void publishError(String error) {
+        if (!isAdded()) {
+            return; // Prevent async conflicts
+        }
         EventBus.getDefault().post(new ErrorEvent(error));
     }
 }

@@ -69,6 +69,11 @@ class UserDAO extends BaseDAO implements IUserDAO {
         _preferenceDAL.edit().putString(TOKEN_KEY, value).commit();
     }
 
+    @Override
+    public boolean hasCurrentUser() {
+        return getCurrentUsername() != null && getCurrentUserToken() != null;
+    }
+
     public void create(User user) {
         getDAL().executeTransaction(
             (dal) -> {

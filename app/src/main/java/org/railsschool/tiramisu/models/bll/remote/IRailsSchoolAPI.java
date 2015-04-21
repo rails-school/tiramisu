@@ -8,7 +8,6 @@ import org.railsschool.tiramisu.models.bll.structs.SchoolClass;
 import java.util.List;
 
 import retrofit.Callback;
-import retrofit.http.DELETE;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
@@ -69,24 +68,18 @@ public interface IRailsSchoolAPI {
 
     @PUT(ATTENDANCE_ROOT + FORMAT)
     @FormUrlEncoded
-    public void attend(
-        @Field("lessonId") int lessonId,
+    public void toggleAttendance(
+        @Field("lessonSlug") String lessonSlug,
         @Field("username") String username,
         @Field("userToken") String userToken,
-        Callback<Void> callback);
-
-    @DELETE(ATTENDANCE_ROOT + FORMAT)
-    @FormUrlEncoded
-    public void cancelAttendance(
-        @Field("lessonId") int lessonId,
-        @Field("username") String username,
-        @Field("userToken") String userToken,
+        @Field("attendance") boolean attendance,
         Callback<Void> callback);
 
     // TODO: Change route
-    @GET(ATTENDANCE_ROOT + "/{lessonId}/{userToken}" + FORMAT)
+    @GET(ATTENDANCE_ROOT + "/{lessonSlug}/{username}/{userToken}" + FORMAT)
     public void isAttending(
-        @Path("lessonId") int lesson,
+        @Path("lessonSlug") String lessonSlug,
+        @Path("username") String username,
         @Path("userToken") String userToken,
         Callback<Boolean> callback);
 

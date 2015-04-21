@@ -28,4 +28,6 @@ public interface ILessonBusiness {
                                    Action<String> failure);
 
     public void getUpcoming(Action<Lesson> success);
+
+    public void engineAlarms(Action<Lesson> twoHourAlarm, Action<Lesson> dayAlarm);
 }

@@ -9,8 +9,11 @@ import java.util.List;
 
 import retrofit.Callback;
 import retrofit.http.DELETE;
+import retrofit.http.Field;
+import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
 import retrofit.http.POST;
+import retrofit.http.PUT;
 import retrofit.http.Path;
 
 /**
@@ -47,8 +50,11 @@ public interface IRailsSchoolAPI {
     public void getUser(@Path("id") int id, Callback<User> callback);
 
     @POST(USER_ROOT + "/check-credentials" + FORMAT)
-    public void checkCredentials(String login, String password, Callback<String>
-        callback);
+    @FormUrlEncoded
+    public void checkCredentials(
+        @Field("login") String login,
+        @Field("password") String password,
+        Callback<String> callback);
 
     //endregion
 
@@ -61,12 +67,21 @@ public interface IRailsSchoolAPI {
 
     //region Attendances
 
-    @POST(ATTENDANCE_ROOT + FORMAT)
-    public void attend(int lessonId, String userToken, Callback<Void> callback);
+    @PUT(ATTENDANCE_ROOT + FORMAT)
+    @FormUrlEncoded
+    public void attend(
+        @Field("lessonId") int lessonId,
+        @Field("username") String username,
+        @Field("userToken") String userToken,
+        Callback<Void> callback);
 
     @DELETE(ATTENDANCE_ROOT + FORMAT)
-    public void cancelAttendance(int lessonId, String userToken, Callback<Void>
-        callback);
+    @FormUrlEncoded
+    public void cancelAttendance(
+        @Field("lessonId") int lessonId,
+        @Field("username") String username,
+        @Field("userToken") String userToken,
+        Callback<Void> callback);
 
     // TODO: Change route
     @GET(ATTENDANCE_ROOT + "/{lessonId}/{userToken}" + FORMAT)

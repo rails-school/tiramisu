@@ -1,5 +1,7 @@
 package org.railsschool.tiramisu.models.beans;
 
+import java.util.Date;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -10,6 +12,7 @@ import io.realm.annotations.PrimaryKey;
 public class Lesson extends RealmObject {
     @PrimaryKey
     private String slug;
+
     private String title;
     private String summary;
     private String description;
@@ -17,6 +20,7 @@ public class Lesson extends RealmObject {
     private String endTime;
     private int    teacherId;
     private int    venueId;
+    private Date   updateDate;
 
     public String getSlug() {
         return slug;
@@ -80,5 +84,13 @@ public class Lesson extends RealmObject {
 
     public void setVenueId(int venueId) {
         this.venueId = venueId;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date value) {
+        updateDate = value;
     }
 }

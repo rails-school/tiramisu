@@ -1,5 +1,7 @@
 package org.railsschool.tiramisu.models.beans;
 
+import java.util.Date;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -19,6 +21,7 @@ public class Venue extends RealmObject {
     private String city;
     private String state;
     private String country;
+    private Date   updateDate;
 
     public String getName() {
         return name;
@@ -90,5 +93,13 @@ public class Venue extends RealmObject {
 
     public void setLongitude(float longitude) {
         this.longitude = longitude;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date value) {
+        updateDate = value;
     }
 }

@@ -3,6 +3,7 @@ package org.railsschool.tiramisu.models.dao;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import org.joda.time.DateTime;
 import org.railsschool.tiramisu.models.beans.User;
 import org.railsschool.tiramisu.models.dao.interfaces.IUserDAO;
 
@@ -77,6 +78,7 @@ class UserDAO extends BaseDAO implements IUserDAO {
     public void create(User user) {
         getDAL().executeTransaction(
             (dal) -> {
+                user.setUpdateDate(DateTime.now().toDate());
                 dal.copyToRealm(user);
             }
         );
@@ -91,6 +93,7 @@ class UserDAO extends BaseDAO implements IUserDAO {
                 entry.setEmail(user.getEmail());
                 entry.setTeacher(user.getTeacher());
                 entry.setHideLastName(user.getHideLastName());
+                entry.setUpdateDate(DateTime.now().toDate());
             }
         );
     }

@@ -31,6 +31,7 @@ import retrofit.client.Response;
  * @brief
  */
 class LessonBusiness extends BaseBusiness implements ILessonBusiness {
+    private final static int COOLDOWN_MS = 5 * 60 * 1000;
 
     private IUserBusiness       _userBusiness;
     private IVenueBusiness      _venueBusiness;
@@ -86,24 +87,29 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
     @Override
     public void get(String lessonSlug, Action<Lesson> success, Action<String> failure) {
         if (_lessonDAO.exists(lessonSlug)) {
-            // Lesson already in local storage, run callback
-            success.run(_lessonDAO.find(lessonSlug));
+            Lesson l = _lessonDAO.find(lessonSlug);
 
-            // Refresh lesson details
-            tryConnecting(
-                (api) -> {
-                    api.getLesson(
-                        lessonSlug,
-                        new BLLCallback<Lesson>(failure) {
-                            @Override
-                            public void success(Lesson lesson, Response response) {
-                                _lessonDAO.save(lesson);
+            // Lesson already in local storage, run callback
+            success.run(l);
+
+            if (DateTime.now().minus(l.getUpdateDate().getTime()).getMillis() >=
+                COOLDOWN_MS) {
+                // Refresh lesson details
+                tryConnecting(
+                    (api) -> {
+                        api.getLesson(
+                            lessonSlug,
+                            new BLLCallback<Lesson>(failure) {
+                                @Override
+                                public void success(Lesson lesson, Response response) {
+                                    _lessonDAO.save(lesson);
+                                }
                             }
-                        }
-                    );
-                },
-                failure
-            );
+                        );
+                    },
+                    failure
+                );
+            }
         } else {
             // No entry in local storage, forced to pull
             tryConnecting(

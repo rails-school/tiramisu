@@ -8,6 +8,7 @@
         android:id="@+id/fragment_class_list"
         style="@style/MatchParentWrapContent"
         android:divider="@null"
+        android:dividerHeight="0dp"
         />
 
 </LinearLayout>

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/AdapterClassWrapper"
+    tools:background="@color/black"
     >
 
     <LinearLayout
@@ -46,6 +47,13 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/adapter_class_separator"
+        android:layout_gravity="center_horizontal"
+        tools:visibility="visible"
+        style="@style/AdapterClassSeparator"
+        />
 
 </LinearLayout>
 

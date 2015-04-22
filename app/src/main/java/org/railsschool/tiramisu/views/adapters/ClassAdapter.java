@@ -30,7 +30,7 @@ public class ClassAdapter extends SmartAdapter<String> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View adapter;
+        View adapter, separator;
         TextView headline, digest, teacherName, date, location;
         String lessonSlug;
 
@@ -40,6 +40,8 @@ public class ClassAdapter extends SmartAdapter<String> {
         teacherName = ViewHelper.findById(adapter, R.id.adapter_class_teacher);
         date = ViewHelper.findById(adapter, R.id.adapter_class_date);
         location = ViewHelper.findById(adapter, R.id.adapter_class_location);
+
+        separator = ViewHelper.findById(adapter, R.id.adapter_class_separator);
 
         lessonSlug = itemAt(position);
 
@@ -65,6 +67,12 @@ public class ClassAdapter extends SmartAdapter<String> {
                 EventBus.getDefault().post(new ClassDetailsRequestedEvent(lessonSlug));
             }
         );
+
+        if (position == 0) {
+            separator.setVisibility(View.VISIBLE);
+        } else {
+            separator.setVisibility(View.GONE);
+        }
 
         return adapter;
     }

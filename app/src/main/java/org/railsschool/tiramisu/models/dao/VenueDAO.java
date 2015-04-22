@@ -1,5 +1,6 @@
 package org.railsschool.tiramisu.models.dao;
 
+import org.joda.time.DateTime;
 import org.railsschool.tiramisu.models.beans.Venue;
 import org.railsschool.tiramisu.models.dao.interfaces.IVenueDAO;
 
@@ -40,6 +41,7 @@ class VenueDAO extends BaseDAO implements IVenueDAO {
     public void create(Venue venue) {
         getDAL().executeTransaction(
             (dal) -> {
+                venue.setUpdateDate(DateTime.now().toDate());
                 dal.copyToRealm(venue);
             }
         );
@@ -58,6 +60,7 @@ class VenueDAO extends BaseDAO implements IVenueDAO {
                 entry.setCity(venue.getCity());
                 entry.setState(venue.getState());
                 entry.setCountry(venue.getCountry());
+                entry.setUpdateDate(DateTime.now().toDate());
             }
         );
     }

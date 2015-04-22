@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.coshx.chocolatine.utils.actions.Action;
 
+import org.joda.time.DateTime;
 import org.railsschool.tiramisu.models.beans.Venue;
 import org.railsschool.tiramisu.models.bll.interfaces.IVenueBusiness;
 import org.railsschool.tiramisu.models.bll.remote.interfaces.IRailsSchoolAPIOutlet;
@@ -16,6 +17,8 @@ import retrofit.client.Response;
  * @brief
  */
 class VenueBusiness extends BaseBusiness implements IVenueBusiness {
+    private final static int COOLDOWN_MS = 5 * 60 * 1000;
+
     private IVenueDAO _venueDAO;
 
     public VenueBusiness(Context context, IRailsSchoolAPIOutlet outlet,
@@ -28,22 +31,27 @@ class VenueBusiness extends BaseBusiness implements IVenueBusiness {
     @Override
     public void get(int id, Action<Venue> success, Action<String> failure) {
         if (_venueDAO.exists(id)) {
-            success.run(_venueDAO.find(id));
+            Venue v = _venueDAO.find(id);
 
-            tryConnecting(
-                (api) -> {
-                    api.getVenue(
-                        id,
-                        new BLLCallback<Venue>(failure) {
-                            @Override
-                            public void success(Venue venue, Response response) {
-                                _venueDAO.save(venue);
+            success.run(v);
+
+            if (DateTime.now().minus(v.getUpdateDate().getTime()).getMillis() >=
+                COOLDOWN_MS) {
+                tryConnecting(
+                    (api) -> {
+                        api.getVenue(
+                            id,
+                            new BLLCallback<Venue>(failure) {
+                                @Override
+                                public void success(Venue venue, Response response) {
+                                    _venueDAO.save(venue);
+                                }
                             }
-                        }
-                    );
-                },
-                failure
-            );
+                        );
+                    },
+                    failure
+                );
+            }
         } else {
             tryConnecting(
                 (api) -> {

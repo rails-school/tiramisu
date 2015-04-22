@@ -1,5 +1,6 @@
 package org.railsschool.tiramisu.models.dao;
 
+import org.joda.time.DateTime;
 import org.railsschool.tiramisu.models.beans.Lesson;
 import org.railsschool.tiramisu.models.dao.interfaces.ILessonDAO;
 
@@ -40,6 +41,7 @@ class LessonDAO extends BaseDAO implements ILessonDAO {
     public void create(Lesson lesson) {
         getDAL().executeTransaction(
             (dal) -> {
+                lesson.setUpdateDate(DateTime.now().toDate());
                 dal.copyToRealm(lesson);
             }
         );
@@ -57,6 +59,7 @@ class LessonDAO extends BaseDAO implements ILessonDAO {
                 entry.setEndTime(lesson.getEndTime());
                 entry.setTeacherId(lesson.getTeacherId());
                 entry.setVenueId(lesson.getVenueId());
+                entry.setUpdateDate(DateTime.now().toDate());
             }
         );
     }

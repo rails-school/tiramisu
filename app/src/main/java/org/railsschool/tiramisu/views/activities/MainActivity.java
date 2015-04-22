@@ -144,10 +144,9 @@ public class MainActivity extends BaseActivity {
     }
 
     /**
-     * Handled between onCreate and onResume
-     * onCreate sets landing screen
-     * If lesson slug has been provided (from alarm/notif), it will be triggered after
-     * this
+     * Handled between onCreate and onResume onCreate sets landing screen If lesson slug
+     * has been provided (from alarm/notif), it will be triggered after this
+     *
      * @param event
      */
     public void onEventMainThread(RestoreDisplayEvent event) {

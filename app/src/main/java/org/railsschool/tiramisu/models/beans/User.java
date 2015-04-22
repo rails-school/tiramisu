@@ -1,5 +1,7 @@
 package org.railsschool.tiramisu.models.beans;
 
+import java.util.Date;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -9,11 +11,13 @@ import io.realm.annotations.PrimaryKey;
  */
 public class User extends RealmObject {
     @PrimaryKey
-    private int     id;
+    private int id;
+
     private String  name;
     private String  email;
     private boolean teacher;
     private boolean hideLastName;
+    private Date    updateDate;
 
     public int getId() {
         return id;
@@ -53,5 +57,13 @@ public class User extends RealmObject {
 
     public void setHideLastName(boolean value) {
         hideLastName = value;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date value) {
+        updateDate = value;
     }
 }

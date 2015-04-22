@@ -5,6 +5,7 @@ import android.content.Context;
 import com.coshx.chocolatine.utils.actions.Action;
 import com.coshx.chocolatine.utils.actions.Action0;
 
+import org.joda.time.DateTime;
 import org.mindrot.jbcrypt.BCrypt;
 import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.models.beans.User;
@@ -21,6 +22,8 @@ import retrofit.client.Response;
  * @brief
  */
 class UserBusiness extends BaseBusiness implements IUserBusiness {
+    private final static int COOLDOWN_MS = 5 * 60 * 1000;
+
     private IUserDAO _userDAO;
 
     public UserBusiness(Context context, IRailsSchoolAPIOutlet outlet, IUserDAO userDAO) {
@@ -32,24 +35,29 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
     @Override
     public void get(int id, Action<User> success, Action<String> failure) {
         if (_userDAO.exists(id)) {
-            // Already an entry, use local data first
-            success.run(_userDAO.find(id));
+            User u = _userDAO.find(id);
 
-            // Then refresh them
-            tryConnecting(
-                (api) -> {
-                    api.getUser(
-                        id,
-                        new BLLCallback<User>(failure) {
-                            @Override
-                            public void success(User user, Response response) {
-                                _userDAO.save(user);
+            // Already an entry, use local data first
+            success.run(u);
+
+            if (DateTime.now().minus(u.getUpdateDate().getTime()).getMillis() >=
+                COOLDOWN_MS) {
+                // Then refresh them
+                tryConnecting(
+                    (api) -> {
+                        api.getUser(
+                            id,
+                            new BLLCallback<User>(failure) {
+                                @Override
+                                public void success(User user, Response response) {
+                                    _userDAO.save(user);
+                                }
                             }
-                        }
-                    );
-                },
-                failure
-            );
+                        );
+                    },
+                    failure
+                );
+            }
         } else {
             // No entry in local storage, force to pull
             tryConnecting(

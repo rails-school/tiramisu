@@ -41,6 +41,13 @@
                 android:inputType="textPassword"
                 />
 
+            <Button
+                android:id="@+id/fragment_settings_submit_credentials"
+                style="@style/FragmentSettingsSubmit"
+                android:text="@string/settings_submit_credentials"
+                android:layout_gravity="right"
+                />
+
             <ImageView
                 style="@style/FragmentSettingsSeparator"
                 />

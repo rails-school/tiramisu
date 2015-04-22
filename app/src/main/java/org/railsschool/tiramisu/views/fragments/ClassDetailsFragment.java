@@ -22,6 +22,7 @@ import org.railsschool.tiramisu.models.beans.Venue;
 import org.railsschool.tiramisu.models.bll.BusinessFactory;
 import org.railsschool.tiramisu.models.bll.structs.SchoolClass;
 import org.railsschool.tiramisu.views.events.ClassDetailsInitEvent;
+import org.railsschool.tiramisu.views.events.InformationEvent;
 import org.railsschool.tiramisu.views.helpers.DateHelper;
 import org.railsschool.tiramisu.views.helpers.PicassoHelper;
 import org.railsschool.tiramisu.views.helpers.UserHelper;
@@ -42,6 +43,7 @@ public class ClassDetailsFragment extends BaseFragment {
     private Venue                 _currentVenue;
     private boolean               _isAttending;
     private boolean               _isTogglingAttendance;
+    private boolean               _canToggleAttendance;
 
     @InjectView(R.id.fragment_class_details_headline)
     TextView _headline;
@@ -152,6 +154,7 @@ public class ClassDetailsFragment extends BaseFragment {
         super.onDestroy();
 
         if (_initArgs != null) {
+            // If device is rotated, post same initialization args
             EventBus.getDefault().postSticky(_initArgs);
         }
     }
@@ -161,13 +164,14 @@ public class ClassDetailsFragment extends BaseFragment {
 
         BusinessFactory
             .provideLesson(getActivity())
-            .getSchoolClassPair(
+            .getSchoolClassTuple(
                 event.getLessonSlug(),
                 (schoolClass, teacher, venue) -> {
                     if (!isAdded()) {
-                        return; // Prevent asynchronous conflicts
+                        return; // Fragment has been removed before call and callback
                     }
 
+                    // Hydrate screen
                     _currentSchoolClass = schoolClass;
 
                     _headline.setText(schoolClass.getLesson().getTitle());
@@ -194,13 +198,24 @@ public class ClassDetailsFragment extends BaseFragment {
                 event.getLessonSlug(),
                 (isAttending) -> {
                     if (!isAdded()) {
-                        return; // Prevent asynchronous conflicts
+                        return; // Fragment has been removed before call and callback
                     }
 
                     _isAttending = isAttending;
+                    _canToggleAttendance = true;
                     _setAttendanceToggle();
                 },
-                this::publishError
+                () -> {
+                    _canToggleAttendance = false;
+                    _isAttending = false;
+                    _setAttendanceToggle();
+                    _toggleButton.setBackgroundColor(getResources().getColor(R.color.gray));
+                },
+                (error) -> {
+                    publishError(error);
+                    _isAttending = false;
+                    _setAttendanceToggle();
+                }
             );
     }
 
@@ -208,7 +223,13 @@ public class ClassDetailsFragment extends BaseFragment {
     public void onAttendanceToggle(View view) {
         final Action0 finallyAction;
 
-        if (_currentSchoolClass == null) { // Prevent null pointer
+        if (!_canToggleAttendance) { // Not signed in
+            EventBus.getDefault()
+                    .post(new InformationEvent(getString(R.string.error_not_signed_in)));
+            return;
+        }
+
+        if (_currentSchoolClass == null) { // School class not known yet
             return;
         }
 
@@ -219,10 +240,10 @@ public class ClassDetailsFragment extends BaseFragment {
         DeviceHelper.lockOrientation(getActivity());
         _isTogglingAttendance = true;
         finallyAction = () -> {
-            DeviceHelper.unlockOrientation(getActivity());
             _isTogglingAttendance = false;
             _toggleIcon.setVisibility(View.VISIBLE);
             _setAttendanceToggle();
+            DeviceHelper.unlockOrientation(getActivity());
         };
 
         _toggleIcon.setVisibility(View.GONE);
@@ -234,17 +255,13 @@ public class ClassDetailsFragment extends BaseFragment {
                 _currentSchoolClass.getLesson().getSlug(),
                 _isAttending,
                 () -> {
-                    if (!isAdded()) {
-                        return; // Prevent asynchronous conflicts
-                    }
-
                     _isAttending = !_isAttending;
                     finallyAction.run();
                     _setAttendees();
                 },
                 (error) -> {
-                    finallyAction.run();
                     publishError(error);
+                    finallyAction.run();
                 }
             );
     }
@@ -254,11 +271,10 @@ public class ClassDetailsFragment extends BaseFragment {
         Intent intent;
 
         if (_currentSchoolClass == null || _currentVenue == null) {
-            return; // Prevent null exceptions
+            return; // Details not known yet
         }
 
         intent = new Intent(Intent.ACTION_EDIT);
-
         intent.setType("vnd.android.cursor.item/event");
         intent.putExtra(
             CalendarContract.EXTRA_EVENT_BEGIN_TIME,
@@ -285,7 +301,7 @@ public class ClassDetailsFragment extends BaseFragment {
         Intent intent;
 
         if (_currentVenue == null) {
-            return; // Prevent null exceptions
+            return; // Venue not known yet
         }
 
         intent = new Intent(

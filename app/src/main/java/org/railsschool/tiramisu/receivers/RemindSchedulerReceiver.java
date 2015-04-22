@@ -8,7 +8,6 @@ import android.content.Intent;
 
 import org.joda.time.DateTime;
 import org.joda.time.Hours;
-import org.joda.time.Interval;
 import org.railsschool.tiramisu.models.beans.Lesson;
 import org.railsschool.tiramisu.models.bll.BusinessFactory;
 
@@ -17,22 +16,6 @@ import org.railsschool.tiramisu.models.bll.BusinessFactory;
  * @brief
  */
 public class RemindSchedulerReceiver extends BroadcastReceiver {
-
-    /**
-     * Returns true if user is currently in notification interval
-     *
-     * @param lesson
-     * @param hours
-     * @return
-     */
-    private boolean _shouldBeNotified(Lesson lesson, Hours hours) {
-        DateTime startTime = new DateTime(lesson.getStartTime());
-
-        return !new Interval(
-            startTime.minusHours(hours.getHours()),
-            startTime
-        ).containsNow();
-    }
 
     /**
      * Gets time when user should be notified
@@ -47,67 +30,59 @@ public class RemindSchedulerReceiver extends BroadcastReceiver {
             .getMillis();
     }
 
-    @Override
-    public void onReceive(Context context, Intent intent) {
+    /**
+     * Schedules alarm
+     * @param context
+     * @param processId Alarm process id (should be unique)
+     * @param receiver Alarm receiver
+     * @param lesson
+     * @param date Delay before triggering class
+     */
+    private void _scheduleAlarm(
+        Context context,
+        int processId,
+        Class<? extends BroadcastReceiver> receiver,
+        Lesson lesson,
+        Hours date) {
+
         AlarmManager alarmManager =
             (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        PendingIntent alarmIntent;
 
+        alarmIntent = PendingIntent.getBroadcast(
+            context,
+            processId,
+            new Intent(context, receiver),
+            0
+        );
+
+        try {
+            // Cancel existing similar alarm, then schedule it again
+            alarmManager.cancel(alarmIntent);
+        } catch (Exception e) {
+            // No alarm before, does not matter
+        } finally {
+            // Sets alarm, wake up device id needed
+            alarmManager.set(
+                AlarmManager.RTC_WAKEUP,
+                _getDelayInMilli(lesson, date),
+                alarmIntent
+            );
+        }
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
         BusinessFactory
             .provideLesson(context)
-            .getUpcoming(
+            .engineAlarms(
                 (lesson) -> {
-                    if (lesson == null) {
-                        // No upcoming lesson, do nothing
-                        return;
-                    }
-                    
-                    // 2 hours before notification
-                    if (_shouldBeNotified(lesson, Hours.TWO)) {
-                        PendingIntent twoHourIntent;
-
-                        twoHourIntent = PendingIntent.getBroadcast(
-                            context,
-                            100,
-                            new Intent(context, TwoHourReminderReceiver.class),
-                            0
-                        );
-
-                        try {
-                            alarmManager.cancel(twoHourIntent);
-                        } catch (Exception e) {
-
-                        } finally {
-                            alarmManager.set(
-                                AlarmManager.RTC,
-                                _getDelayInMilli(lesson, Hours.TWO),
-                                twoHourIntent
-                            );
-                        }
-                    }
-
-                    // Previous day notification
-                    if (_shouldBeNotified(lesson, Hours.hours(24))) {
-                        PendingIntent dayIntent;
-
-                        dayIntent = PendingIntent.getBroadcast(
-                            context,
-                            200,
-                            new Intent(context, DayReminderReceiver.class),
-                            0
-                        );
-
-                        try {
-                            alarmManager.cancel(dayIntent);
-                        } catch (Exception e) {
-
-                        } finally {
-                            alarmManager.set(
-                                AlarmManager.RTC,
-                                _getDelayInMilli(lesson, Hours.hours(24)),
-                                dayIntent
-                            );
-                        }
-                    }
+                    _scheduleAlarm(context, 100, TwoHourReminderReceiver.class, lesson,
+                                   Hours.TWO);
+                },
+                (lesson) -> {
+                    _scheduleAlarm(context, 200, DayReminderReceiver.class, lesson,
+                                   Hours.hours(24));
                 }
             );
     }

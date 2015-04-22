@@ -28,7 +28,7 @@ public class DAOFactory {
         if (_user == null) {
             synchronized (_userLock) {
                 if (_user == null) {
-                    _user = new UserDAO(Realm.getInstance(context));
+                    _user = new UserDAO(Realm.getInstance(context), context);
                 }
             }
         }

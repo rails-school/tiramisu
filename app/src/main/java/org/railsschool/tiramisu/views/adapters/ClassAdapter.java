@@ -45,7 +45,7 @@ public class ClassAdapter extends SmartAdapter<String> {
 
         BusinessFactory
             .provideLesson(getContext())
-            .getPair(
+            .getTuple(
                 lessonSlug,
                 (lesson, teacher, venue) -> {
                     headline.setText(lesson.getTitle());

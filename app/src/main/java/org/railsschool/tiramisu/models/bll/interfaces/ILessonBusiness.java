@@ -15,17 +15,51 @@ import java.util.List;
  * @brief
  */
 public interface ILessonBusiness {
-    public void sortFutureSlugsByDate(Action<List<String>> success, Action<String> failure);
+    /**
+     * Sorts slugs of lessons by start time asc
+     * @param success
+     * @param failure
+     */
+    void sortFutureSlugsByDate(Action<List<String>> success, Action<String> failure);
 
-    public void get(String lessonSlug, Action<Lesson> success, Action<String> failure);
+    /**
+     * Gets a lesson by slug
+     * @param lessonSlug
+     * @param success
+     * @param failure
+     */
+    void get(String lessonSlug, Action<Lesson> success, Action<String> failure);
 
-    public void getPair(String lessonSlug,
-                        Action3<Lesson, User, Venue> success,
-                        Action<String> failure);
+    /**
+     * Gets lesson tuple (lesson, teacher and venue) using slug
+     * @param lessonSlug
+     * @param success
+     * @param failure
+     */
+    void getTuple(String lessonSlug,
+                         Action3<Lesson, User, Venue> success,
+                         Action<String> failure);
 
-    public void getSchoolClassPair(String lessonSlug,
-                                   Action3<SchoolClass, User, Venue> success,
-                                   Action<String> failure);
+    /**
+     * Gets school class tuple (school class, teacher and venue) using slug
+     * @param lessonSlug
+     * @param success
+     * @param failure
+     */
+    void getSchoolClassTuple(String lessonSlug,
+                             Action3<SchoolClass, User, Venue> success,
+                             Action<String> failure);
 
-    public void getUpcoming(Action<Lesson> success);
+    /**
+     * Gets upcoming lesson
+     * @param success
+     */
+    void getUpcoming(Action<Lesson> success);
+
+    /**
+     * Engines upcoming lesson and triggers alarm initializers if needed
+     * @param twoHourAlarm
+     * @param dayAlarm
+     */
+    void engineAlarms(Action<Lesson> twoHourAlarm, Action<Lesson> dayAlarm);
 }

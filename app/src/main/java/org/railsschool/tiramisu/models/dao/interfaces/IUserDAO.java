@@ -12,4 +12,14 @@ public interface IUserDAO {
     public User find(int id);
 
     public void save(User user);
+
+    public String getCurrentUsername();
+
+    public void setCurrentUsername(String value);
+
+    public String getCurrentUserToken();
+
+    public void setCurrentUserToken(String value);
+
+    public boolean hasCurrentUser();
 }

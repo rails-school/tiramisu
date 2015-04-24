@@ -77,8 +77,10 @@ repositories {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.0.0'
+
     // Chocolatine
-    compile(name: 'chocolatine-base', ext: 'aar')
+    compile(name: 'chocolatine-base-0.1.0', ext: 'aar')
+
     // Espresso
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'
     androidTestCompile 'com.android.support.test:testing-support-lib:0.1'

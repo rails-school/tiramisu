@@ -1,6 +1,7 @@
 package org.railsschool.tiramisu.models.bll;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.coshx.chocolatine.utils.actions.Action;
 import com.coshx.chocolatine.utils.actions.Action0;
@@ -11,10 +12,15 @@ import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.models.beans.User;
 import org.railsschool.tiramisu.models.bll.interfaces.IUserBusiness;
 import org.railsschool.tiramisu.models.bll.remote.interfaces.IRailsSchoolAPIOutlet;
+import org.railsschool.tiramisu.models.bll.structs.CheckCredentialsRequest;
 import org.railsschool.tiramisu.models.dao.interfaces.IUserDAO;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
+import retrofit.client.Header;
 import retrofit.client.Response;
 
 /**
@@ -129,19 +135,55 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
     }
 
     @Override
-    public void checkCredentials(String username, String password, Action0 success, Action<String> failure) {
+    public void checkCredentials(String username, String password, Action0 success,
+                                 Action<String> failure) {
         tryConnecting(
             (api) -> {
                 api.checkCredentials(
-                    username,
-                    BCrypt.hashpw(password, BCrypt.gensalt()), // Encrypt password
-                    new Callback<String>() {
+                    new CheckCredentialsRequest(
+                        username,
+                        BCrypt.hashpw(password, BCrypt.gensalt())
+                    ),
+                    new Callback<Void>() {
                         @Override
-                        public void success(String token, Response response) {
-                            _userDAO.setCurrentUsername(username);
-                            _userDAO.setCurrentUserToken(token);
+                        public void success(Void aVoid, Response response) {
+                            String authenticationCookie = null;
 
-                            success.run();
+                            for (int i = 0, size = response.getHeaders().size();
+                                 i < size && authenticationCookie == null; i++) {
+                                Header h = response.getHeaders().get(i);
+
+                                if (h.getName().equals("Set-Cookie")) {
+                                    Pattern p = Pattern.compile(
+                                        "remember_user_token=(.+)"
+                                    );
+                                    Matcher m = p.matcher(h.getValue());
+
+                                    if (m.matches()) {
+                                        authenticationCookie = m.group();
+                                    } else {
+                                        Log.e(
+                                            UserBusiness.class.getSimpleName(),
+                                            "Cookies were present but expected one"
+                                        );
+                                        failure.run(null);
+
+                                        return;
+                                    }
+                                }
+                            }
+
+                            if (authenticationCookie != null) {
+                                _userDAO.setCurrentUsername(username);
+                                _userDAO.setCurrentUserToken(authenticationCookie);
+                                success.run();
+                            } else {
+                                Log.e(
+                                    UserBusiness.class.getSimpleName(),
+                                    "No cookie"
+                                );
+                                failure.run(null);
+                            }
                         }
 
                         @Override

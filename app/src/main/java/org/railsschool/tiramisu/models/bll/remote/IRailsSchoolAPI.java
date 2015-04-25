@@ -3,11 +3,13 @@ package org.railsschool.tiramisu.models.bll.remote;
 import org.railsschool.tiramisu.models.beans.Lesson;
 import org.railsschool.tiramisu.models.beans.User;
 import org.railsschool.tiramisu.models.beans.Venue;
+import org.railsschool.tiramisu.models.bll.structs.CheckCredentialsRequest;
 import org.railsschool.tiramisu.models.bll.structs.SchoolClass;
 
 import java.util.List;
 
 import retrofit.Callback;
+import retrofit.http.Body;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
@@ -48,12 +50,11 @@ public interface IRailsSchoolAPI {
     @GET(USER_ROOT + "/{id}" + FORMAT)
     public void getUser(@Path("id") int id, Callback<User> callback);
 
-    @POST(USER_ROOT + "/check-credentials" + FORMAT)
+    @POST(USER_ROOT + "/sign_in" + FORMAT)
     @FormUrlEncoded
     public void checkCredentials(
-        @Field("login") String login,
-        @Field("password") String password,
-        Callback<String> callback);
+        @Body CheckCredentialsRequest request,
+        Callback<Void> callback);
 
     //endregion
 

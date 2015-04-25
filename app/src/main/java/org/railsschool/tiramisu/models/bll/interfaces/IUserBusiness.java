@@ -34,12 +34,12 @@ public interface IUserBusiness {
     /**
      * Toggles attendance for current user
      *
-     * @param lessonSlug
+     * @param lessonId
      * @param isAttending
      * @param success
      * @param failure
      */
-    void toggleAttendance(String lessonSlug, boolean isAttending,
+    void toggleAttendance(int lessonId, boolean isAttending,
                           Action0 success, Action<String> failure);
 
     /**

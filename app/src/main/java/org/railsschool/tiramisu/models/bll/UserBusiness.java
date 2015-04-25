@@ -90,11 +90,10 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
             needToSignIn.run();
         } else {
             tryConnecting(
+                _userDAO.getCurrentUserToken(),
                 (api) -> {
                     api.isAttending(
                         lessonSlug,
-                        _userDAO.getCurrentUserEmail(),
-                        _userDAO.getCurrentUserToken(),
                         new BLLCallback<Boolean>(failure) {
                             @Override
                             public void success(Boolean value, Response response) {
@@ -110,24 +109,35 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
     }
 
     @Override
-    public void toggleAttendance(String lessonSlug, boolean isAttending, Action0 success, Action<String> failure) {
+    public void toggleAttendance(int lessonId, boolean isAttending, Action0 success,
+                                 Action<String> failure) {
         if (!isSignedIn()) {
             failure.run(getContext().getString(R.string.error_not_signed_in));
         } else {
             tryConnecting(
+                _userDAO.getCurrentUserToken(),
                 (api) -> {
-                    api.toggleAttendance(
-                        lessonSlug,
-                        _userDAO.getCurrentUserEmail(),
-                        _userDAO.getCurrentUserToken(),
-                        isAttending,
-                        new BLLCallback<Void>(failure) {
-                            @Override
-                            public void success(Void aVoid, Response response) {
-                                success.run();
+                    if (isAttending) {
+                        api.attend(
+                            lessonId,
+                            new BLLCallback<Void>(failure) {
+                                @Override
+                                public void success(Void aVoid, Response response) {
+                                    success.run();
+                                }
                             }
-                        }
-                    );
+                        );
+                    } else {
+                        api.removeAttendance(
+                            lessonId,
+                            new BLLCallback<Void>(failure) {
+                                @Override
+                                public void success(Void aVoid, Response response) {
+                                    success.run();
+                                }
+                            }
+                        );
+                    }
                 },
                 failure
             );

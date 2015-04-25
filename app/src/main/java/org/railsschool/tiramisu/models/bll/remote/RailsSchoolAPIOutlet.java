@@ -30,12 +30,13 @@ import retrofit.converter.GsonConverter;
  * @brief
  */
 class RailsSchoolAPIOutlet implements IRailsSchoolAPIOutlet {
-    private Context             _context;
-    private RestAdapter.Builder _adapterBuilder;
+    private Context _context;
 
     public RailsSchoolAPIOutlet(Context context) {
         this._context = context;
+    }
 
+    private RestAdapter.Builder _boilerplate() {
         Gson gson = new GsonBuilder()
             .registerTypeAdapter(User.class, new UserSerializer())
             .registerTypeAdapter(Lesson.class, new LessonSerializer())
@@ -48,18 +49,39 @@ class RailsSchoolAPIOutlet implements IRailsSchoolAPIOutlet {
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .create();
 
-        this._adapterBuilder = new RestAdapter.Builder()
+        return new RestAdapter.Builder()
             //.setLogLevel(RestAdapter.LogLevel.FULL)
             .setEndpoint(this._context.getString(R.string.api_endpoint))
             .setConverter(new GsonConverter(gson));
+
+    }
+
+    private IRailsSchoolAPI _regular() {
+        return _boilerplate().build().create(IRailsSchoolAPI.class);
+    }
+
+    private IRailsSchoolAPI _withAuthentication(String authenticationCookie) {
+        return _boilerplate()
+            .setRequestInterceptor(new AuthenticationInterceptor(authenticationCookie))
+            .build()
+            .create(IRailsSchoolAPI.class);
     }
 
     @Override
     public void connect(Action<IRailsSchoolAPI> success, Action0 failure) {
         try {
-            IRailsSchoolAPI api = _adapterBuilder.build().create(IRailsSchoolAPI.class);
+            success.run(_regular());
+        } catch (Exception e) {
+            Log.e(getClass().getSimpleName(), "Failed to connect to remote server", e);
+            failure.run();
+        }
+    }
 
-            success.run(api);
+    @Override
+    public void connect(String cookieAuthentication, Action<IRailsSchoolAPI> success,
+                        Action0 failure) {
+        try {
+            success.run(_withAuthentication(cookieAuthentication));
         } catch (Exception e) {
             Log.e(getClass().getSimpleName(), "Failed to connect to remote server", e);
             failure.run();

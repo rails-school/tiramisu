@@ -45,12 +45,12 @@ public interface IUserBusiness {
     /**
      * Checks provided credentials with server
      *
-     * @param username
+     * @param email
      * @param password Unencrypted password
      * @param success
      * @param failure
      */
-    void checkCredentials(String username, String password, Action0 success,
+    void checkCredentials(String email, String password, Action0 success,
                           Action<String> failure);
 
     /**
@@ -61,8 +61,9 @@ public interface IUserBusiness {
     boolean isSignedIn();
 
     /**
-     * Gets stored username
+     * Gets stored email
+     *
      * @return
      */
-    String getCurrentUsername();
+    String getCurrentUserEmail();
 }

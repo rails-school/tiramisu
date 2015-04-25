@@ -5,16 +5,16 @@ package org.railsschool.tiramisu.models.bll.structs;
  * @brief
  */
 public class CheckCredentialsRequest {
-    private String _username;
+    private String _email;
     private String _password;
 
-    public CheckCredentialsRequest(String username, String password) {
-        this._username = username;
+    public CheckCredentialsRequest(String email, String password) {
+        this._email = email;
         this._password = password;
     }
 
-    public String getUsername() {
-        return _username;
+    public String getEmail() {
+        return _email;
     }
 
     public String getPassword() {

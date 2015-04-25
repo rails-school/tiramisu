@@ -93,7 +93,7 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
                 (api) -> {
                     api.isAttending(
                         lessonSlug,
-                        _userDAO.getCurrentUsername(),
+                        _userDAO.getCurrentUserEmail(),
                         _userDAO.getCurrentUserToken(),
                         new BLLCallback<Boolean>(failure) {
                             @Override
@@ -118,7 +118,7 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
                 (api) -> {
                     api.toggleAttendance(
                         lessonSlug,
-                        _userDAO.getCurrentUsername(),
+                        _userDAO.getCurrentUserEmail(),
                         _userDAO.getCurrentUserToken(),
                         isAttending,
                         new BLLCallback<Void>(failure) {
@@ -135,13 +135,13 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
     }
 
     @Override
-    public void checkCredentials(String username, String password, Action0 success,
+    public void checkCredentials(String email, String password, Action0 success,
                                  Action<String> failure) {
         tryConnecting(
             (api) -> {
                 api.checkCredentials(
                     new CheckCredentialsRequest(
-                        username,
+                        email,
                         BCrypt.hashpw(password, BCrypt.gensalt())
                     ),
                     new Callback<Void>() {
@@ -174,7 +174,7 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
                             }
 
                             if (authenticationCookie != null) {
-                                _userDAO.setCurrentUsername(username);
+                                _userDAO.setCurrentUserEmail(email);
                                 _userDAO.setCurrentUserToken(authenticationCookie);
                                 success.run();
                             } else {
@@ -211,7 +211,7 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
     }
 
     @Override
-    public String getCurrentUsername() {
-        return _userDAO.getCurrentUsername();
+    public String getCurrentUserEmail() {
+        return _userDAO.getCurrentUserEmail();
     }
 }

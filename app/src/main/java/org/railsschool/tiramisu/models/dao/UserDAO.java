@@ -17,8 +17,8 @@ class UserDAO extends BaseDAO implements IUserDAO {
     private final static Object _saveLock = new Object();
 
     private final static String FILE_NAME = "current_user",
-        USERNAME_KEY                      = "username",
-        TOKEN_KEY                         = "token";
+        EMAIL_KEY = "email",
+        TOKEN_KEY = "token";
     private SharedPreferences _preferenceDAL;
 
     public UserDAO(Realm dal, Context context) {
@@ -51,13 +51,13 @@ class UserDAO extends BaseDAO implements IUserDAO {
     }
 
     @Override
-    public String getCurrentUsername() {
-        return _preferenceDAL.getString(USERNAME_KEY, null);
+    public String getCurrentUserEmail() {
+        return _preferenceDAL.getString(EMAIL_KEY, null);
     }
 
     @Override
-    public void setCurrentUsername(String value) {
-        _preferenceDAL.edit().putString(USERNAME_KEY, value).commit();
+    public void setCurrentUserEmail(String value) {
+        _preferenceDAL.edit().putString(EMAIL_KEY, value).commit();
     }
 
     @Override
@@ -72,7 +72,7 @@ class UserDAO extends BaseDAO implements IUserDAO {
 
     @Override
     public boolean hasCurrentUser() {
-        return getCurrentUsername() != null && getCurrentUserToken() != null;
+        return getCurrentUserEmail() != null && getCurrentUserToken() != null;
     }
 
     public void create(User user) {

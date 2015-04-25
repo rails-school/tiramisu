@@ -7,19 +7,19 @@ import org.railsschool.tiramisu.models.beans.User;
  * @brief
  */
 public interface IUserDAO {
-    public boolean exists(int id);
+    boolean exists(int id);
 
-    public User find(int id);
+    User find(int id);
 
-    public void save(User user);
+    void save(User user);
 
-    public String getCurrentUsername();
+    String getCurrentUserEmail();
 
-    public void setCurrentUsername(String value);
+    void setCurrentUserEmail(String value);
 
-    public String getCurrentUserToken();
+    String getCurrentUserToken();
 
-    public void setCurrentUserToken(String value);
+    void setCurrentUserToken(String value);
 
-    public boolean hasCurrentUser();
+    boolean hasCurrentUser();
 }

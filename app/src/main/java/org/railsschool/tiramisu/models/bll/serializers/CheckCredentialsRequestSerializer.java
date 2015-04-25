@@ -19,7 +19,7 @@ public class CheckCredentialsRequestSerializer implements JsonSerializer<CheckCr
     public JsonElement serialize(CheckCredentialsRequest src, Type typeOfSrc, JsonSerializationContext context) {
         JsonObject content = new JsonObject(), wrapper = new JsonObject();
 
-        content.addProperty("email", src.getUsername());
+        content.addProperty("email", src.getEmail());
         content.addProperty("password", src.getPassword());
         content.addProperty("remember_me", 1);
 

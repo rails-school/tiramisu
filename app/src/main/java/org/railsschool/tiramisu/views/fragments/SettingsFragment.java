@@ -17,6 +17,7 @@ import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.models.bll.BusinessFactory;
 import org.railsschool.tiramisu.models.dao.DayNotificationPreference;
 import org.railsschool.tiramisu.models.dao.TwoHourNotificationPreference;
+import org.railsschool.tiramisu.utils.KeyboardHelper;
 import org.railsschool.tiramisu.views.events.ConfirmationEvent;
 import org.railsschool.tiramisu.views.events.InformationEvent;
 
@@ -274,7 +275,7 @@ public class SettingsFragment extends BaseFragment {
                     EventBus.getDefault().post(
                         new ConfirmationEvent(getString(R.string.saved_confirmation))
                     );
-
+                    KeyboardHelper.hide(getActivity());
                     finallyCallback.run();
                 },
                 (error) -> {

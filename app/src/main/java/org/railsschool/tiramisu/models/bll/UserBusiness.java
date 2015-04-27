@@ -1,20 +1,25 @@
 package org.railsschool.tiramisu.models.bll;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.coshx.chocolatine.utils.actions.Action;
 import com.coshx.chocolatine.utils.actions.Action0;
 
 import org.joda.time.DateTime;
-import org.mindrot.jbcrypt.BCrypt;
 import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.models.beans.User;
 import org.railsschool.tiramisu.models.bll.interfaces.IUserBusiness;
 import org.railsschool.tiramisu.models.bll.remote.interfaces.IRailsSchoolAPIOutlet;
+import org.railsschool.tiramisu.models.bll.structs.CheckCredentialsRequest;
 import org.railsschool.tiramisu.models.dao.interfaces.IUserDAO;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
+import retrofit.client.Header;
 import retrofit.client.Response;
 
 /**
@@ -84,11 +89,10 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
             needToSignIn.run();
         } else {
             tryConnecting(
+                _userDAO.getCurrentUserToken(),
                 (api) -> {
                     api.isAttending(
                         lessonSlug,
-                        _userDAO.getCurrentUsername(),
-                        _userDAO.getCurrentUserToken(),
                         new BLLCallback<Boolean>(failure) {
                             @Override
                             public void success(Boolean value, Response response) {
@@ -104,24 +108,35 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
     }
 
     @Override
-    public void toggleAttendance(String lessonSlug, boolean isAttending, Action0 success, Action<String> failure) {
+    public void toggleAttendance(int lessonId, boolean isAttending, Action0 success,
+                                 Action<String> failure) {
         if (!isSignedIn()) {
             failure.run(getContext().getString(R.string.error_not_signed_in));
         } else {
             tryConnecting(
+                _userDAO.getCurrentUserToken(),
                 (api) -> {
-                    api.toggleAttendance(
-                        lessonSlug,
-                        _userDAO.getCurrentUsername(),
-                        _userDAO.getCurrentUserToken(),
-                        isAttending,
-                        new BLLCallback<Void>(failure) {
-                            @Override
-                            public void success(Void aVoid, Response response) {
-                                success.run();
+                    if (isAttending) {
+                        api.attend(
+                            lessonId,
+                            new BLLCallback<Void>(failure) {
+                                @Override
+                                public void success(Void aVoid, Response response) {
+                                    success.run();
+                                }
                             }
-                        }
-                    );
+                        );
+                    } else {
+                        api.removeAttendance(
+                            lessonId,
+                            new BLLCallback<Void>(failure) {
+                                @Override
+                                public void success(Void aVoid, Response response) {
+                                    success.run();
+                                }
+                            }
+                        );
+                    }
                 },
                 failure
             );
@@ -129,19 +144,55 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
     }
 
     @Override
-    public void checkCredentials(String username, String password, Action0 success, Action<String> failure) {
+    public void checkCredentials(String email, String password, Action0 success,
+                                 Action<String> failure) {
         tryConnecting(
             (api) -> {
                 api.checkCredentials(
-                    username,
-                    BCrypt.hashpw(password, BCrypt.gensalt()), // Encrypt password
-                    new Callback<String>() {
+                    new CheckCredentialsRequest(
+                        email,
+                        password // Unencrypted password for HTTPS connection
+                    ),
+                    new Callback<Void>() {
                         @Override
-                        public void success(String token, Response response) {
-                            _userDAO.setCurrentUsername(username);
-                            _userDAO.setCurrentUserToken(token);
+                        public void success(Void aVoid, Response response) {
+                            String authenticationCookie = null;
 
-                            success.run();
+                            for (int i = 0, size = response.getHeaders().size();
+                                 i < size && authenticationCookie == null; i++) {
+                                Header h = response.getHeaders().get(i);
+
+                                if (h.getName() != null && h.getName().equals("Set-Cookie")) {
+                                    Pattern p = Pattern.compile(
+                                        "remember_user_token=(.+)"
+                                    );
+                                    Matcher m = p.matcher(h.getValue());
+
+                                    if (m.matches()) {
+                                        authenticationCookie = m.group(1);
+                                    } else {
+                                        Log.e(
+                                            UserBusiness.class.getSimpleName(),
+                                            "Cookies were all present but expected one"
+                                        );
+                                        failure.run(getDefaultErrorMsg());
+
+                                        return;
+                                    }
+                                }
+                            }
+
+                            if (authenticationCookie != null) {
+                                _userDAO.setCurrentUserEmail(email);
+                                _userDAO.setCurrentUserToken(authenticationCookie);
+                                success.run();
+                            } else {
+                                Log.e(
+                                    UserBusiness.class.getSimpleName(),
+                                    "No cookie"
+                                );
+                                failure.run(getDefaultErrorMsg());
+                            }
                         }
 
                         @Override
@@ -169,7 +220,7 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
     }
 
     @Override
-    public String getCurrentUsername() {
-        return _userDAO.getCurrentUsername();
+    public String getCurrentUserEmail() {
+        return _userDAO.getCurrentUserEmail();
     }
 }

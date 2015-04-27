@@ -17,6 +17,7 @@ import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.models.bll.BusinessFactory;
 import org.railsschool.tiramisu.models.dao.DayNotificationPreference;
 import org.railsschool.tiramisu.models.dao.TwoHourNotificationPreference;
+import org.railsschool.tiramisu.utils.KeyboardHelper;
 import org.railsschool.tiramisu.views.events.ConfirmationEvent;
 import org.railsschool.tiramisu.views.events.InformationEvent;
 
@@ -36,16 +37,16 @@ public class SettingsFragment extends BaseFragment {
      * @brief Restores input when device is rotated
      */
     private static class RestoreCredentialInputEvent {
-        private String _username;
+        private String _email;
         private String _password;
 
-        public RestoreCredentialInputEvent(String username, String password) {
-            this._username = username;
+        public RestoreCredentialInputEvent(String email, String password) {
+            this._email = email;
             this._password = password;
         }
 
-        public String getUsername() {
-            return _username;
+        public String getEmail() {
+            return _email;
         }
 
         public String getPassword() {
@@ -53,8 +54,8 @@ public class SettingsFragment extends BaseFragment {
         }
     }
 
-    @InjectView(R.id.fragment_settings_username)
-    EditText _usernameField;
+    @InjectView(R.id.fragment_settings_email)
+    EditText _emailField;
 
     @InjectView(R.id.fragment_settings_password)
     EditText _passwordField;
@@ -99,8 +100,8 @@ public class SettingsFragment extends BaseFragment {
     private void _setCredentials() {
         if (BusinessFactory.provideUser(getActivity()).isSignedIn()) {
             // Sets "display" credentials if user has already signed in
-            _usernameField.setText(
-                BusinessFactory.provideUser(getActivity()).getCurrentUsername()
+            _emailField.setText(
+                BusinessFactory.provideUser(getActivity()).getCurrentUserEmail()
             );
 
             _passwordField.setText(getString(R.string.app_name));
@@ -220,19 +221,19 @@ public class SettingsFragment extends BaseFragment {
 
     @Override
     public void onPause() {
-        String username, password;
+        String email, password;
         super.onPause();
 
         EventBus.getDefault().unregister(this);
 
         // Before pausing, save input if any
-        username = _usernameField.getText().toString();
+        email = _emailField.getText().toString();
         password = _passwordField.getText().toString();
-        if (username != null && !username.isEmpty() && password != null &&
+        if (email != null && !email.isEmpty() && password != null &&
             !password.isEmpty()) {
             EventBus.getDefault().postSticky(
                 new RestoreCredentialInputEvent(
-                    username,
+                    email,
                     password
                 )
             );
@@ -240,7 +241,7 @@ public class SettingsFragment extends BaseFragment {
     }
 
     public void onEventMainThread(RestoreCredentialInputEvent event) {
-        _usernameField.setText(event.getUsername());
+        _emailField.setText(event.getEmail());
         _passwordField.setText(event.getPassword());
     }
 
@@ -268,13 +269,13 @@ public class SettingsFragment extends BaseFragment {
         BusinessFactory
             .provideUser(getActivity())
             .checkCredentials(
-                _usernameField.getText().toString(),
+                _emailField.getText().toString(),
                 _passwordField.getText().toString(),
                 () -> {
                     EventBus.getDefault().post(
                         new ConfirmationEvent(getString(R.string.saved_confirmation))
                     );
-
+                    KeyboardHelper.hide(getActivity());
                     finallyCallback.run();
                 },
                 (error) -> {

@@ -3,16 +3,15 @@ package org.railsschool.tiramisu.models.bll.remote;
 import org.railsschool.tiramisu.models.beans.Lesson;
 import org.railsschool.tiramisu.models.beans.User;
 import org.railsschool.tiramisu.models.beans.Venue;
+import org.railsschool.tiramisu.models.bll.structs.CheckCredentialsRequest;
 import org.railsschool.tiramisu.models.bll.structs.SchoolClass;
 
 import java.util.List;
 
 import retrofit.Callback;
-import retrofit.http.Field;
-import retrofit.http.FormUrlEncoded;
+import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.POST;
-import retrofit.http.PUT;
 import retrofit.http.Path;
 
 /**
@@ -20,68 +19,57 @@ import retrofit.http.Path;
  * @brief
  */
 public interface IRailsSchoolAPI {
-    public final static String LESSON_ROOT     = "/l";
-    public final static String USER_ROOT       = "/users";
-    public final static String VENUE_ROOT      = "/venues";
-    public final static String ATTENDANCE_ROOT = "/attendances";
+    String LESSON_ROOT     = "/l";
+    String USER_ROOT       = "/users";
+    String VENUE_ROOT      = "/venues";
 
-    public final static String FORMAT = ".json";
+    String FORMAT = ".json";
 
     //region Lessons
 
     @GET(LESSON_ROOT + "/future/slugs" + FORMAT)
-    public void getFutureLessonSlugs(Callback<List<String>> callback);
+    void getFutureLessonSlugs(Callback<List<String>> callback);
 
     @GET(LESSON_ROOT + "/{slug}" + FORMAT)
-    public void getLesson(@Path("slug") String slug, Callback<Lesson> callback);
+    void getLesson(@Path("slug") String slug, Callback<Lesson> callback);
 
     @GET(LESSON_ROOT + "/{slug}" + FORMAT)
-    public void getSchoolClass(@Path("slug") String slug, Callback<SchoolClass> callback);
+    void getSchoolClass(@Path("slug") String slug, Callback<SchoolClass> callback);
 
     @GET(LESSON_ROOT + "/upcoming" + FORMAT)
-    public void getUpcomingLesson(Callback<Lesson> callback);
+    void getUpcomingLesson(Callback<Lesson> callback);
 
     //endregion
 
     //region Users
 
     @GET(USER_ROOT + "/{id}" + FORMAT)
-    public void getUser(@Path("id") int id, Callback<User> callback);
+    void getUser(@Path("id") int id, Callback<User> callback);
 
-    @POST(USER_ROOT + "/check-credentials" + FORMAT)
-    @FormUrlEncoded
-    public void checkCredentials(
-        @Field("login") String login,
-        @Field("password") String password,
-        Callback<String> callback);
+    @POST(USER_ROOT + "/sign_in" + FORMAT)
+    void checkCredentials(
+        @Body CheckCredentialsRequest request,
+        Callback<Void> callback);
 
     //endregion
 
     //region Venues
 
     @GET(VENUE_ROOT + "/{id}" + FORMAT)
-    public void getVenue(@Path("id") int id, Callback<Venue> callback);
+    void getVenue(@Path("id") int id, Callback<Venue> callback);
 
     //endregion
 
     //region Attendances
 
-    @PUT(ATTENDANCE_ROOT + FORMAT)
-    @FormUrlEncoded
-    public void toggleAttendance(
-        @Field("lessonSlug") String lessonSlug,
-        @Field("username") String username,
-        @Field("userToken") String userToken,
-        @Field("attendance") boolean attendance,
-        Callback<Void> callback);
+    @GET("/attending_lesson/{slug}" + FORMAT)
+    void isAttending(@Path("slug") String lessonSlug, Callback<Boolean> callback);
 
-    // TODO: Change route
-    @GET(ATTENDANCE_ROOT + "/{lessonSlug}/{username}/{userToken}" + FORMAT)
-    public void isAttending(
-        @Path("lessonSlug") String lessonSlug,
-        @Path("username") String username,
-        @Path("userToken") String userToken,
-        Callback<Boolean> callback);
+    @POST("/rsvp/{id}" + FORMAT)
+    void attend(@Path("id") int lessonId, Callback<Void> callback);
+
+    @POST("/rsvp/{id}/delete" + FORMAT)
+    void removeAttendance(@Path("id") int lessonId, Callback<Void> callback);
 
     //endregion
 }

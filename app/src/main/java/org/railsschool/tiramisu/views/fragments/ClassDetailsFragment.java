@@ -252,8 +252,8 @@ public class ClassDetailsFragment extends BaseFragment {
         BusinessFactory
             .provideUser(getActivity())
             .toggleAttendance(
-                _currentSchoolClass.getLesson().getSlug(),
-                _isAttending,
+                _currentSchoolClass.getLesson().getId(),
+                !_isAttending,
                 () -> {
                     _isAttending = !_isAttending;
                     finallyAction.run();

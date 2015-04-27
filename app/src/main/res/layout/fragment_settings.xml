@@ -29,9 +29,10 @@
             </LinearLayout>
 
             <EditText
-                android:id="@+id/fragment_settings_username"
+                android:id="@+id/fragment_settings_email"
                 style="@style/FragmentSettingsField"
-                android:hint="@string/settings_username_placeholder"
+                android:hint="@string/settings_email_placeholder"
+                android:inputType="textEmailAddress"
                 />
 
             <EditText

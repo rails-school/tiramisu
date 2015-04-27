@@ -51,8 +51,23 @@ abstract class BaseBusiness {
         );
     }
 
+    public void tryConnecting(String cookieAuthentication,
+                              Action<IRailsSchoolAPI> success, Action<String> failure) {
+        _outlet.connect(
+            cookieAuthentication,
+            (api) -> {
+                success.run(api);
+            },
+            () -> failure.run(_context.getString(R.string.error_no_connection))
+        );
+    }
+
+    public String getDefaultErrorMsg() {
+        return _context.getString(R.string.error_default);
+    }
+
     public void processError(RetrofitError error, Action<String> failure) {
         Log.e(getClass().getSimpleName(), error.getMessage(), error);
-        failure.run(_context.getString(R.string.error_default));
+        failure.run(getDefaultErrorMsg());
     }
 }

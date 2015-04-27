@@ -10,9 +10,9 @@ import io.realm.annotations.PrimaryKey;
  * @brief
  */
 public class Lesson extends RealmObject {
-    @PrimaryKey
     private int id;
 
+    @PrimaryKey
     private String slug;
     private String title;
     private String summary;

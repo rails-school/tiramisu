@@ -7,7 +7,6 @@ import com.coshx.chocolatine.utils.actions.Action;
 import com.coshx.chocolatine.utils.actions.Action0;
 
 import org.joda.time.DateTime;
-import org.mindrot.jbcrypt.BCrypt;
 import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.models.beans.User;
 import org.railsschool.tiramisu.models.bll.interfaces.IUserBusiness;
@@ -152,7 +151,7 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
                 api.checkCredentials(
                     new CheckCredentialsRequest(
                         email,
-                        BCrypt.hashpw(password, BCrypt.gensalt())
+                        password // Unencrypted password for HTTPS connection
                     ),
                     new Callback<Void>() {
                         @Override
@@ -163,20 +162,20 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
                                  i < size && authenticationCookie == null; i++) {
                                 Header h = response.getHeaders().get(i);
 
-                                if (h.getName().equals("Set-Cookie")) {
+                                if (h.getName() != null && h.getName().equals("Set-Cookie")) {
                                     Pattern p = Pattern.compile(
                                         "remember_user_token=(.+)"
                                     );
                                     Matcher m = p.matcher(h.getValue());
 
                                     if (m.matches()) {
-                                        authenticationCookie = m.group();
+                                        authenticationCookie = m.group(1);
                                     } else {
                                         Log.e(
                                             UserBusiness.class.getSimpleName(),
-                                            "Cookies were present but expected one"
+                                            "Cookies were all present but expected one"
                                         );
-                                        failure.run(null);
+                                        failure.run(getDefaultErrorMsg());
 
                                         return;
                                     }
@@ -192,7 +191,7 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
                                     UserBusiness.class.getSimpleName(),
                                     "No cookie"
                                 );
-                                failure.run(null);
+                                failure.run(getDefaultErrorMsg());
                             }
                         }
 

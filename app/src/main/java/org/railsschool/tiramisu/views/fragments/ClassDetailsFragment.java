@@ -253,7 +253,7 @@ public class ClassDetailsFragment extends BaseFragment {
             .provideUser(getActivity())
             .toggleAttendance(
                 _currentSchoolClass.getLesson().getId(),
-                _isAttending,
+                !_isAttending,
                 () -> {
                     _isAttending = !_isAttending;
                     finallyAction.run();

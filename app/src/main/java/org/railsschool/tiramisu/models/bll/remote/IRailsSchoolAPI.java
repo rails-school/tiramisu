@@ -22,7 +22,6 @@ public interface IRailsSchoolAPI {
     String LESSON_ROOT     = "/l";
     String USER_ROOT       = "/users";
     String VENUE_ROOT      = "/venues";
-    String ATTENDANCE_ROOT = "/attendances";
 
     String FORMAT = ".json";
 
@@ -63,13 +62,13 @@ public interface IRailsSchoolAPI {
 
     //region Attendances
 
-    @GET("/attending_lesson/{slug}")
+    @GET("/attending_lesson/{slug}" + FORMAT)
     void isAttending(@Path("slug") String lessonSlug, Callback<Boolean> callback);
 
-    @POST("/rsvp/{id}")
+    @POST("/rsvp/{id}" + FORMAT)
     void attend(@Path("id") int lessonId, Callback<Void> callback);
 
-    @POST("/rsvp/{id}/delete")
+    @POST("/rsvp/{id}/delete" + FORMAT)
     void removeAttendance(@Path("id") int lessonId, Callback<Void> callback);
 
     //endregion

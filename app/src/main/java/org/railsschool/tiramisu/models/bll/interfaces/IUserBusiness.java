@@ -35,7 +35,7 @@ public interface IUserBusiness {
      * Toggles attendance for current user
      *
      * @param lessonId
-     * @param isAttending
+     * @param isAttending New value
      * @param success
      * @param failure
      */

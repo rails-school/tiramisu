@@ -4,7 +4,7 @@ import retrofit.RequestInterceptor;
 
 /**
  * @class AuthenticationInterceptor
- * @brief
+ * @brief Adds authentication cookie to http headers
  */
 class AuthenticationInterceptor implements RequestInterceptor {
     private String _authenticationCookie;

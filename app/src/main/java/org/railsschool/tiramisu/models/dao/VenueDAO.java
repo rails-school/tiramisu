@@ -64,12 +64,4 @@ class VenueDAO extends BaseDAO implements IVenueDAO {
             }
         );
     }
-
-    public void delete(Venue venue) {
-        getDAL().executeTransaction(
-            (dal) -> {
-                find(venue.getId()).removeFromRealm();
-            }
-        );
-    }
 }

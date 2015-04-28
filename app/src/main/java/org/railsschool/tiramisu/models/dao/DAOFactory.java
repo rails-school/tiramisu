@@ -14,6 +14,7 @@ import io.realm.Realm;
  * @brief
  */
 public class DAOFactory {
+    // Locks are needed for avoiding threading issues
     private static final Object _userLock   = new Object();
     private static final Object _lessonLock = new Object();
     private static final Object _venueLock  = new Object();

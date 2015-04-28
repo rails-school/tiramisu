@@ -10,9 +10,9 @@ import org.railsschool.tiramisu.models.dao.TwoHourNotificationPreference;
 public interface IPreferenceBusiness {
     void updateTwoHourReminderPreference(TwoHourNotificationPreference preference);
 
-    public TwoHourNotificationPreference getTwoHourReminderPreference();
+    TwoHourNotificationPreference getTwoHourReminderPreference();
 
-    public void updateDayReminderPreference(DayNotificationPreference preference);
+    void updateDayReminderPreference(DayNotificationPreference preference);
 
-    public DayNotificationPreference getDayReminderPreference();
+    DayNotificationPreference getDayReminderPreference();
 }

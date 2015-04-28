@@ -21,6 +21,12 @@ public abstract class BaseActivity extends Activity {
         Crouton.cancelAllCroutons();
     }
 
+    /**
+     * Changes a single fragment
+     *
+     * @param resourceId
+     * @param fragment
+     */
     public void setFragment(int resourceId, Fragment fragment) {
         getFragmentManager()
             .beginTransaction()
@@ -30,6 +36,12 @@ public abstract class BaseActivity extends Activity {
             .commit();
     }
 
+    /**
+     * Changes multiple fragments in a same commit
+     *
+     * @param fragments
+     * @param keepInStack
+     */
     public void setFragments(Map<Integer, Fragment> fragments, boolean keepInStack) {
         FragmentTransaction t = getFragmentManager().beginTransaction();
 

@@ -10,6 +10,7 @@ import org.railsschool.tiramisu.models.beans.User;
  * @brief
  */
 public interface IUserBusiness {
+
     /**
      * Finds user using its id
      *
@@ -20,7 +21,7 @@ public interface IUserBusiness {
     void get(int id, Action<User> success, Action<String> failure);
 
     /**
-     * Returns true if current user (signed in one) attends to lesson
+     * Returns true if current user attends to lesson
      *
      * @param lessonSlug
      * @param isAttending
@@ -35,7 +36,7 @@ public interface IUserBusiness {
      * Toggles attendance for current user
      *
      * @param lessonId
-     * @param isAttending New value
+     * @param isAttending New value to set
      * @param success
      * @param failure
      */
@@ -43,7 +44,7 @@ public interface IUserBusiness {
                           Action0 success, Action<String> failure);
 
     /**
-     * Checks provided credentials with server
+     * Try to sign in user
      *
      * @param email
      * @param password Unencrypted password

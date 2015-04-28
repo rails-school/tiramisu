@@ -17,7 +17,7 @@ import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.models.bll.BusinessFactory;
 import org.railsschool.tiramisu.models.dao.DayNotificationPreference;
 import org.railsschool.tiramisu.models.dao.TwoHourNotificationPreference;
-import org.railsschool.tiramisu.utils.KeyboardHelper;
+import org.railsschool.tiramisu.views.helpers.KeyboardHelper;
 import org.railsschool.tiramisu.views.events.ConfirmationEvent;
 import org.railsschool.tiramisu.views.events.InformationEvent;
 

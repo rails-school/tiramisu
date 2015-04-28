@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * @class SchoolClass
- * @brief
+ * @brief Pairs lesson and attendees.
  */
 public class SchoolClass {
     private Lesson     _lesson;

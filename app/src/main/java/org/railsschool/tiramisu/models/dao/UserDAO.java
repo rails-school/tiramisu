@@ -16,9 +16,12 @@ import io.realm.Realm;
 class UserDAO extends BaseDAO implements IUserDAO {
     private final static Object _saveLock = new Object();
 
+    /**
+     * Token and username are both stored in preferences
+     */
     private final static String FILE_NAME = "current_user",
-        EMAIL_KEY = "email",
-        TOKEN_KEY = "token";
+        EMAIL_KEY                         = "email",
+        TOKEN_KEY                         = "token";
     private SharedPreferences _preferenceDAL;
 
     public UserDAO(Realm dal, Context context) {
@@ -94,14 +97,6 @@ class UserDAO extends BaseDAO implements IUserDAO {
                 entry.setTeacher(user.getTeacher());
                 entry.setHideLastName(user.getHideLastName());
                 entry.setUpdateDate(DateTime.now().toDate());
-            }
-        );
-    }
-
-    public void delete(User user) {
-        getDAL().executeTransaction(
-            (dal) -> {
-                find(user.getId()).removeFromRealm();
             }
         );
     }

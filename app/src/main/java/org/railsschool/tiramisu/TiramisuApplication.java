@@ -18,7 +18,7 @@ public class TiramisuApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        // Start puller CRON task
+        // Defines a CRON task for the reminder system
         AlarmManager alarmManager =
             (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
@@ -31,6 +31,7 @@ public class TiramisuApplication extends Application {
             0
         );
 
+        // Inexact accuracy is fine
         alarmManager.setInexactRepeating(
             AlarmManager.ELAPSED_REALTIME,
             0,

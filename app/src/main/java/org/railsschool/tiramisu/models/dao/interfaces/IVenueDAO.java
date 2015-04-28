@@ -7,9 +7,9 @@ import org.railsschool.tiramisu.models.beans.Venue;
  * @brief
  */
 public interface IVenueDAO {
-    public boolean exists(int id);
+    boolean exists(int id);
 
-    public Venue find(int id);
+    Venue find(int id);
 
-    public void save(Venue venue);
+    void save(Venue venue);
 }

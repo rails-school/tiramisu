@@ -78,10 +78,10 @@ class RailsSchoolAPIOutlet implements IRailsSchoolAPIOutlet {
     }
 
     @Override
-    public void connect(String cookieAuthentication, Action<IRailsSchoolAPI> success,
+    public void connect(String authenticationCookie, Action<IRailsSchoolAPI> success,
                         Action0 failure) {
         try {
-            success.run(_withAuthentication(cookieAuthentication));
+            success.run(_withAuthentication(authenticationCookie));
         } catch (Exception e) {
             Log.e(getClass().getSimpleName(), "Failed to connect to remote server", e);
             failure.run();

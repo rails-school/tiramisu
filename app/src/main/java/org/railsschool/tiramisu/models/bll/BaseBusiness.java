@@ -20,6 +20,11 @@ abstract class BaseBusiness {
     private Context               _context;
     private IRailsSchoolAPIOutlet _outlet;
 
+    /**
+     * Internal class for simplify failure management
+     *
+     * @param <T>
+     */
     abstract class BLLCallback<T> implements Callback<T> {
         private Action<String> _failure;
 

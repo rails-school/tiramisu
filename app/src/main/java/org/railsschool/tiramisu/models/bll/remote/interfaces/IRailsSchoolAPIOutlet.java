@@ -7,11 +7,18 @@ import org.railsschool.tiramisu.models.bll.remote.IRailsSchoolAPI;
 
 /**
  * @class IRailsSchoolAPIOutlet
- * @brief
+ * @brief Handles connections to remote API
  */
 public interface IRailsSchoolAPIOutlet {
     void connect(Action<IRailsSchoolAPI> success, Action0 failure);
 
-    void connect(String cookieAuthentication, Action<IRailsSchoolAPI> success,
+    /**
+     * Connects API using authentication token
+     *
+     * @param authenticationCookie
+     * @param success
+     * @param failure
+     */
+    void connect(String authenticationCookie, Action<IRailsSchoolAPI> success,
                  Action0 failure);
 }

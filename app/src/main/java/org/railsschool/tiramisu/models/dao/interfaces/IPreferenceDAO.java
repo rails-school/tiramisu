@@ -8,11 +8,11 @@ import org.railsschool.tiramisu.models.dao.TwoHourNotificationPreference;
  * @brief
  */
 public interface IPreferenceDAO {
-    public TwoHourNotificationPreference getTwoHourNotificationPreference();
+    TwoHourNotificationPreference getTwoHourNotificationPreference();
 
-    public void setTwoHourNotificationPreference(TwoHourNotificationPreference value);
+    void setTwoHourNotificationPreference(TwoHourNotificationPreference value);
 
-    public DayNotificationPreference getDayNotificationPreference();
+    DayNotificationPreference getDayNotificationPreference();
 
-    public void setDayNotificationPreference(DayNotificationPreference value);
+    void setDayNotificationPreference(DayNotificationPreference value);
 }

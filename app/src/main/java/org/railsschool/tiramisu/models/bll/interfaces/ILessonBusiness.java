@@ -15,8 +15,10 @@ import java.util.List;
  * @brief
  */
 public interface ILessonBusiness {
+
     /**
      * Sorts slugs of lessons by start time asc
+     *
      * @param success
      * @param failure
      */
@@ -24,6 +26,7 @@ public interface ILessonBusiness {
 
     /**
      * Gets a lesson by slug
+     *
      * @param lessonSlug
      * @param success
      * @param failure
@@ -32,16 +35,18 @@ public interface ILessonBusiness {
 
     /**
      * Gets lesson tuple (lesson, teacher and venue) using slug
+     *
      * @param lessonSlug
      * @param success
      * @param failure
      */
     void getTuple(String lessonSlug,
-                         Action3<Lesson, User, Venue> success,
-                         Action<String> failure);
+                  Action3<Lesson, User, Venue> success,
+                  Action<String> failure);
 
     /**
      * Gets school class tuple (school class, teacher and venue) using slug
+     *
      * @param lessonSlug
      * @param success
      * @param failure
@@ -52,12 +57,14 @@ public interface ILessonBusiness {
 
     /**
      * Gets upcoming lesson
+     *
      * @param success
      */
     void getUpcoming(Action<Lesson> success);
 
     /**
      * Engines upcoming lesson and triggers alarm initializers if needed
+     *
      * @param twoHourAlarm
      * @param dayAlarm
      */

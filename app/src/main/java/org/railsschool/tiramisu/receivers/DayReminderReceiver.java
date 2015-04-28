@@ -11,7 +11,7 @@ import org.railsschool.tiramisu.views.activities.MainActivity;
 
 /**
  * @class DayReminderReceiver
- * @brief
+ * @brief Day reminder. Triggered by ReminderScheduler
  */
 public class DayReminderReceiver extends BroadcastReceiver {
     @Override

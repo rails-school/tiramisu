@@ -2,7 +2,7 @@ package org.railsschool.tiramisu.views.events;
 
 /**
  * @class ClassDetailsRequestedEvent
- * @brief
+ * @brief Triggered when user has selected a lesson from landing list
  */
 public class ClassDetailsRequestedEvent {
     private String _lessonSlug;

@@ -38,12 +38,23 @@ import de.greenrobot.event.EventBus;
  */
 public class ClassDetailsFragment extends BaseFragment {
 
+    /**
+     * Save init args for posting them again when device is rotated
+     */
     private ClassDetailsInitEvent _initArgs;
     private SchoolClass           _currentSchoolClass;
     private Venue                 _currentVenue;
     private boolean               _isAttending;
-    private boolean               _isTogglingAttendance;
-    private boolean               _canToggleAttendance;
+
+    /**
+     * Locks similar actions when saving attendance
+     */
+    private boolean _isTogglingAttendance;
+
+    /**
+     * True if user has signed in
+     */
+    private boolean _canToggleAttendance;
 
     @InjectView(R.id.fragment_class_details_headline)
     TextView _headline;
@@ -206,6 +217,7 @@ public class ClassDetailsFragment extends BaseFragment {
                     _setAttendanceToggle();
                 },
                 () -> {
+                    // User is not signed in, disable attendance toggling feature
                     _canToggleAttendance = false;
                     _isAttending = false;
                     _setAttendanceToggle();

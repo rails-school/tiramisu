@@ -21,7 +21,11 @@ public class Venue extends RealmObject {
     private String city;
     private String state;
     private String country;
-    private Date   updateDate;
+
+    /**
+     * Internal purpose only
+     */
+    private Date updateDate;
 
     public String getName() {
         return name;

@@ -63,12 +63,4 @@ class LessonDAO extends BaseDAO implements ILessonDAO {
             }
         );
     }
-
-    public void delete(Lesson lesson) {
-        getDAL().executeTransaction(
-            (dal) -> {
-                find(lesson.getSlug()).removeFromRealm();
-            }
-        );
-    }
 }

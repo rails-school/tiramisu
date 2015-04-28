@@ -27,6 +27,9 @@ import retrofit.client.Response;
  * @brief
  */
 class UserBusiness extends BaseBusiness implements IUserBusiness {
+    /**
+     * Cooldown before refreshing user again
+     */
     private final static int COOLDOWN_MS = 5 * 60 * 1000;
 
     private IUserDAO _userDAO;
@@ -158,6 +161,7 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
                         public void success(Void aVoid, Response response) {
                             String authenticationCookie = null;
 
+                            // Let's find the authentication cookie among headers
                             for (int i = 0, size = response.getHeaders().size();
                                  i < size && authenticationCookie == null; i++) {
                                 Header h = response.getHeaders().get(i);
@@ -171,6 +175,7 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
                                     if (m.matches()) {
                                         authenticationCookie = m.group(1);
                                     } else {
+                                        // No authentication cookie
                                         Log.e(
                                             UserBusiness.class.getSimpleName(),
                                             "Cookies were all present but expected one"
@@ -187,6 +192,7 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
                                 _userDAO.setCurrentUserToken(authenticationCookie);
                                 success.run();
                             } else {
+                                // No cookie at all
                                 Log.e(
                                     UserBusiness.class.getSimpleName(),
                                     "No cookie"

@@ -2,7 +2,7 @@ package org.railsschool.tiramisu.views.events;
 
 /**
  * @class ClassDetailsInitEvent
- * @brief
+ * @brief Arguments needed when initializing class details
  */
 public class ClassDetailsInitEvent {
     private String _lessonSlug;

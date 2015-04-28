@@ -17,7 +17,10 @@ import retrofit.client.Response;
  * @brief
  */
 class VenueBusiness extends BaseBusiness implements IVenueBusiness {
-    private final static int COOLDOWN_MS = 5 * 60 * 1000;
+    /**
+     * Cooldown before refreshing venue
+     */
+    private final static int COOLDOWN_MS = 20 * 60 * 1000;
 
     private IVenueDAO _venueDAO;
 

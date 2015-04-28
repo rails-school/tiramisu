@@ -12,8 +12,8 @@ import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.models.bll.BusinessFactory;
 import org.railsschool.tiramisu.views.events.ClassDetailsRequestedEvent;
 import org.railsschool.tiramisu.views.events.ErrorEvent;
-import org.railsschool.tiramisu.views.helpers.UserHelper;
 import org.railsschool.tiramisu.views.helpers.DateHelper;
+import org.railsschool.tiramisu.views.helpers.UserHelper;
 
 import java.util.List;
 
@@ -69,6 +69,7 @@ public class ClassAdapter extends SmartAdapter<String> {
         );
 
         if (position == 0) {
+            // Show separator only for upcoming class
             separator.setVisibility(View.VISIBLE);
         } else {
             separator.setVisibility(View.GONE);

@@ -2,7 +2,7 @@ package org.railsschool.tiramisu.models.bll.structs;
 
 /**
  * @class CheckCredentialsRequest
- * @brief
+ * @brief Wraps credentials when checking them. See serializer for more details.
  */
 public class CheckCredentialsRequest {
     private String _email;

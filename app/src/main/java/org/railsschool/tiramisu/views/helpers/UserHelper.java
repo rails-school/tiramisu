@@ -8,13 +8,19 @@ import org.railsschool.tiramisu.models.beans.User;
  */
 public class UserHelper {
 
+    /**
+     * Hides last name if requested
+     *
+     * @param user
+     * @return
+     */
     public static String getDisplayedName(User user) {
         if (user.getHideLastName()) {
             String[] a = user.getName().trim().split(" ");
 
-            if (a.length > 0) {
+            if (a.length > 0) { // Hide last name
                 return a[0];
-            } else {
+            } else { // No last name
                 return user.getName();
             }
         } else {

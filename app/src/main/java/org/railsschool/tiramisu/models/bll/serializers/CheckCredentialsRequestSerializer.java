@@ -15,6 +15,20 @@ import java.lang.reflect.Type;
  */
 public class CheckCredentialsRequestSerializer implements JsonSerializer<CheckCredentialsRequest> {
 
+    /**
+     * Pattern:
+     * {
+     *     "user": {
+     *         "email": "me@railsschool.org",
+     *         "password": "myUnencryptedPassword",
+     *         "remember_me": 1
+     *     }
+     * }
+     * @param src
+     * @param typeOfSrc
+     * @param context
+     * @return
+     */
     @Override
     public JsonElement serialize(CheckCredentialsRequest src, Type typeOfSrc, JsonSerializationContext context) {
         JsonObject content = new JsonObject(), wrapper = new JsonObject();

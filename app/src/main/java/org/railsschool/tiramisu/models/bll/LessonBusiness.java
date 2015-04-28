@@ -31,6 +31,9 @@ import retrofit.client.Response;
  * @brief
  */
 class LessonBusiness extends BaseBusiness implements ILessonBusiness {
+    /**
+     * Cooldown before pulling lesson again
+     */
     private final static int COOLDOWN_MS = 5 * 60 * 1000;
 
     private IUserBusiness       _userBusiness;
@@ -52,7 +55,8 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
     }
 
     /**
-     * Returns true if lesson is currently in notification interval
+     * Returns true if lesson is currently in notification interval. Assumes alarm frequency if
+     * lower than lowest alert delay.
      *
      * @param lesson
      * @param hours

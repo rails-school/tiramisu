@@ -23,6 +23,13 @@ public class PushNotificationSystem {
         this._context = context;
     }
 
+    /**
+     * Sends a push notification to user
+     *
+     * @param title   Desired title
+     * @param message Inner message
+     * @param intent  Intent to start once notification is clicked
+     */
     public void notify(String title, String message, Intent intent) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(_context);
         NotificationManager manager;
@@ -35,6 +42,7 @@ public class PushNotificationSystem {
                     R.mipmap.ic_launcher
                 )
             )
+            // Vibrate and produce sound if possible. Auto-remove notification when clicked
             .setDefaults(
                 Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND |
                 Notification.VISIBILITY_PUBLIC | Notification.FLAG_AUTO_CANCEL

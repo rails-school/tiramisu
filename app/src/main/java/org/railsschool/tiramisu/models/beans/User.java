@@ -7,7 +7,7 @@ import io.realm.annotations.PrimaryKey;
 
 /**
  * @class User
- * @brief
+ * @brief Any user of RailsSchool. Could be an admin, teacher or regular user.
  */
 public class User extends RealmObject {
     @PrimaryKey
@@ -16,8 +16,16 @@ public class User extends RealmObject {
     private String  name;
     private String  email;
     private boolean teacher;
+
+    /**
+     * Needed here for hiding last name within app too
+     */
     private boolean hideLastName;
-    private Date    updateDate;
+
+    /**
+     * Internal purpose only
+     */
+    private Date updateDate;
 
     public int getId() {
         return id;

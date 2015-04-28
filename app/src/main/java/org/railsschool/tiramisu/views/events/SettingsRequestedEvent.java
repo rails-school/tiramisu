@@ -2,7 +2,7 @@ package org.railsschool.tiramisu.views.events;
 
 /**
  * @class SettingsRequestedEvent
- * @brief
+ * @brief Settings requested from landing
  */
 public class SettingsRequestedEvent {
 }

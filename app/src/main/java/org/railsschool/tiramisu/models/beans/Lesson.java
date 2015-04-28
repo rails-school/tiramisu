@@ -7,11 +7,15 @@ import io.realm.annotations.PrimaryKey;
 
 /**
  * @class Lesson
- * @brief
+ * @brief Rails School lesson
  */
 public class Lesson extends RealmObject {
     private int id;
 
+    /**
+     * Slug is primary key for we handle lessons using it within application. Then, it is more
+     * convenient to use it as an index.
+     */
     @PrimaryKey
     private String slug;
     private String title;
@@ -21,7 +25,11 @@ public class Lesson extends RealmObject {
     private String endTime;
     private int    teacherId;
     private int    venueId;
-    private Date   updateDate;
+
+    /**
+     * Internal purpose only
+     */
+    private Date updateDate;
 
     public int getId() {
         return id;

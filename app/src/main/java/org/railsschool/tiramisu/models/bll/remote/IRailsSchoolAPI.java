@@ -16,17 +16,22 @@ import retrofit.http.Path;
 
 /**
  * @class IRailsSchoolAPI
- * @brief
+ * @brief API offered by RailsSchool
  */
 public interface IRailsSchoolAPI {
-    String LESSON_ROOT     = "/l";
-    String USER_ROOT       = "/users";
-    String VENUE_ROOT      = "/venues";
+    String LESSON_ROOT = "/l";
+    String USER_ROOT   = "/users";
+    String VENUE_ROOT  = "/venues";
 
     String FORMAT = ".json";
 
     //region Lessons
 
+    /**
+     * Returns slugs of upcoming lessons
+     *
+     * @param callback
+     */
     @GET(LESSON_ROOT + "/future/slugs" + FORMAT)
     void getFutureLessonSlugs(Callback<List<String>> callback);
 

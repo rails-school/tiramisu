@@ -11,7 +11,7 @@ import org.railsschool.tiramisu.views.activities.MainActivity;
 
 /**
  * @class TwoHourReminderReceiver
- * @brief
+ * @brief Two hour reminder
  */
 public class TwoHourReminderReceiver extends BroadcastReceiver {
     @Override

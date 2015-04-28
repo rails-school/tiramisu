@@ -13,12 +13,12 @@ import org.railsschool.tiramisu.models.bll.BusinessFactory;
 
 /**
  * @class RemindSchedulerReceiver
- * @brief
+ * @brief Schedules alarms
  */
 public class RemindSchedulerReceiver extends BroadcastReceiver {
 
     /**
-     * Gets time when user should be notified
+     * Gets duration before user should be notified
      *
      * @param lesson
      * @param hours
@@ -32,11 +32,12 @@ public class RemindSchedulerReceiver extends BroadcastReceiver {
 
     /**
      * Schedules alarm
+     *
      * @param context
      * @param processId Alarm process id (should be unique)
-     * @param receiver Alarm receiver
+     * @param receiver  Alarm receiver
      * @param lesson
-     * @param date Delay before triggering class
+     * @param date      Delay before triggering class
      */
     private void _scheduleAlarm(
         Context context,
@@ -45,8 +46,7 @@ public class RemindSchedulerReceiver extends BroadcastReceiver {
         Lesson lesson,
         Hours date) {
 
-        AlarmManager alarmManager =
-            (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         PendingIntent alarmIntent;
 
         alarmIntent = PendingIntent.getBroadcast(
@@ -62,7 +62,7 @@ public class RemindSchedulerReceiver extends BroadcastReceiver {
         } catch (Exception e) {
             // No alarm before, does not matter
         } finally {
-            // Sets alarm, wake up device id needed
+            // Sets alarm, wake up device if needed
             alarmManager.set(
                 AlarmManager.RTC_WAKEUP,
                 _getDelayInMilli(lesson, date),
@@ -73,16 +73,21 @@ public class RemindSchedulerReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        // Woken up periodically. Schedules alarms
         BusinessFactory
             .provideLesson(context)
             .engineAlarms(
                 (lesson) -> {
-                    _scheduleAlarm(context, 100, TwoHourReminderReceiver.class, lesson,
-                                   Hours.TWO);
+                    _scheduleAlarm(
+                        context, 100, TwoHourReminderReceiver.class, lesson,
+                        Hours.TWO
+                    );
                 },
                 (lesson) -> {
-                    _scheduleAlarm(context, 200, DayReminderReceiver.class, lesson,
-                                   Hours.hours(24));
+                    _scheduleAlarm(
+                        context, 200, DayReminderReceiver.class, lesson,
+                        Hours.hours(24)
+                    );
                 }
             );
     }

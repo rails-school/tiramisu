@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.railsschool.tiramisu.R;
+import org.railsschool.tiramisu.views.helpers.KeyboardHelper;
 import org.railsschool.tiramisu.views.events.SettingsHeaderBackEvent;
 import org.railsschool.tiramisu.views.helpers.AnimationHelper;
 
@@ -34,5 +35,6 @@ public class SettingsHeaderFragment extends BaseFragment {
     public void onBack(View view) {
         AnimationHelper.pressed(view);
         EventBus.getDefault().post(new SettingsHeaderBackEvent());
+        KeyboardHelper.hide(getActivity());
     }
 }

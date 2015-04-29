@@ -21,10 +21,13 @@ public class UserSerializer implements JsonDeserializer<User> {
         JsonObject o = json.getAsJsonObject();
 
         outcome.setId(o.get("id").getAsInt());
-        outcome.setName(o.get("name").getAsString());
-        outcome.setEmail(o.get("email").getAsString());
-        outcome.setTeacher(o.get("teacher").getAsBoolean());
-        outcome.setHideLastName(o.get("hide_last_name").getAsBoolean());
+
+        // Optional fields
+        outcome.setName(o.has("name") ? o.get("name").getAsString() : "");
+        outcome.setEmail(o.has("email") ? o.get("email").getAsString() : "");
+        outcome.setHideLastName(
+            o.has("hide_last_name") ? o.get("hide_last_name").getAsBoolean() : true
+        );
 
         return outcome;
     }

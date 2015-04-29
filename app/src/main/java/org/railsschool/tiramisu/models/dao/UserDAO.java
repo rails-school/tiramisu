@@ -92,9 +92,14 @@ class UserDAO extends BaseDAO implements IUserDAO {
             (dal) -> {
                 User entry = find(user.getId());
 
-                entry.setName(user.getName());
-                entry.setEmail(user.getEmail());
-                entry.setTeacher(user.getTeacher());
+                // Optional fields from server. If they are blank, do not update local entry.
+                if (user.getName() != null && !user.getName().isEmpty()) {
+                    entry.setName(user.getName());
+                }
+                if (user.getEmail() != null && !user.getEmail().isEmpty()) {
+                    entry.setEmail(user.getEmail());
+                }
+
                 entry.setHideLastName(user.getHideLastName());
                 entry.setUpdateDate(DateTime.now().toDate());
             }

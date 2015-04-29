@@ -13,9 +13,8 @@ public class User extends RealmObject {
     @PrimaryKey
     private int id;
 
-    private String  name;
-    private String  email;
-    private boolean teacher;
+    private String name;
+    private String email;
 
     /**
      * Needed here for hiding last name within app too
@@ -49,14 +48,6 @@ public class User extends RealmObject {
 
     public void setEmail(String value) {
         email = value;
-    }
-
-    public boolean getTeacher() {
-        return teacher;
-    }
-
-    public void setTeacher(boolean value) {
-        teacher = value;
     }
 
     public boolean getHideLastName() {

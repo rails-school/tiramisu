@@ -203,7 +203,8 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
 
                         @Override
                         public void failure(RetrofitError error) {
-                            if (error.getResponse().getStatus() == 401) {
+                            if (error.getResponse() != null &&
+                                error.getResponse().getStatus() == 401) {
                                 failure.run(
                                     getContext().getString(
                                         R.string.settings_invalid_credentials

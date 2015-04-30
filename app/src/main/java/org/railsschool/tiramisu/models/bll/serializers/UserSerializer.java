@@ -21,6 +21,7 @@ public class UserSerializer implements JsonDeserializer<User> {
         JsonObject o = json.getAsJsonObject();
 
         outcome.setId(o.get("id").getAsInt());
+        outcome.setSchoolId(o.get("school_id").getAsInt());
 
         // Optional fields
         outcome.setName(o.has("name") ? o.get("name").getAsString() : "");

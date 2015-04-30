@@ -27,13 +27,11 @@ public interface IRailsSchoolAPI {
 
     //region Lessons
 
-    /**
-     * Returns slugs of upcoming lessons
-     *
-     * @param callback
-     */
     @GET(LESSON_ROOT + "/future/slugs" + FORMAT)
     void getFutureLessonSlugs(Callback<List<String>> callback);
+
+    @GET(LESSON_ROOT + "/future/{school}/slugs" + FORMAT)
+    void getFutureLessonSlugs(@Path("school") int schoolId, Callback<List<String>> callback);
 
     @GET(LESSON_ROOT + "/{slug}" + FORMAT)
     void getLesson(@Path("slug") String slug, Callback<Lesson> callback);
@@ -43,6 +41,9 @@ public interface IRailsSchoolAPI {
 
     @GET(LESSON_ROOT + "/upcoming" + FORMAT)
     void getUpcomingLesson(Callback<Lesson> callback);
+
+    @GET(LESSON_ROOT + "/upcoming/{school}" + FORMAT)
+    void getUpcomingLesson(@Path("school") int schoolId, Callback<Lesson> callback);
 
     //endregion
 

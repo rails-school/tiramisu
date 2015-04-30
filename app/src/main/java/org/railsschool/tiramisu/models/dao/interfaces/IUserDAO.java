@@ -21,5 +21,9 @@ public interface IUserDAO {
 
     void setCurrentUserToken(String value);
 
+    int getCurrentUserSchoolId();
+
+    void setCurrentUserSchoolId(int value);
+
     boolean hasCurrentUser();
 }

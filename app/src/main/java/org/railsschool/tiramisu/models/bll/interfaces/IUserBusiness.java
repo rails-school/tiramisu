@@ -67,4 +67,6 @@ public interface IUserBusiness {
      * @return
      */
     String getCurrentUserEmail();
+
+    int getCurrentUserSchoolId();
 }

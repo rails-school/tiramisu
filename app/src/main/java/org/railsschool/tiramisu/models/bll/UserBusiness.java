@@ -181,6 +181,7 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
                             if (authenticationCookie != null) {
                                 _userDAO.setCurrentUserEmail(email);
                                 _userDAO.setCurrentUserToken(authenticationCookie);
+                                // TODO: find a way to get school id here
                                 success.run();
                             } else {
                                 Log.e(
@@ -219,5 +220,10 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
     @Override
     public String getCurrentUserEmail() {
         return _userDAO.getCurrentUserEmail();
+    }
+
+    @Override
+    public int getCurrentUserSchoolId() {
+        return _userDAO.getCurrentUserSchoolId();
     }
 }

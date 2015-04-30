@@ -75,14 +75,26 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
     public void sortFutureSlugsByDate(Action<List<String>> success, Action<String> failure) {
         tryConnecting(
             (api) -> {
-                api.getFutureLessonSlugs(
-                    new BLLCallback<List<String>>(failure) {
-                        @Override
-                        public void success(List<String> lessonSlugs, Response response) {
-                            success.run(lessonSlugs);
+                if (_userBusiness.isSignedIn()) {
+                    api.getFutureLessonSlugs(
+                        _userBusiness.getCurrentUserSchoolId(),
+                        new BLLCallback<List<String>>(failure) {
+                            @Override
+                            public void success(List<String> lessonSlugs, Response response) {
+                                success.run(lessonSlugs);
+                            }
                         }
-                    }
-                );
+                    );
+                } else {
+                    api.getFutureLessonSlugs(
+                        new BLLCallback<List<String>>(failure) {
+                            @Override
+                            public void success(List<String> lessonSlugs, Response response) {
+                                success.run(lessonSlugs);
+                            }
+                        }
+                    );
+                }
             },
             failure
         );
@@ -205,14 +217,26 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
 
         tryConnecting(
             (api) -> {
-                api.getUpcomingLesson(
-                    new BLLCallback<Lesson>(failure) {
-                        @Override
-                        public void success(Lesson lesson, Response response) {
-                            success.run(lesson);
+                if (_userBusiness.isSignedIn()) {
+                    api.getUpcomingLesson(
+                        _userBusiness.getCurrentUserSchoolId(),
+                        new BLLCallback<Lesson>(failure) {
+                            @Override
+                            public void success(Lesson lesson, Response response) {
+                                success.run(lesson);
+                            }
                         }
-                    }
-                );
+                    );
+                } else {
+                    api.getUpcomingLesson(
+                        new BLLCallback<Lesson>(failure) {
+                            @Override
+                            public void success(Lesson lesson, Response response) {
+                                success.run(lesson);
+                            }
+                        }
+                    );
+                }
             },
             failure
         );

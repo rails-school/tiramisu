@@ -21,6 +21,7 @@ class UserDAO extends BaseDAO implements IUserDAO {
      */
     private final static String FILE_NAME = "current_user",
         EMAIL_KEY                         = "email",
+        SCHOOL_ID_KEY                     = "school_id",
         TOKEN_KEY                         = "token";
     private SharedPreferences _preferenceDAL;
 
@@ -71,6 +72,16 @@ class UserDAO extends BaseDAO implements IUserDAO {
     @Override
     public void setCurrentUserToken(String value) {
         _preferenceDAL.edit().putString(TOKEN_KEY, value).commit();
+    }
+
+    @Override
+    public int getCurrentUserSchoolId() {
+        return _preferenceDAL.getInt(SCHOOL_ID_KEY, 0);
+    }
+
+    @Override
+    public void setCurrentUserSchoolId(int value) {
+        _preferenceDAL.edit().putInt(SCHOOL_ID_KEY, value).commit();
     }
 
     @Override

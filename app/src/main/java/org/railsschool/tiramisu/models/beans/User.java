@@ -20,6 +20,7 @@ public class User extends RealmObject {
      * Needed here for hiding last name within app too
      */
     private boolean hideLastName;
+    private int     schoolId;
 
     /**
      * Internal purpose only
@@ -56,6 +57,14 @@ public class User extends RealmObject {
 
     public void setHideLastName(boolean value) {
         hideLastName = value;
+    }
+
+    public int getSchoolId() {
+        return schoolId;
+    }
+
+    public void setSchoolId(int value) {
+        schoolId = value;
     }
 
     public Date getUpdateDate() {

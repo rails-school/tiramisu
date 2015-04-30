@@ -173,11 +173,13 @@ public class ClassDetailsFragment extends BaseFragment {
     public void onEventMainThread(ClassDetailsInitEvent event) {
         _initArgs = event;
 
+        fork();
         BusinessFactory
             .provideLesson(getActivity())
             .getSchoolClassTuple(
                 event.getLessonSlug(),
                 (schoolClass, teacher, venue) -> {
+                    done();
                     if (!isAdded()) {
                         return; // Fragment has been removed before call and callback
                     }
@@ -203,11 +205,13 @@ public class ClassDetailsFragment extends BaseFragment {
                 this::publishError
             );
 
+        fork();
         BusinessFactory
             .provideUser(getActivity())
             .isCurrentUserAttendingTo(
                 event.getLessonSlug(),
                 (isAttending) -> {
+                    done();
                     if (!isAdded()) {
                         return; // Fragment has been removed before call and callback
                     }
@@ -222,6 +226,7 @@ public class ClassDetailsFragment extends BaseFragment {
                     _isAttending = false;
                     _setAttendanceToggle();
                     _toggleButton.setBackgroundColor(getResources().getColor(R.color.gray));
+                    done();
                 },
                 (error) -> {
                     publishError(error);

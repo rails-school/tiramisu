@@ -2,7 +2,10 @@ package org.railsschool.tiramisu.views.fragments;
 
 import android.app.Fragment;
 
+import org.railsschool.tiramisu.views.activities.ProgressActivity;
 import org.railsschool.tiramisu.views.events.ErrorEvent;
+import org.railsschool.tiramisu.views.events.ProgressDoneEvent;
+import org.railsschool.tiramisu.views.events.ProgressForkEvent;
 
 import de.greenrobot.event.EventBus;
 
@@ -16,5 +19,14 @@ public abstract class BaseFragment extends Fragment {
             return; // Prevent async conflicts
         }
         EventBus.getDefault().post(new ErrorEvent(error));
+        done();
+    }
+
+    public void fork() {
+        ProgressActivity.getBus().post(new ProgressForkEvent());
+    }
+
+    public void done() {
+        ProgressActivity.getBus().post(new ProgressDoneEvent());
     }
 }

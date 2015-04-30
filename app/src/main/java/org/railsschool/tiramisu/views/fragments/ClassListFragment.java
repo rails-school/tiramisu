@@ -13,7 +13,6 @@ import com.daimajia.androidanimations.library.YoYo;
 import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.models.bll.BusinessFactory;
 import org.railsschool.tiramisu.views.adapters.ClassAdapter;
-import org.railsschool.tiramisu.views.events.ErrorEvent;
 import org.railsschool.tiramisu.views.events.RefreshClassListEvent;
 
 import butterknife.ButterKnife;
@@ -29,10 +28,12 @@ public class ClassListFragment extends BaseFragment {
     ListView _list;
 
     private void _setContent() {
+        fork();
         BusinessFactory
             .provideLesson(getActivity())
             .sortFutureSlugsByDate(
                 (ids) -> {
+                    done();
                     if (!isAdded()) {
                         return; // Prevent asynchronous conflicts
                     }
@@ -43,9 +44,7 @@ public class ClassListFragment extends BaseFragment {
                         .duration(500)
                         .playOn(_list);
                 },
-                (error) -> {
-                    EventBus.getDefault().post(new ErrorEvent(error));
-                }
+                this::publishError
             );
     }
 

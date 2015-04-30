@@ -16,7 +16,7 @@ import de.greenrobot.event.EventBus;
  * @brief
  */
 public abstract class ProgressActivity extends Activity {
-    //private final static Object _spinnerLock = new Object();
+    private static EventBus _progressBus;
 
     private ProgressDialog _spinner;
     private int            _backgroundThreads;
@@ -37,17 +37,21 @@ public abstract class ProgressActivity extends Activity {
 
         _backgroundThreads = 0;
 
-        EventBus.getDefault().register(this);
+        getBus().register(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
 
-        EventBus.getDefault().unregister(this);
+        getBus().unregister(this);
 
         if (_spinner != null && _spinner.isShowing()) {
             _spinner.dismiss();
+        }
+
+        if (_backgroundHandler != null) {
+            _backgroundHandler.removeCallbacksAndMessages(null);
         }
     }
 
@@ -77,5 +81,16 @@ public abstract class ProgressActivity extends Activity {
                 _backgroundHandler.removeCallbacksAndMessages(null);
             }
         }
+    }
+
+    public static EventBus getBus() {
+        if (_progressBus == null) {
+            _progressBus = EventBus.builder()
+                                   .logNoSubscriberMessages(true)
+                                   .sendNoSubscriberEvent(true)
+                                   .build();
+        }
+
+        return _progressBus;
     }
 }

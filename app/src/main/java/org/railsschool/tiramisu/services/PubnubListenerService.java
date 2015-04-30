@@ -14,6 +14,7 @@ import com.pubnub.api.PubnubException;
 
 import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.models.beans.Lesson;
+import org.railsschool.tiramisu.models.bll.BusinessFactory;
 import org.railsschool.tiramisu.models.bll.serializers.LessonSerializer;
 import org.railsschool.tiramisu.utils.PushNotificationSystem;
 import org.railsschool.tiramisu.views.activities.MainActivity;
@@ -45,6 +46,12 @@ public class PubnubListenerService extends IntentService {
                     public void successCallback(String channel, Object message) {
                         Lesson lesson;
                         Gson gson;
+
+                        if (!BusinessFactory.providePreference(getApplicationContext())
+                                            .getLessonAlertPreference()) {
+                            // User disabled alerts
+                            return;
+                        }
 
                         gson = new GsonBuilder()
                             .registerTypeAdapter(Lesson.class, new LessonSerializer())

@@ -12,7 +12,8 @@ import org.railsschool.tiramisu.models.dao.interfaces.IPreferenceDAO;
 class PreferenceDAO implements IPreferenceDAO {
     private final static String FILE_NAME = "preferences",
         TWO_HOUR_NOTIFICATION_KEY         = "two_hour_notification",
-        DAY_NOTIFICATION_KEY              = "day_notification";
+        DAY_NOTIFICATION_KEY              = "day_notification",
+        LESSON_ALERT_KEY                  = "lesson_alert";
 
     private SharedPreferences _dal;
 
@@ -42,5 +43,15 @@ class PreferenceDAO implements IPreferenceDAO {
     @Override
     public void setDayNotificationPreference(DayNotificationPreference value) {
         _dal.edit().putInt(DAY_NOTIFICATION_KEY, value.toInt()).commit();
+    }
+
+    @Override
+    public boolean getLessonAlertPreference() {
+        return _dal.getBoolean(LESSON_ALERT_KEY, true);
+    }
+
+    @Override
+    public void setLessonAlertPreference(boolean value) {
+        _dal.edit().putBoolean(LESSON_ALERT_KEY, value).commit();
     }
 }

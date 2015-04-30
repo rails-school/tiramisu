@@ -15,4 +15,8 @@ public interface IPreferenceBusiness {
     void updateDayReminderPreference(DayNotificationPreference preference);
 
     DayNotificationPreference getDayReminderPreference();
+
+    void updateLessonAlertPreference(boolean value);
+
+    boolean getLessonAlertPreference();
 }

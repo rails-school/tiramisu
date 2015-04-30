@@ -26,13 +26,12 @@
         Your username or password is invalid.
     </string>
 
-    <string name="settings_reminder_label">Reminders</string>
-    <string name="settings_reminder_day">24 hours</string>
-    <string name="settings_reminder_two_hour">2 hours</string>
+    <string name="settings_reminder_label">Alert settings</string>
+    <string name="settings_reminder_day">24 hour reminder</string>
+    <string name="settings_reminder_two_hour">2 hour reminder</string>
+    <string name="settings_lesson_alert">New lesson alert</string>
 
-    <array name="settings_reminder_frequencies">
-        <item>Always</item>
-        <item>Only if attending</item>
-        <item>Never</item>
-    </array>
+    <string name="settings_reminder_frequence_always">Always</string>
+    <string name="settings_remider_frequence_attending">Only if attending</string>
+    <string name="settings_reminder_frequence_never">Never</string>
 </resources>

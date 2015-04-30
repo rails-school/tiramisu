@@ -1,7 +1,6 @@
 package org.railsschool.tiramisu.views.activities;
 
 import android.R;
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 
@@ -13,7 +12,7 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
  * @class BaseActivity
  * @brief
  */
-public abstract class BaseActivity extends Activity {
+public abstract class BaseActivity extends ProgressActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();

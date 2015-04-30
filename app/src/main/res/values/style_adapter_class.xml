@@ -60,12 +60,12 @@
 
     <style name="AdapterClassSeparator">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">4dp</item>
+        <item name="android:layout_height">3dp</item>
 
         <item name="android:layout_marginTop">@dimen/xlarge_margin</item>
 
         <item name="android:visibility">gone</item>
-        <item name="android:background">@drawable/dashed_separator</item>
+        <item name="android:background">@color/gray</item>
         <item name="android:layerType">software</item>
     </style>
 </resources>

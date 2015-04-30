@@ -10,8 +10,11 @@ import com.coshx.chocolatine.widgets.SmartAdapter;
 
 import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.models.bll.BusinessFactory;
+import org.railsschool.tiramisu.views.activities.ProgressActivity;
 import org.railsschool.tiramisu.views.events.ClassDetailsRequestedEvent;
 import org.railsschool.tiramisu.views.events.ErrorEvent;
+import org.railsschool.tiramisu.views.events.ProgressDoneEvent;
+import org.railsschool.tiramisu.views.events.ProgressForkEvent;
 import org.railsschool.tiramisu.views.helpers.DateHelper;
 import org.railsschool.tiramisu.views.helpers.UserHelper;
 
@@ -45,6 +48,7 @@ public class ClassAdapter extends SmartAdapter<String> {
 
         lessonSlug = itemAt(position);
 
+        ProgressActivity.getBus().post(new ProgressForkEvent());
         BusinessFactory
             .provideLesson(getContext())
             .getTuple(
@@ -56,9 +60,12 @@ public class ClassAdapter extends SmartAdapter<String> {
 
                     teacherName.setText(UserHelper.getDisplayedName(teacher));
                     location.setText(venue.getName());
+
+                    ProgressActivity.getBus().post(new ProgressDoneEvent());
                 },
                 (error) -> {
                     EventBus.getDefault().post(new ErrorEvent(error));
+                    ProgressActivity.getBus().post(new ProgressDoneEvent());
                 }
             );
 

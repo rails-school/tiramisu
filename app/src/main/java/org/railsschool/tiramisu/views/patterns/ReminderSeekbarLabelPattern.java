@@ -34,18 +34,18 @@ public class ReminderSeekbarLabelPattern {
 
     private void _setCurrent(int value) {
         int softGray = _context.getResources().getColor(R.color.soft_gray),
-            gray = _context.getResources().getColor(R.color.gray);
+            blue = _context.getResources().getColor(R.color.blue);
 
         _always.setTextColor(softGray);
         _onlyIfAttending.setTextColor(softGray);
         _never.setTextColor(softGray);
 
         if (value == 0) {
-            _always.setTextColor(gray);
+            _always.setTextColor(blue);
         } else if (value == 2) {
-            _never.setTextColor(gray);
+            _never.setTextColor(blue);
         } else {
-            _onlyIfAttending.setTextColor(gray);
+            _onlyIfAttending.setTextColor(blue);
         }
     }
 

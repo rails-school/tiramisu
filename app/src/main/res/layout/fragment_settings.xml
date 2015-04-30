@@ -30,23 +30,23 @@
 
             <EditText
                 android:id="@+id/fragment_settings_email"
-                style="@style/FragmentSettingsField"
                 android:hint="@string/settings_email_placeholder"
                 android:inputType="textEmailAddress"
+                style="@style/FragmentSettingsField"
                 />
 
             <EditText
                 android:id="@+id/fragment_settings_password"
-                style="@style/FragmentSettingsField"
                 android:hint="@string/settings_password_placeholder"
                 android:inputType="textPassword"
+                style="@style/FragmentSettingsField"
                 />
 
             <Button
                 android:id="@+id/fragment_settings_submit_credentials"
-                style="@style/FragmentSettingsSubmit"
-                android:text="@string/settings_submit_credentials"
                 android:layout_gravity="right"
+                android:text="@string/settings_submit_credentials"
+                style="@style/FragmentSettingsSubmit"
                 />
 
             <ImageView
@@ -69,37 +69,52 @@
 
             </LinearLayout>
 
+            <TextView
+                android:text="@string/settings_reminder_two_hour"
+                style="@style/FragmentSettingsSeekbarHeadline"
+                />
+
+            <SeekBar
+                android:id="@+id/fragment_settings_two_hour_reminder"
+                android:max="2"
+                style="@style/FragmentSettingsSeekBar"
+                />
+
+            <include
+                android:id="@+id/fragment_settings_two_hour_reminder_labels"
+                layout="@layout/pattern_reminder_seekbar_labels"
+                />
+
+            <TextView
+                android:text="@string/settings_reminder_day"
+                style="@style/FragmentSettingsSeekbarHeadline"
+                />
+
+            <SeekBar
+                android:id="@+id/fragment_settings_day_reminder"
+                android:max="2"
+                style="@style/FragmentSettingsSeekBar"
+                />
+
+            <include
+                android:id="@+id/fragment_settings_day_reminder_labels"
+                layout="@layout/pattern_reminder_seekbar_labels"
+                />
+
             <LinearLayout
                 style="@style/MatchParentWrapContent.Horizontal"
                 >
 
                 <TextView
-                    android:text="@string/settings_reminder_two_hour"
-                    style="@style/FragmentSettingsSpinnerLabel"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/settings_lesson_alert"
+                    style="@style/FragmentSettingsSwitchLabel"
                     />
 
-                <Spinner
-                    android:id="@+id/fragment_settings_two_day_reminder"
-                    android:entries="@array/settings_reminder_frequencies"
-                    style="@style/FragmentSettingsSpinner"
-                    />
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                style="@style/MatchParentWrapContent.Horizontal"
-                >
-
-                <TextView
-                    android:text="@string/settings_reminder_day"
-                    style="@style/FragmentSettingsSpinnerLabel"
-                    />
-
-                <Spinner
-                    android:id="@+id/fragment_settings_day_reminder"
-                    android:entries="@array/settings_reminder_frequencies"
-                    style="@style/FragmentSettingsSpinner"
+                <Switch
+                    android:id="@+id/fragment_settings_lesson_alert"
+                    android:layout_gravity="center_vertical"
+                    style="@style/FragmentSettingsSwitch"
                     />
 
             </LinearLayout>

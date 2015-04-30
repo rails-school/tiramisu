@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="org.railsschool.tiramisu"
+<manifest package="org.railsschool.tiramisu"
+          xmlns:android="http://schemas.android.com/apk/res/android"
     >
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -27,6 +27,11 @@
 
         <receiver android:name=".receivers.DayReminderReceiver" />
         <receiver android:name=".receivers.TwoHourReminderReceiver" />
+
+        <service
+            android:name=".services.PubnubListenerService"
+            android:exported="false"
+            />
     </application>
 
 </manifest>

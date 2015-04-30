@@ -35,4 +35,14 @@ class PreferenceBusiness implements IPreferenceBusiness {
     public DayNotificationPreference getDayReminderPreference() {
         return _prefDAO.getDayNotificationPreference();
     }
+
+    @Override
+    public void updateLessonAlertPreference(boolean value) {
+        _prefDAO.setLessonAlertPreference(value);
+    }
+
+    @Override
+    public boolean getLessonAlertPreference() {
+        return _prefDAO.getLessonAlertPreference();
+    }
 }

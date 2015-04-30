@@ -15,4 +15,8 @@ public interface IPreferenceDAO {
     DayNotificationPreference getDayNotificationPreference();
 
     void setDayNotificationPreference(DayNotificationPreference value);
+
+    boolean getLessonAlertPreference();
+
+    void setLessonAlertPreference(boolean value);
 }

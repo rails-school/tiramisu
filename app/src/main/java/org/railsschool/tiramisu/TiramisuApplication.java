@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import org.railsschool.tiramisu.receivers.RemindSchedulerReceiver;
+import org.railsschool.tiramisu.services.PubnubListenerService;
 
 /**
  * @class TiramisuApplication
@@ -16,6 +17,8 @@ public class TiramisuApplication extends Application {
 
     @Override
     public void onCreate() {
+        Intent pubnubIntent;
+
         super.onCreate();
 
         // Defines a CRON task for the reminder system
@@ -38,5 +41,9 @@ public class TiramisuApplication extends Application {
             AlarmManager.INTERVAL_HALF_HOUR,
             alarmIntent
         );
+
+        // Start pubnub service
+        pubnubIntent = new Intent(getApplicationContext(), PubnubListenerService.class);
+        getApplicationContext().startService(pubnubIntent);
     }
 }

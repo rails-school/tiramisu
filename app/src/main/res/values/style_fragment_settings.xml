@@ -56,9 +56,28 @@
         <item name="android:background">@color/soft_gray</item>
     </style>
 
-    <style name="FragmentSettingsSpinnerLabel" parent="HorizontalStretchable">
-        <item name="android:layout_gravity">center_vertical</item>
+    <style name="FragmentSettingsSeekbarHeadline" parent="MatchParentWrapContent">
+        <item name="android:layout_margin">@dimen/medium_margin</item>
 
+        <item name="android:textSize">@dimen/subhead</item>
+        <item name="android:textColor">@color/gray</item>
+    </style>
+
+    <style name="FragmentSettingsSeekBar" parent="MatchParentWrapContent">
+        <item name="android:layout_marginTop">@dimen/small_margin</item>
+        <item name="android:layout_marginBottom">@dimen/small_margin</item>
+    </style>
+
+    <style name="FragmentSettingsSeekBarLabel" parent="HorizontalStretchable">
+        <item name="android:layout_marginBottom">@dimen/medium_margin</item>
+        <item name="android:paddingLeft">@dimen/small_margin</item>
+        <item name="android:paddingRight">@dimen/small_margin</item>
+
+        <item name="android:textSize">@dimen/body</item>
+        <item name="android:textColor">@color/soft_gray</item>
+    </style>
+
+    <style name="FragmentSettingsSwitchLabel" parent="HorizontalStretchable">
         <item name="android:layout_marginLeft">@dimen/medium_margin</item>
         <item name="android:layout_marginRight">@dimen/medium_margin</item>
 
@@ -66,13 +85,8 @@
         <item name="android:textColor">@color/gray</item>
     </style>
 
-    <style name="FragmentSettingsSpinner" parent="HorizontalStretchable">
-        <item name="android:layout_gravity">center_vertical</item>
-
+    <style name="FragmentSettingsSwitch" parent="WrapContent">
         <item name="android:layout_marginTop">@dimen/small_margin</item>
         <item name="android:layout_marginBottom">@dimen/small_margin</item>
-        <item name="android:padding">@dimen/small_margin</item>
-
-        <item name="android:textSize">@dimen/subhead</item>
     </style>
 </resources>

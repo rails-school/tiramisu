@@ -5,10 +5,11 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.SeekBar;
+import android.widget.Switch;
 
 import com.coshx.chocolatine.helpers.DeviceHelper;
 import com.coshx.chocolatine.utils.actions.Action0;
@@ -17,9 +18,10 @@ import org.railsschool.tiramisu.R;
 import org.railsschool.tiramisu.models.bll.BusinessFactory;
 import org.railsschool.tiramisu.models.dao.DayNotificationPreference;
 import org.railsschool.tiramisu.models.dao.TwoHourNotificationPreference;
-import org.railsschool.tiramisu.views.helpers.KeyboardHelper;
 import org.railsschool.tiramisu.views.events.ConfirmationEvent;
 import org.railsschool.tiramisu.views.events.InformationEvent;
+import org.railsschool.tiramisu.views.helpers.KeyboardHelper;
+import org.railsschool.tiramisu.views.patterns.ReminderSeekbarLabelPattern;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -63,38 +65,55 @@ public class SettingsFragment extends BaseFragment {
     @InjectView(R.id.fragment_settings_submit_credentials)
     Button _submitButton;
 
-    @InjectView(R.id.fragment_settings_two_day_reminder)
-    Spinner _twoHourReminderSpinner;
+    @InjectView(R.id.fragment_settings_two_hour_reminder)
+    SeekBar _twoHourReminderBar;
 
     @InjectView(R.id.fragment_settings_day_reminder)
-    Spinner _dayReminderSpinner;
+    SeekBar _dayReminderBar;
+
+    @InjectView(R.id.fragment_settings_lesson_alert)
+    Switch _lessonAlertSwitch;
 
     // These booleans prevent database update when resuming fragment
     private boolean _twoHourReminderManuallySet;
     private boolean _dayReminderManuallySet;
+    private boolean _lessonAlertManuallySet;
 
     // Avoids asynchronous conflicts (spinner touched again before
     // callback has been triggered)
     private boolean _isCurrentlySettingTwoHourReminder;
     private boolean _isCurrentlySettingDayReminder;
+    private boolean _isCurrentlySettingLessonAlert;
 
     private boolean _isProcessingCredentials;
 
-    private void _setTwoHourReminderSpinner() {
+    private ReminderSeekbarLabelPattern _twoHourSeekbarLabels;
+    private ReminderSeekbarLabelPattern _daySeekbarLabels;
+
+    private void _setTwoHourReminderSeekBar() {
         TwoHourNotificationPreference pref =
             BusinessFactory.providePreference(getActivity())
                            .getTwoHourReminderPreference();
 
         _twoHourReminderManuallySet = true;
-        _twoHourReminderSpinner.setSelection(pref.toInt());
+        _twoHourReminderBar.setProgress(pref.toInt());
+        _twoHourSeekbarLabels.update(pref);
     }
 
-    private void _setDayReminderSpinner() {
+    private void _setDayReminderSeekBar() {
         DayNotificationPreference pref =
             BusinessFactory.providePreference(getActivity()).getDayReminderPreference();
 
         _dayReminderManuallySet = true;
-        _dayReminderSpinner.setSelection(pref.toInt());
+        _dayReminderBar.setProgress(pref.toInt());
+        _daySeekbarLabels.update(pref);
+    }
+
+    private void _setLessonAlertSwitch() {
+        boolean pref = BusinessFactory.providePreference(getActivity()).getLessonAlertPreference();
+
+        _lessonAlertManuallySet = true;
+        _lessonAlertSwitch.setChecked(pref);
     }
 
     private void _setCredentials() {
@@ -117,10 +136,12 @@ public class SettingsFragment extends BaseFragment {
         ButterKnife.inject(this, fragment);
 
         // Set two hour spinner listener
-        _twoHourReminderSpinner.setOnItemSelectedListener(
-            new AdapterView.OnItemSelectedListener() {
+        _twoHourReminderBar.setOnSeekBarChangeListener(
+            new SeekBar.OnSeekBarChangeListener() {
                 @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    TwoHourNotificationPreference pref;
+
                     if (_twoHourReminderManuallySet) {
                         // Event has been triggered for value has been set manually.
                         // Do not update DB
@@ -136,12 +157,12 @@ public class SettingsFragment extends BaseFragment {
 
                     DeviceHelper.lockOrientation(getActivity());
                     _isCurrentlySettingTwoHourReminder = true;
+                    pref = TwoHourNotificationPreference.fromInt(seekBar.getProgress());
+                    _twoHourSeekbarLabels.update(pref);
                     BusinessFactory
                         .providePreference(getActivity())
-                        .updateTwoHourReminderPreference(
-                            TwoHourNotificationPreference
-                                .fromInt(position)
-                        );
+                        .updateTwoHourReminderPreference(pref);
+
                     DeviceHelper.unlockOrientation(getActivity());
                     _isCurrentlySettingTwoHourReminder = false;
 
@@ -151,16 +172,23 @@ public class SettingsFragment extends BaseFragment {
                 }
 
                 @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-                    // Nothing selected, nothing to do
+                public void onStartTrackingTouch(SeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+
                 }
             }
         );
 
-        _dayReminderSpinner.setOnItemSelectedListener(
-            new AdapterView.OnItemSelectedListener() {
+        _dayReminderBar.setOnSeekBarChangeListener(
+            new SeekBar.OnSeekBarChangeListener() {
                 @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    DayNotificationPreference pref;
+
                     if (_dayReminderManuallySet) {
                         // Event has been triggered for value has been set manually.
                         // Do not update DB
@@ -176,12 +204,12 @@ public class SettingsFragment extends BaseFragment {
 
                     DeviceHelper.lockOrientation(getActivity());
                     _isCurrentlySettingDayReminder = true;
+                    pref = DayNotificationPreference.fromInt(seekBar.getProgress());
+                    _daySeekbarLabels.update(pref);
                     BusinessFactory
                         .providePreference(getActivity())
-                        .updateDayReminderPreference(
-                            DayNotificationPreference
-                                .fromInt(position)
-                        );
+                        .updateDayReminderPreference(pref);
+
                     DeviceHelper.unlockOrientation(getActivity());
                     _isCurrentlySettingDayReminder = false;
 
@@ -191,10 +219,54 @@ public class SettingsFragment extends BaseFragment {
                 }
 
                 @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-                    // Nothing selected, nothing to do
+                public void onStartTrackingTouch(SeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+
                 }
             }
+        );
+
+        _lessonAlertSwitch.setOnCheckedChangeListener(
+            new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (_lessonAlertManuallySet) {
+                        // Event has been triggered for value has been set manually.
+                        // Do not update DB
+                        _lessonAlertManuallySet = false;
+                        return;
+                    }
+
+                    if (_isCurrentlySettingLessonAlert) {
+                        // Prevent similar operations
+                        // Possible for asynchronous operation needed below
+                        return;
+                    }
+
+                    DeviceHelper.lockOrientation(getActivity());
+                    _isCurrentlySettingLessonAlert = true;
+                    BusinessFactory
+                        .providePreference(getActivity())
+                        .updateLessonAlertPreference(buttonView.isChecked());
+                    DeviceHelper.unlockOrientation(getActivity());
+                    _isCurrentlySettingLessonAlert = false;
+
+                    EventBus.getDefault().post(
+                        new ConfirmationEvent(getString(R.string.updated_preference))
+                    );
+                }
+            }
+        );
+
+        _twoHourSeekbarLabels = new ReminderSeekbarLabelPattern(
+            getActivity(), fragment.findViewById(R.id.fragment_settings_two_hour_reminder_labels)
+        );
+        _daySeekbarLabels = new ReminderSeekbarLabelPattern(
+            getActivity(), fragment.findViewById(R.id.fragment_settings_day_reminder_labels)
         );
 
         return fragment;
@@ -206,13 +278,16 @@ public class SettingsFragment extends BaseFragment {
 
         _twoHourReminderManuallySet = false;
         _dayReminderManuallySet = false;
+        _lessonAlertManuallySet = false;
 
         _isCurrentlySettingTwoHourReminder = false;
         _isCurrentlySettingDayReminder = false;
+        _isCurrentlySettingLessonAlert = false;
 
         // On resume, set spinner values from existing value in DB
-        _setTwoHourReminderSpinner();
-        _setDayReminderSpinner();
+        _setTwoHourReminderSeekBar();
+        _setDayReminderSeekBar();
+        _setLessonAlertSwitch();
 
         _setCredentials();
 

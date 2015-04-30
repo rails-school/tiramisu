@@ -174,15 +174,6 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
 
                                     if (m.matches()) {
                                         authenticationCookie = m.group(1);
-                                    } else {
-                                        // No authentication cookie
-                                        Log.e(
-                                            UserBusiness.class.getSimpleName(),
-                                            "Cookies were all present but expected one"
-                                        );
-                                        failure.run(getDefaultErrorMsg());
-
-                                        return;
                                     }
                                 }
                             }
@@ -192,10 +183,9 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
                                 _userDAO.setCurrentUserToken(authenticationCookie);
                                 success.run();
                             } else {
-                                // No cookie at all
                                 Log.e(
                                     UserBusiness.class.getSimpleName(),
-                                    "No cookie"
+                                    "Expected cookie was not found"
                                 );
                                 failure.run(getDefaultErrorMsg());
                             }

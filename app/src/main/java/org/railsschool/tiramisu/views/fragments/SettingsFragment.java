@@ -77,6 +77,7 @@ public class SettingsFragment extends BaseFragment {
     // These booleans prevent database update when resuming fragment
     private boolean _twoHourReminderManuallySet;
     private boolean _dayReminderManuallySet;
+    private boolean _lessonAlertManuallySet;
 
     // Avoids asynchronous conflicts (spinner touched again before
     // callback has been triggered)
@@ -111,6 +112,7 @@ public class SettingsFragment extends BaseFragment {
     private void _setLessonAlertSwitch() {
         boolean pref = BusinessFactory.providePreference(getActivity()).getLessonAlertPreference();
 
+        _lessonAlertManuallySet = true;
         _lessonAlertSwitch.setChecked(pref);
     }
 
@@ -232,6 +234,13 @@ public class SettingsFragment extends BaseFragment {
             new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (_lessonAlertManuallySet) {
+                        // Event has been triggered for value has been set manually.
+                        // Do not update DB
+                        _lessonAlertManuallySet = false;
+                        return;
+                    }
+
                     if (_isCurrentlySettingLessonAlert) {
                         // Prevent similar operations
                         // Possible for asynchronous operation needed below
@@ -254,10 +263,10 @@ public class SettingsFragment extends BaseFragment {
         );
 
         _twoHourSeekbarLabels = new ReminderSeekbarLabelPattern(
-            getActivity(), getActivity().findViewById(R.id.fragment_settings_two_hour_reminder_labels)
+            getActivity(), fragment.findViewById(R.id.fragment_settings_two_hour_reminder_labels)
         );
         _daySeekbarLabels = new ReminderSeekbarLabelPattern(
-            getActivity(), getActivity().findViewById(R.id.fragment_settings_day_reminder_labels)
+            getActivity(), fragment.findViewById(R.id.fragment_settings_day_reminder_labels)
         );
 
         return fragment;
@@ -269,6 +278,7 @@ public class SettingsFragment extends BaseFragment {
 
         _twoHourReminderManuallySet = false;
         _dayReminderManuallySet = false;
+        _lessonAlertManuallySet = false;
 
         _isCurrentlySettingTwoHourReminder = false;
         _isCurrentlySettingDayReminder = false;

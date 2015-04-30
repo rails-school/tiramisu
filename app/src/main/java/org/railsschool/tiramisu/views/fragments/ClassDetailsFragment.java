@@ -112,7 +112,7 @@ public class ClassDetailsFragment extends BaseFragment {
 
     private void _setAttendanceToggle() {
         if (_isAttending) {
-            _toggleButton.setBackgroundColor(getResources().getColor(R.color.red));
+            _toggleButton.setBackgroundColor(getResources().getColor(R.color.green));
             Picasso
                 .with(getActivity())
                 .load(R.drawable.ic_unrsvp)
@@ -120,7 +120,7 @@ public class ClassDetailsFragment extends BaseFragment {
                 .into(_toggleIcon);
             _toggleLabel.setText(getString(R.string.remove_attendance));
         } else {
-            _toggleButton.setBackgroundColor(getResources().getColor(R.color.green));
+            _toggleButton.setBackgroundColor(getResources().getColor(R.color.red));
             Picasso
                 .with(getActivity())
                 .load(R.drawable.ic_rsvp)

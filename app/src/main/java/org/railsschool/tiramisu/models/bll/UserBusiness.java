@@ -156,9 +156,9 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
                         email,
                         password // Unencrypted password for HTTPS connection
                     ),
-                    new Callback<Void>() {
+                    new Callback<User>() {
                         @Override
-                        public void success(Void aVoid, Response response) {
+                        public void success(User user, Response response) {
                             String authenticationCookie = null;
 
                             // Let's find the authentication cookie among headers
@@ -181,7 +181,7 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
                             if (authenticationCookie != null) {
                                 _userDAO.setCurrentUserEmail(email);
                                 _userDAO.setCurrentUserToken(authenticationCookie);
-                                // TODO: find a way to get school id here
+                                _userDAO.setCurrentUserSchoolId(user.getSchoolId());
                                 success.run();
                             } else {
                                 Log.e(

@@ -30,7 +30,7 @@ public interface IRailsSchoolAPI {
     @GET(LESSON_ROOT + "/future/slugs" + FORMAT)
     void getFutureLessonSlugs(Callback<List<String>> callback);
 
-    @GET(LESSON_ROOT + "/future/{school}/slugs" + FORMAT)
+    @GET(LESSON_ROOT + "/future/slugs/{school}" + FORMAT)
     void getFutureLessonSlugs(@Path("school") int schoolId, Callback<List<String>> callback);
 
     @GET(LESSON_ROOT + "/{slug}" + FORMAT)
@@ -55,7 +55,7 @@ public interface IRailsSchoolAPI {
     @POST(USER_ROOT + "/sign_in" + FORMAT)
     void checkCredentials(
         @Body CheckCredentialsRequest request,
-        Callback<Void> callback);
+        Callback<User> callback);
 
     //endregion
 

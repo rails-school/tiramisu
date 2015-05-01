@@ -74,11 +74,6 @@ public class SettingsFragment extends BaseFragment {
     @InjectView(R.id.fragment_settings_lesson_alert)
     Switch _lessonAlertSwitch;
 
-    // These booleans prevent database update when resuming fragment
-    private boolean _twoHourReminderManuallySet;
-    private boolean _dayReminderManuallySet;
-    private boolean _lessonAlertManuallySet;
-
     // Avoids asynchronous conflicts (spinner touched again before
     // callback has been triggered)
     private boolean _isCurrentlySettingTwoHourReminder;
@@ -95,7 +90,6 @@ public class SettingsFragment extends BaseFragment {
             BusinessFactory.providePreference(getActivity())
                            .getTwoHourReminderPreference();
 
-        _twoHourReminderManuallySet = true;
         _twoHourReminderBar.setProgress(pref.toInt());
         _twoHourSeekbarLabels.update(pref);
     }
@@ -104,7 +98,6 @@ public class SettingsFragment extends BaseFragment {
         DayNotificationPreference pref =
             BusinessFactory.providePreference(getActivity()).getDayReminderPreference();
 
-        _dayReminderManuallySet = true;
         _dayReminderBar.setProgress(pref.toInt());
         _daySeekbarLabels.update(pref);
     }
@@ -112,7 +105,6 @@ public class SettingsFragment extends BaseFragment {
     private void _setLessonAlertSwitch() {
         boolean pref = BusinessFactory.providePreference(getActivity()).getLessonAlertPreference();
 
-        _lessonAlertManuallySet = true;
         _lessonAlertSwitch.setChecked(pref);
     }
 
@@ -135,19 +127,37 @@ public class SettingsFragment extends BaseFragment {
         fragment = inflater.inflate(R.layout.fragment_settings, container, false);
         ButterKnife.inject(this, fragment);
 
+        _twoHourSeekbarLabels = new ReminderSeekbarLabelPattern(
+            getActivity(), fragment.findViewById(R.id.fragment_settings_two_hour_reminder_labels)
+        );
+        _daySeekbarLabels = new ReminderSeekbarLabelPattern(
+            getActivity(), fragment.findViewById(R.id.fragment_settings_day_reminder_labels)
+        );
+
+        return fragment;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        _isCurrentlySettingTwoHourReminder = false;
+        _isCurrentlySettingDayReminder = false;
+        _isCurrentlySettingLessonAlert = false;
+
+        // On resume, set spinner values from existing value in DB
+        _setTwoHourReminderSeekBar();
+        _setDayReminderSeekBar();
+        _setLessonAlertSwitch();
+
+        _setCredentials();
+
         // Set two hour spinner listener
         _twoHourReminderBar.setOnSeekBarChangeListener(
             new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     TwoHourNotificationPreference pref;
-
-                    if (_twoHourReminderManuallySet) {
-                        // Event has been triggered for value has been set manually.
-                        // Do not update DB
-                        _twoHourReminderManuallySet = false;
-                        return;
-                    }
 
                     if (_isCurrentlySettingTwoHourReminder) {
                         // Prevent similar operations
@@ -189,13 +199,6 @@ public class SettingsFragment extends BaseFragment {
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     DayNotificationPreference pref;
 
-                    if (_dayReminderManuallySet) {
-                        // Event has been triggered for value has been set manually.
-                        // Do not update DB
-                        _dayReminderManuallySet = false;
-                        return;
-                    }
-
                     if (_isCurrentlySettingDayReminder) {
                         // Prevent similar operations
                         // Possible for asynchronous operation needed below
@@ -234,13 +237,6 @@ public class SettingsFragment extends BaseFragment {
             new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (_lessonAlertManuallySet) {
-                        // Event has been triggered for value has been set manually.
-                        // Do not update DB
-                        _lessonAlertManuallySet = false;
-                        return;
-                    }
-
                     if (_isCurrentlySettingLessonAlert) {
                         // Prevent similar operations
                         // Possible for asynchronous operation needed below
@@ -261,35 +257,6 @@ public class SettingsFragment extends BaseFragment {
                 }
             }
         );
-
-        _twoHourSeekbarLabels = new ReminderSeekbarLabelPattern(
-            getActivity(), fragment.findViewById(R.id.fragment_settings_two_hour_reminder_labels)
-        );
-        _daySeekbarLabels = new ReminderSeekbarLabelPattern(
-            getActivity(), fragment.findViewById(R.id.fragment_settings_day_reminder_labels)
-        );
-
-        return fragment;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        _twoHourReminderManuallySet = false;
-        _dayReminderManuallySet = false;
-        _lessonAlertManuallySet = false;
-
-        _isCurrentlySettingTwoHourReminder = false;
-        _isCurrentlySettingDayReminder = false;
-        _isCurrentlySettingLessonAlert = false;
-
-        // On resume, set spinner values from existing value in DB
-        _setTwoHourReminderSeekBar();
-        _setDayReminderSeekBar();
-        _setLessonAlertSwitch();
-
-        _setCredentials();
 
         EventBus.getDefault().registerSticky(this);
     }
@@ -313,6 +280,10 @@ public class SettingsFragment extends BaseFragment {
                 )
             );
         }
+
+        _twoHourReminderBar.setOnSeekBarChangeListener(null);
+        _dayReminderBar.setOnSeekBarChangeListener(null);
+        _lessonAlertSwitch.setOnCheckedChangeListener(null);
     }
 
     public void onEventMainThread(RestoreCredentialInputEvent event) {

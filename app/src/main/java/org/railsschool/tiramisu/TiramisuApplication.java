@@ -7,7 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import org.railsschool.tiramisu.receivers.RemindSchedulerReceiver;
-import org.railsschool.tiramisu.services.PubnubListenerService;
+import org.railsschool.tiramisu.services.SocketListenerService;
 
 /**
  * @class TiramisuApplication
@@ -43,7 +43,7 @@ public class TiramisuApplication extends Application {
         );
 
         // Start pubnub service
-        pubnubIntent = new Intent(getApplicationContext(), PubnubListenerService.class);
+        pubnubIntent = new Intent(getApplicationContext(), SocketListenerService.class);
         getApplicationContext().startService(pubnubIntent);
     }
 }

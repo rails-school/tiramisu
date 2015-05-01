@@ -29,7 +29,7 @@
         <receiver android:name=".receivers.TwoHourReminderReceiver" />
 
         <service
-            android:name=".services.PubnubListenerService"
+            android:name=".services.SocketListenerService"
             android:exported="false"
             />
     </application>

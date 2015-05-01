@@ -10,6 +10,6 @@
 /**/*.iml
 .idea/codeStyleSettings.xml
 
-app/src/main/res/values/strings_pubnub.xml
+app/src/main/res/values/strings_socket_config.xml
 
 pubnub.log

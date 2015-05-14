@@ -65,8 +65,9 @@ public interface ILessonBusiness {
     /**
      * Engines upcoming lesson and triggers alarm initializers if needed
      *
+     * @param periodMilli  Period of puller in milliseconds
      * @param twoHourAlarm
      * @param dayAlarm
      */
-    void engineAlarms(Action<Lesson> twoHourAlarm, Action<Lesson> dayAlarm);
+    void engineAlarms(int periodMilli, Action<Lesson> twoHourAlarm, Action<Lesson> dayAlarm);
 }

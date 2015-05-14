@@ -38,7 +38,7 @@ public class TiramisuApplication extends Application {
         alarmManager.setInexactRepeating(
             AlarmManager.ELAPSED_REALTIME,
             0,
-            AlarmManager.INTERVAL_HALF_HOUR,
+            RemindSchedulerReceiver.PULLER_PERIOD,
             alarmIntent
         );
 

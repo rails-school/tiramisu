@@ -17,6 +17,8 @@ import org.railsschool.tiramisu.models.bll.BusinessFactory;
  */
 public class RemindSchedulerReceiver extends BroadcastReceiver {
 
+    public final static long PULLER_PERIOD = AlarmManager.INTERVAL_HALF_HOUR;
+
     /**
      * Gets duration before user should be notified
      *
@@ -77,6 +79,7 @@ public class RemindSchedulerReceiver extends BroadcastReceiver {
         BusinessFactory
             .provideLesson(context)
             .engineAlarms(
+                new Long(PULLER_PERIOD).intValue(),
                 (lesson) -> {
                     _scheduleAlarm(
                         context, 100, TwoHourReminderReceiver.class, lesson,

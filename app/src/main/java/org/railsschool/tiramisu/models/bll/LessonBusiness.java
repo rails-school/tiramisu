@@ -55,20 +55,28 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
     }
 
     /**
-     * Returns true if lesson is currently in notification interval. Assumes alarm frequency if
-     * lower than lowest alert delay.
+     * Returns true if lesson is currently in notification interval.
      *
+     * @param periodMilli
      * @param lesson
      * @param hours
      * @return
      */
-    private boolean _isWithinInterval(Lesson lesson, Hours hours) {
+    private boolean _shouldBeNotified(int periodMilli, Lesson lesson, Hours hours) {
         DateTime startTime = new DateTime(lesson.getStartTime());
-
-        return !new Interval(
+        // Alarm should only occur if it is the final countdown before lesson
+        boolean isInCountdownInterval = new Interval(
             startTime.minusHours(hours.getHours()),
             startTime
         ).containsNow();
+        // Alarm should only occur once. If puller's period is lower than alarm's period, then
+        // ignore other alarms
+        boolean isFirstNotification = new Interval(
+            startTime.minusHours(hours.getHours()),
+            startTime.minusHours(hours.getHours()).plusMillis(periodMilli)
+        ).containsNow();
+
+        return isInCountdownInterval && isFirstNotification;
     }
 
     @Override
@@ -243,14 +251,14 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
     }
 
     @Override
-    public void engineAlarms(Action<Lesson> twoHourAlarm, Action<Lesson> dayAlarm) {
+    public void engineAlarms(int periodMilli, Action<Lesson> twoHourAlarm, Action<Lesson> dayAlarm) {
         getUpcoming(
             (lesson) -> {
                 if (lesson == null) {
                     return; // No upcoming lesson
                 }
 
-                if (_isWithinInterval(lesson, Hours.TWO)) {
+                if (_shouldBeNotified(periodMilli, lesson, Hours.TWO)) {
                     TwoHourNotificationPreference pref = _preferenceBusiness.getTwoHourReminderPreference();
 
                     switch (pref) {
@@ -279,7 +287,7 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
                     }
                 }
 
-                if (_isWithinInterval(lesson, Hours.hours(24))) {
+                if (_shouldBeNotified(periodMilli, lesson, Hours.hours(24))) {
                     DayNotificationPreference pref = _preferenceBusiness
                         .getDayReminderPreference();
 

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    style="@style/Header"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <ImageView
+        android:id="@+id/fragment_class_details_header_back"
+        android:src="@drawable/ic_back"
+        style="@style/HeaderIcon"
+        />
+
+    <ImageView
+        android:id="@+id/fragment_class_details_header_share"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_share"
+        style="@style/HeaderIcon"
+        />
+
+</RelativeLayout>

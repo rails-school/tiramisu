@@ -21,7 +21,7 @@ android {
     buildTypes {
         debug {
             debuggable true
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             testCoverageEnabled true
         }
@@ -33,6 +33,7 @@ android {
     }
 
     productFlavors {
+        app
         unitTest // Creates a new scope which wraps only unit tests
     }
 
@@ -51,6 +52,7 @@ android {
 
     // Prevent conflicts between Roboelectric's dependencies
     packagingOptions {
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
         exclude 'META-INF/DEPENDENCIES.txt'
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/NOTICE.txt'
@@ -76,7 +78,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.0.0'
     // Chocolatine
-    compile(name: 'chocolatine-base', ext: 'aar')
+    compile(name: 'chocolatine-base-0.1.0', ext: 'aar')
     // Espresso
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'
     androidTestCompile 'com.android.support.test:testing-support-lib:0.1'
@@ -109,6 +111,20 @@ dependencies {
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.jakewharton:butterknife:6.1.0'
     compile 'de.greenrobot:eventbus:2.4.0'
+    compile('de.keyboardsurfer.android.widget:crouton:1.8.5@aar') {
+        // https://github.com/keyboardsurfer/Crouton
+        exclude group: 'com.google.android', module: 'support-v4'
+    }
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile 'com.daimajia.easing:library:1.0.1@aar'
+    compile 'com.daimajia.androidanimations:library:1.1.3@aar'
+    compile 'io.realm:realm-android:0.80.0'
+    compile 'com.makeramen:roundedimageview:1.5.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'joda-time:joda-time:2.7'
+    compile 'com.orhanobut:dialogplus:1.4@aar'
+    compile 'com.github.castorflex.smoothprogressbar:library-circular:1.1.0'
+    compile 'com.github.nkzawa:socket.io-client:0.4.2'
 }
 
 // Using lambda functions

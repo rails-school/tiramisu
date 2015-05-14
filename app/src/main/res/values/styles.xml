@@ -1,8 +1,28 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="android:Theme.Holo.Light.NoActionBar.Fullscreen">
         <!-- Customize your theme here. -->
+    </style>
+
+    <style name="HeaderWrapper">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/landing_header_size</item>
+    </style>
+
+    <style name="Header" parent="MatchParentWrapContent">
+        <item name="android:padding">@dimen/medium_margin</item>
+
+        <item name="android:background">@color/red</item>
+    </style>
+
+    <style name="HeaderIcon">
+        <item name="android:layout_width">@dimen/medium_ic</item>
+        <item name="android:layout_height">@dimen/medium_ic</item>
+        <item name="android:layout_centerVertical">true</item>
+
+        <item name="android:layout_marginLeft">@dimen/medium_margin</item>
+        <item name="android:layout_marginRight">@dimen/medium_margin</item>
     </style>
 
 </resources>

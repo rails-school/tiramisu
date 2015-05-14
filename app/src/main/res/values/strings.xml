@@ -1,8 +1,37 @@
 <resources>
-    <string name="app_name">Tiramisu</string>
+    <string name="app_name">Rails School</string>
 
-    <string name="api_endpoint">https://www.railsschool.org/</string>
+    <string name="api_endpoint">https://www.railsschool.org</string>
+    <!--<string name="api_endpoint">http://192.168.50.238:3000</string>-->
 
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="no_attendee">Be the first to join this class!</string>
+    <string name="one_attendee">1 student attends this class</string>
+    <string name="multi_attendees">%1$d students attend this class</string>
+
+    <string name="processing">Processing...</string>
+    <string name="updated_preference">Updated!</string>
+    <string name="saved_confirmation">Saved!</string>
+
+    <string name="attend_class">I\'m in!</string>
+    <string name="remove_attendance">Nah, I came around.</string>
+
+    <string name="reminder_two_hours">In two hours</string>
+    <string name="reminder_next_day">Tomorrow</string>
+
+    <string name="settings_account_label">Account</string>
+    <string name="settings_email_placeholder">Email</string>
+    <string name="settings_password_placeholder">Password</string>
+    <string name="settings_submit_credentials">Remember me</string>
+    <string name="settings_invalid_credentials">
+        Your username or password is invalid.
+    </string>
+
+    <string name="settings_reminder_label">Alert settings</string>
+    <string name="settings_reminder_day">24 hour reminder</string>
+    <string name="settings_reminder_two_hour">2 hour reminder</string>
+    <string name="settings_lesson_alert">New lesson alert</string>
+
+    <string name="settings_reminder_frequence_always">Always</string>
+    <string name="settings_remider_frequence_attending">Only if attending</string>
+    <string name="settings_reminder_frequence_never">Never</string>
 </resources>

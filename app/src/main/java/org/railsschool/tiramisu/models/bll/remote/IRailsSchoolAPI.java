@@ -1,31 +1,81 @@
 package org.railsschool.tiramisu.models.bll.remote;
 
 import org.railsschool.tiramisu.models.beans.Lesson;
-import org.railsschool.tiramisu.models.beans.SchoolClass;
 import org.railsschool.tiramisu.models.beans.User;
+import org.railsschool.tiramisu.models.beans.Venue;
+import org.railsschool.tiramisu.models.bll.structs.CheckCredentialsRequest;
+import org.railsschool.tiramisu.models.bll.structs.SchoolClass;
 
 import java.util.List;
 
 import retrofit.Callback;
+import retrofit.http.Body;
 import retrofit.http.GET;
+import retrofit.http.POST;
 import retrofit.http.Path;
 
 /**
  * @class IRailsSchoolAPI
- * @brief
+ * @brief API offered by RailsSchool
  */
 public interface IRailsSchoolAPI {
-    public final static String LESSON_ROOT = "/lessons";
-    public final static String USER_ROOT   = "/users";
+    String LESSON_ROOT = "/l";
+    String USER_ROOT   = "/users";
+    String VENUE_ROOT  = "/venues";
 
-    public final static String FORMAT = ".json";
+    String FORMAT = ".json";
 
-    @GET(LESSON_ROOT + FORMAT)
-    public void getLessons(Callback<List<Lesson>> callback);
+    //region Lessons
 
-    @GET(LESSON_ROOT + "/{id}" + FORMAT)
-    public void getLesson(@Path("id") int id, Callback<SchoolClass> callback);
+    @GET(LESSON_ROOT + "/future/slugs" + FORMAT)
+    void getFutureLessonSlugs(Callback<List<String>> callback);
+
+    @GET(LESSON_ROOT + "/future/slugs/{school}" + FORMAT)
+    void getFutureLessonSlugs(@Path("school") int schoolId, Callback<List<String>> callback);
+
+    @GET(LESSON_ROOT + "/{slug}" + FORMAT)
+    void getLesson(@Path("slug") String slug, Callback<Lesson> callback);
+
+    @GET(LESSON_ROOT + "/{slug}" + FORMAT)
+    void getSchoolClass(@Path("slug") String slug, Callback<SchoolClass> callback);
+
+    @GET(LESSON_ROOT + "/upcoming" + FORMAT)
+    void getUpcomingLesson(Callback<Lesson> callback);
+
+    @GET(LESSON_ROOT + "/upcoming/{school}" + FORMAT)
+    void getUpcomingLesson(@Path("school") int schoolId, Callback<Lesson> callback);
+
+    //endregion
+
+    //region Users
 
     @GET(USER_ROOT + "/{id}" + FORMAT)
-    public void getUser(@Path("id") int id, Callback<User> callback);
+    void getUser(@Path("id") int id, Callback<User> callback);
+
+    @POST(USER_ROOT + "/sign_in" + FORMAT)
+    void checkCredentials(
+        @Body CheckCredentialsRequest request,
+        Callback<User> callback);
+
+    //endregion
+
+    //region Venues
+
+    @GET(VENUE_ROOT + "/{id}" + FORMAT)
+    void getVenue(@Path("id") int id, Callback<Venue> callback);
+
+    //endregion
+
+    //region Attendances
+
+    @GET("/attending_lesson/{slug}" + FORMAT)
+    void isAttending(@Path("slug") String lessonSlug, Callback<Boolean> callback);
+
+    @POST("/rsvp/{id}" + FORMAT)
+    void attend(@Path("id") int lessonId, Callback<Void> callback);
+
+    @POST("/rsvp/{id}/delete" + FORMAT)
+    void removeAttendance(@Path("id") int lessonId, Callback<Void> callback);
+
+    //endregion
 }

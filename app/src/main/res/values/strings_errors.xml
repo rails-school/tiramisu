@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_default">
+        Whoops! Something wrong happened. Please try again.
+    </string>
+
+    <string name="error_no_connection">
+        You seem to have no Internet connection. Please try again.
+    </string>
+
+    <string name="error_not_signed_in">
+        You need to sign in before attending to any lesson.
+    </string>
+</resources>

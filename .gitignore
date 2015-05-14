@@ -8,3 +8,8 @@
 /build
 # IMLs are safe to ignore as long as your project is entirely managed by gradle and maven
 /**/*.iml
+.idea/codeStyleSettings.xml
+
+app/src/main/res/values/strings_socket_config.xml
+
+pubnub.log

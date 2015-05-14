@@ -1,0 +1,21 @@
+<LinearLayout
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MatchParent.Vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <FrameLayout
+        android:id="@+id/main_activity_header"
+        android:name="org.railsschool.tiramisu.views.fragments.LandingHeaderFragment"
+        style="@style/HeaderWrapper"
+        tools:background="@color/red"
+        />
+
+    <FrameLayout
+        android:id="@+id/main_activity_body"
+        android:name="org.railsschool.tiramisu.views.fragments.ClassListFragment"
+        style="@style/FullVerticalStretchable"
+        tools:background="@color/gray"
+        />
+
+</LinearLayout>

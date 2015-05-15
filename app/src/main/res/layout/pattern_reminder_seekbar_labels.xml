@@ -14,7 +14,7 @@
     <TextView
         android:id="@+id/pattern_reminder_seekbar_attending"
         android:gravity="center"
-        android:text="@string/settings_remider_frequence_attending"
+        android:text="@string/settings_reminder_frequence_attending"
         style="@style/FragmentSettingsSeekBarLabel"
         />
 

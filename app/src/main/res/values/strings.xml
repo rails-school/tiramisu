@@ -32,6 +32,6 @@
     <string name="settings_lesson_alert">New lesson alert</string>
 
     <string name="settings_reminder_frequence_always">Always</string>
-    <string name="settings_remider_frequence_attending">Only if attending</string>
+    <string name="settings_reminder_frequence_attending">Only if attending</string>
     <string name="settings_reminder_frequence_never">Never</string>
 </resources>

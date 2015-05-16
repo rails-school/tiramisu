@@ -220,25 +220,20 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
 
         tryConnecting(
             (api) -> {
+                BLLCallback<Lesson> callback = new BLLCallback<Lesson>(failure) {
+                    @Override
+                    public void success(Lesson lesson, Response response) {
+                        success.run(lesson);
+                    }
+                };
+
                 if (_userBusiness.isSignedIn()) {
                     api.getUpcomingLesson(
                         _userBusiness.getCurrentUserSchoolId(),
-                        new BLLCallback<Lesson>(failure) {
-                            @Override
-                            public void success(Lesson lesson, Response response) {
-                                success.run(lesson);
-                            }
-                        }
+                        callback
                     );
                 } else {
-                    api.getUpcomingLesson(
-                        new BLLCallback<Lesson>(failure) {
-                            @Override
-                            public void success(Lesson lesson, Response response) {
-                                success.run(lesson);
-                            }
-                        }
-                    );
+                    api.getUpcomingLesson(callback);
                 }
             },
             failure

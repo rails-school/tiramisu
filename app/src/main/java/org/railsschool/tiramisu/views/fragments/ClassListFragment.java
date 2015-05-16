@@ -32,13 +32,13 @@ public class ClassListFragment extends BaseFragment {
         BusinessFactory
             .provideLesson(getActivity())
             .sortFutureSlugsByDate(
-                (ids) -> {
+                (slugs) -> {
                     done();
                     if (!isAdded()) {
                         return; // Prevent asynchronous conflicts
                     }
 
-                    _list.setAdapter(new ClassAdapter(ids, getActivity()));
+                    _list.setAdapter(new ClassAdapter(slugs, getActivity()));
                     YoYo
                         .with(Techniques.FadeIn)
                         .duration(500)

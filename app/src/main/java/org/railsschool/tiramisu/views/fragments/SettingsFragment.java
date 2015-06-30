@@ -34,28 +34,6 @@ import de.greenrobot.event.EventBus;
  */
 public class SettingsFragment extends BaseFragment {
 
-    /**
-     * @class RestoreCredentialInputEvent
-     * @brief Restores input when device is rotated
-     */
-    private static class RestoreCredentialInputEvent {
-        private String _email;
-        private String _password;
-
-        public RestoreCredentialInputEvent(String email, String password) {
-            this._email = email;
-            this._password = password;
-        }
-
-        public String getEmail() {
-            return _email;
-        }
-
-        public String getPassword() {
-            return _password;
-        }
-    }
-
     @InjectView(R.id.fragment_settings_email)
     EditText _emailField;
 
@@ -264,8 +242,6 @@ public class SettingsFragment extends BaseFragment {
                 }
             }
         );
-
-        EventBus.getDefault().registerSticky(this);
     }
 
     @Override
@@ -273,29 +249,9 @@ public class SettingsFragment extends BaseFragment {
         String email, password;
         super.onPause();
 
-        EventBus.getDefault().unregister(this);
-
-        // Before pausing, save input if any
-        email = _emailField.getText().toString();
-        password = _passwordField.getText().toString();
-        if (email != null && !email.isEmpty() && password != null &&
-            !password.isEmpty()) {
-            EventBus.getDefault().postSticky(
-                new RestoreCredentialInputEvent(
-                    email,
-                    password
-                )
-            );
-        }
-
         _twoHourReminderBar.setOnSeekBarChangeListener(null);
         _dayReminderBar.setOnSeekBarChangeListener(null);
         _lessonAlertSwitch.setOnCheckedChangeListener(null);
-    }
-
-    public void onEventMainThread(RestoreCredentialInputEvent event) {
-        _emailField.setText(event.getEmail());
-        _passwordField.setText(event.getPassword());
     }
 
     @OnClick(R.id.fragment_settings_submit_credentials)

@@ -40,22 +40,6 @@ public class MainActivity extends BaseActivity {
         SETTINGS
     }
 
-    /**
-     * @class RestoreDisplayEvent
-     * @brief Raised if device is rotated
-     */
-    private static class RestoreDisplayEvent {
-        private Display _previousDisplay;
-
-        public RestoreDisplayEvent(Display display) {
-            this._previousDisplay = display;
-        }
-
-        public Display getPreviousDisplay() {
-            return _previousDisplay;
-        }
-    }
-
     private Display _currentDisplay;
 
     /**
@@ -117,7 +101,7 @@ public class MainActivity extends BaseActivity {
 
         // By default, sets landing
         _setLandingContent();
-        EventBus.getDefault().registerSticky(this);
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -141,23 +125,6 @@ public class MainActivity extends BaseActivity {
         super.onDestroy();
 
         EventBus.getDefault().unregister(this);
-        EventBus.getDefault().postSticky(new RestoreDisplayEvent(_currentDisplay));
-    }
-
-    /**
-     * Handled between onCreate and onResume onCreate sets landing screen If lesson slug has been
-     * provided (from alarm/notif), it will be triggered after this
-     *
-     * @param event
-     */
-    public void onEventMainThread(RestoreDisplayEvent event) {
-        if (event.getPreviousDisplay() == Display.LANDING) {
-            _setLandingContent();
-        } else if (event.getPreviousDisplay() == Display.SETTINGS) {
-            _setSettingsContent();
-        } else {
-            _setClassDetailsContent();
-        }
     }
 
     @Override

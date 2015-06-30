@@ -11,6 +11,7 @@
     <string name="processing">Processing...</string>
     <string name="updated_preference">Updated!</string>
     <string name="saved_confirmation">Saved!</string>
+    <string name="log_out_confirmation">Successfully logged out</string>
 
     <string name="attend_class">RSVP!</string>
     <string name="remove_attendance">unRSVP</string>

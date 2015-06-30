@@ -157,10 +157,6 @@ public class SettingsFragment extends BaseFragment {
                         .updateTwoHourReminderPreference(pref);
 
                     _isCurrentlySettingTwoHourReminder = false;
-
-                    EventBus.getDefault().post(
-                        new ConfirmationEvent(getString(R.string.updated_preference))
-                    );
                 }
 
                 @Override
@@ -195,10 +191,6 @@ public class SettingsFragment extends BaseFragment {
                         .updateDayReminderPreference(pref);
 
                     _isCurrentlySettingDayReminder = false;
-
-                    EventBus.getDefault().post(
-                        new ConfirmationEvent(getString(R.string.updated_preference))
-                    );
                 }
 
                 @Override
@@ -228,10 +220,6 @@ public class SettingsFragment extends BaseFragment {
                         .providePreference(getActivity())
                         .updateLessonAlertPreference(buttonView.isChecked());
                     _isCurrentlySettingLessonAlert = false;
-
-                    EventBus.getDefault().post(
-                        new ConfirmationEvent(getString(R.string.updated_preference))
-                    );
                 }
             }
         );
@@ -312,7 +300,7 @@ public class SettingsFragment extends BaseFragment {
             .logOut(
                 () -> {
                     EventBus.getDefault().post(
-                        new ConfirmationEvent(getString(R.string.saved_confirmation))
+                        new ConfirmationEvent(getString(R.string.log_out_confirmation))
                     );
                     _submitButton.setVisibility(View.VISIBLE);
                     _logOutButton.setVisibility(View.GONE);

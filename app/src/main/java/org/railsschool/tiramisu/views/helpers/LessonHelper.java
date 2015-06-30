@@ -15,11 +15,13 @@ public class LessonHelper {
      * @return
      */
     public static String removeMarkdown(Lesson lesson) {
-        // TODO: improve this method
-        // Currently, only links are removed from the string
+        // TODO: improve this method by removing all tags
         String description = lesson.getDescription();
 
+        // Remove links
         description = description.replaceAll("\\[(.+?)\\]\\((.+?)\\)", "$1");
+        // Remove emphasis
+        description = description.replaceAll("[_\\*]{1,2}(.+?)[_\\*]{1,2}", "$1");
 
         return description;
     }

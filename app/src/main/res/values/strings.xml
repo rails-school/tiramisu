@@ -18,7 +18,7 @@
     <string name="reminder_two_hours">In two hours</string>
     <string name="reminder_next_day">Tomorrow</string>
 
-    <string name="settings_account_label">Account</string>
+    <string name="settings_account_label">User Information</string>
     <string name="settings_email_placeholder">Email</string>
     <string name="settings_password_placeholder">Password</string>
     <string name="settings_submit_credentials">Remember me</string>
@@ -27,10 +27,10 @@
         Your username or password is invalid.
     </string>
 
-    <string name="settings_reminder_label">Alert settings</string>
-    <string name="settings_reminder_day">24 hour reminder</string>
-    <string name="settings_reminder_two_hour">2 hour reminder</string>
-    <string name="settings_lesson_alert">New lesson alert</string>
+    <string name="settings_reminder_label">Notification of Upcoming Workshops</string>
+    <string name="settings_reminder_day">24-Hour Reminder</string>
+    <string name="settings_reminder_two_hour">2-Hour Reminder</string>
+    <string name="settings_lesson_alert">New Workshop Alert</string>
 
     <string name="settings_reminder_frequence_always">Always</string>
     <string name="settings_reminder_frequence_attending">Only if attending</string>

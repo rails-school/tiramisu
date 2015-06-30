@@ -24,6 +24,7 @@ import org.railsschool.tiramisu.models.bll.structs.SchoolClass;
 import org.railsschool.tiramisu.views.events.ClassDetailsInitEvent;
 import org.railsschool.tiramisu.views.events.InformationEvent;
 import org.railsschool.tiramisu.views.helpers.DateHelper;
+import org.railsschool.tiramisu.views.helpers.LessonHelper;
 import org.railsschool.tiramisu.views.helpers.PicassoHelper;
 import org.railsschool.tiramisu.views.helpers.UserHelper;
 
@@ -200,7 +201,7 @@ public class ClassDetailsFragment extends BaseFragment {
                     _teacher.setText(UserHelper.getDisplayedName(teacher));
 
                     _setAttendees();
-                    _description.setText(schoolClass.getLesson().getDescription());
+                    _description.setText(LessonHelper.removeMarkdown(schoolClass.getLesson()));
                 },
                 this::publishError
             );

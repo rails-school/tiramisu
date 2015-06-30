@@ -89,6 +89,16 @@ class UserDAO extends BaseDAO implements IUserDAO {
         return getCurrentUserEmail() != null && getCurrentUserToken() != null;
     }
 
+    @Override
+    public void logOut() {
+        _preferenceDAL
+            .edit()
+            .remove(EMAIL_KEY)
+            .remove(TOKEN_KEY)
+            .remove(SCHOOL_ID_KEY)
+            .commit();
+    }
+
     public void create(User user) {
         getDAL().executeTransaction(
             (dal) -> {

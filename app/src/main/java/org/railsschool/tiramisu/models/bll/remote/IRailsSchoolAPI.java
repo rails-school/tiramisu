@@ -10,6 +10,7 @@ import java.util.List;
 
 import retrofit.Callback;
 import retrofit.http.Body;
+import retrofit.http.DELETE;
 import retrofit.http.GET;
 import retrofit.http.POST;
 import retrofit.http.Path;
@@ -56,6 +57,9 @@ public interface IRailsSchoolAPI {
     void checkCredentials(
         @Body CheckCredentialsRequest request,
         Callback<User> callback);
+
+    @DELETE(USER_ROOT + "/sign_out" + FORMAT)
+    void logOut(Callback<Void> callback);
 
     //endregion
 

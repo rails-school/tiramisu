@@ -33,7 +33,9 @@
         <item name="android:background">@color/soft_gray</item>
     </style>
 
-    <style name="FragmentSettingsSubmit" parent="WrapContent">
+    <style name="FragmentSettingsButton" parent="WrapContent">
+        <item name="android:layout_gravity">right</item>
+
         <item name="android:paddingTop">@dimen/medium_margin</item>
         <item name="android:paddingBottom">@dimen/medium_margin</item>
         <item name="android:paddingLeft">@dimen/xlarge_margin</item>
@@ -42,8 +44,15 @@
 
         <item name="android:textSize">@dimen/subhead</item>
         <item name="android:textColor">@color/white</item>
+    </style>
 
+    <style name="FragmentSettingsSubmit" parent="FragmentSettingsButton">
         <item name="android:background">@color/green</item>
+    </style>
+
+    <style name="FragmentSettingsLogout" parent="FragmentSettingsButton">
+        <item name="android:visibility">gone</item>
+        <item name="android:background">@color/red</item>
     </style>
 
     <style name="FragmentSettingsSeparator">

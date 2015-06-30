@@ -11,7 +11,6 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Switch;
 
-import com.coshx.chocolatine.helpers.DeviceHelper;
 import com.coshx.chocolatine.utils.actions.Action0;
 
 import org.railsschool.tiramisu.R;
@@ -34,28 +33,6 @@ import de.greenrobot.event.EventBus;
  */
 public class SettingsFragment extends BaseFragment {
 
-    /**
-     * @class RestoreCredentialInputEvent
-     * @brief Restores input when device is rotated
-     */
-    private static class RestoreCredentialInputEvent {
-        private String _email;
-        private String _password;
-
-        public RestoreCredentialInputEvent(String email, String password) {
-            this._email = email;
-            this._password = password;
-        }
-
-        public String getEmail() {
-            return _email;
-        }
-
-        public String getPassword() {
-            return _password;
-        }
-    }
-
     @InjectView(R.id.fragment_settings_email)
     EditText _emailField;
 
@@ -65,6 +42,9 @@ public class SettingsFragment extends BaseFragment {
     @InjectView(R.id.fragment_settings_submit_credentials)
     Button _submitButton;
 
+    @InjectView(R.id.fragment_settings_log_out)
+    Button _logOutButton;
+
     @InjectView(R.id.fragment_settings_two_hour_reminder)
     SeekBar _twoHourReminderBar;
 
@@ -73,12 +53,6 @@ public class SettingsFragment extends BaseFragment {
 
     @InjectView(R.id.fragment_settings_lesson_alert)
     Switch _lessonAlertSwitch;
-
-    // Avoids asynchronous conflicts (spinner touched again before
-    // callback has been triggered)
-    private boolean _isCurrentlySettingTwoHourReminder;
-    private boolean _isCurrentlySettingDayReminder;
-    private boolean _isCurrentlySettingLessonAlert;
 
     private boolean _isProcessingCredentials;
 
@@ -114,8 +88,12 @@ public class SettingsFragment extends BaseFragment {
             _emailField.setText(
                 BusinessFactory.provideUser(getActivity()).getCurrentUserEmail()
             );
-
             _passwordField.setText(getString(R.string.app_name));
+            _submitButton.setVisibility(View.GONE);
+            _logOutButton.setVisibility(View.VISIBLE);
+        } else {
+            _submitButton.setVisibility(View.VISIBLE);
+            _logOutButton.setVisibility(View.GONE);
         }
     }
 
@@ -141,10 +119,6 @@ public class SettingsFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
 
-        _isCurrentlySettingTwoHourReminder = false;
-        _isCurrentlySettingDayReminder = false;
-        _isCurrentlySettingLessonAlert = false;
-
         // On resume, set spinner values from existing value in DB
         _setTwoHourReminderSeekBar();
         _setDayReminderSeekBar();
@@ -159,26 +133,11 @@ public class SettingsFragment extends BaseFragment {
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     TwoHourNotificationPreference pref;
 
-                    if (_isCurrentlySettingTwoHourReminder) {
-                        // Prevent similar operations
-                        // Possible for asynchronous operation needed below
-                        return;
-                    }
-
-                    DeviceHelper.lockOrientation(getActivity());
-                    _isCurrentlySettingTwoHourReminder = true;
                     pref = TwoHourNotificationPreference.fromInt(seekBar.getProgress());
                     _twoHourSeekbarLabels.update(pref);
                     BusinessFactory
                         .providePreference(getActivity())
                         .updateTwoHourReminderPreference(pref);
-
-                    DeviceHelper.unlockOrientation(getActivity());
-                    _isCurrentlySettingTwoHourReminder = false;
-
-                    EventBus.getDefault().post(
-                        new ConfirmationEvent(getString(R.string.updated_preference))
-                    );
                 }
 
                 @Override
@@ -199,26 +158,11 @@ public class SettingsFragment extends BaseFragment {
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     DayNotificationPreference pref;
 
-                    if (_isCurrentlySettingDayReminder) {
-                        // Prevent similar operations
-                        // Possible for asynchronous operation needed below
-                        return;
-                    }
-
-                    DeviceHelper.lockOrientation(getActivity());
-                    _isCurrentlySettingDayReminder = true;
                     pref = DayNotificationPreference.fromInt(seekBar.getProgress());
                     _daySeekbarLabels.update(pref);
                     BusinessFactory
                         .providePreference(getActivity())
                         .updateDayReminderPreference(pref);
-
-                    DeviceHelper.unlockOrientation(getActivity());
-                    _isCurrentlySettingDayReminder = false;
-
-                    EventBus.getDefault().post(
-                        new ConfirmationEvent(getString(R.string.updated_preference))
-                    );
                 }
 
                 @Override
@@ -237,28 +181,12 @@ public class SettingsFragment extends BaseFragment {
             new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (_isCurrentlySettingLessonAlert) {
-                        // Prevent similar operations
-                        // Possible for asynchronous operation needed below
-                        return;
-                    }
-
-                    DeviceHelper.lockOrientation(getActivity());
-                    _isCurrentlySettingLessonAlert = true;
                     BusinessFactory
                         .providePreference(getActivity())
                         .updateLessonAlertPreference(buttonView.isChecked());
-                    DeviceHelper.unlockOrientation(getActivity());
-                    _isCurrentlySettingLessonAlert = false;
-
-                    EventBus.getDefault().post(
-                        new ConfirmationEvent(getString(R.string.updated_preference))
-                    );
                 }
             }
         );
-
-        EventBus.getDefault().registerSticky(this);
     }
 
     @Override
@@ -266,29 +194,9 @@ public class SettingsFragment extends BaseFragment {
         String email, password;
         super.onPause();
 
-        EventBus.getDefault().unregister(this);
-
-        // Before pausing, save input if any
-        email = _emailField.getText().toString();
-        password = _passwordField.getText().toString();
-        if (email != null && !email.isEmpty() && password != null &&
-            !password.isEmpty()) {
-            EventBus.getDefault().postSticky(
-                new RestoreCredentialInputEvent(
-                    email,
-                    password
-                )
-            );
-        }
-
         _twoHourReminderBar.setOnSeekBarChangeListener(null);
         _dayReminderBar.setOnSeekBarChangeListener(null);
         _lessonAlertSwitch.setOnCheckedChangeListener(null);
-    }
-
-    public void onEventMainThread(RestoreCredentialInputEvent event) {
-        _emailField.setText(event.getEmail());
-        _passwordField.setText(event.getPassword());
     }
 
     @OnClick(R.id.fragment_settings_submit_credentials)
@@ -308,10 +216,8 @@ public class SettingsFragment extends BaseFragment {
             _isProcessingCredentials = false;
             _submitButton.setBackgroundColor(getResources().getColor(R.color.green));
             _submitButton.setTextColor(getResources().getColor(R.color.white));
-            DeviceHelper.unlockOrientation(getActivity());
         };
 
-        DeviceHelper.lockOrientation(getActivity());
         BusinessFactory
             .provideUser(getActivity())
             .checkCredentials(
@@ -322,6 +228,49 @@ public class SettingsFragment extends BaseFragment {
                         new ConfirmationEvent(getString(R.string.saved_confirmation))
                     );
                     KeyboardHelper.hide(getActivity());
+                    _submitButton.setVisibility(View.GONE);
+                    _logOutButton.setVisibility(View.VISIBLE);
+
+                    finallyCallback.run();
+                },
+                (error) -> {
+                    publishError(error);
+                    finallyCallback.run();
+                }
+            );
+    }
+
+    @OnClick(R.id.fragment_settings_log_out)
+    public void onLogout(View view) {
+        Action0 finallyCallback;
+
+        if (_isProcessingCredentials) { // Operation already in progress
+            return;
+        }
+
+        _isProcessingCredentials = true;
+        EventBus.getDefault().post(new InformationEvent(getString(R.string.processing)));
+        _logOutButton.setBackgroundColor(getResources().getColor(R.color.white));
+        _logOutButton.setTextColor(getResources().getColor(R.color.red));
+
+        finallyCallback = () -> {
+            _isProcessingCredentials = false;
+            _logOutButton.setBackgroundColor(getResources().getColor(R.color.red));
+            _logOutButton.setTextColor(getResources().getColor(R.color.white));
+        };
+
+        BusinessFactory
+            .provideUser(getActivity())
+            .logOut(
+                () -> {
+                    EventBus.getDefault().post(
+                        new ConfirmationEvent(getString(R.string.log_out_confirmation))
+                    );
+                    _submitButton.setVisibility(View.VISIBLE);
+                    _logOutButton.setVisibility(View.GONE);
+                    _emailField.setText(null);
+                    _passwordField.setText(null);
+
                     finallyCallback.run();
                 },
                 (error) -> {

@@ -159,7 +159,7 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
 
                                 if (h.getName() != null && h.getName().equals("Set-Cookie")) {
                                     Pattern p = Pattern.compile(
-                                            "remember_user_token=(.+)"
+                                        "remember_user_token=(.+)"
                                     );
                                     Matcher m = p.matcher(h.getValue());
 
@@ -198,6 +198,22 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
                         }
                     }
                 );
+            },
+            failure
+        );
+    }
+
+    public void logOut(Action0 success, Action<String> failure) {
+        tryConnecting(
+            (api) -> {
+                BLLCallback<Void> callback = new BLLCallback<Void>(failure) {
+                    @Override
+                    public void success(Void aVoid, Response response) {
+                        _userDAO.logOut();
+                        success.run();
+                    }
+                };
+                api.logOut(callback);
             },
             failure
         );

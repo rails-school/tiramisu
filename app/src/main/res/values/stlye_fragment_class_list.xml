@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="FragmentClassList" parent="MatchParent.Vertical">
+    <style name="FragmentClassList" parent="MatchParent">
         <item name="android:background">@color/black</item>
+    </style>
+
+    <style name="FragmentClassListNoClass" parent="MatchParentWrapContent">
+        <item name="android:padding">@dimen/layout_margin</item>
+
+        <item name="android:textColor">@color/soft_gray</item>
+        <item name="android:textSize">@dimen/title</item>
+        <item name="android:gravity">center_horizontal</item>
+
+        <item name="android:visibility">gone</item>
     </style>
 
 </resources>

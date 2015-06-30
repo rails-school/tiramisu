@@ -54,12 +54,6 @@ public class SettingsFragment extends BaseFragment {
     @InjectView(R.id.fragment_settings_lesson_alert)
     Switch _lessonAlertSwitch;
 
-    // Avoids asynchronous conflicts (spinner touched again before
-    // callback has been triggered)
-    private boolean _isCurrentlySettingTwoHourReminder;
-    private boolean _isCurrentlySettingDayReminder;
-    private boolean _isCurrentlySettingLessonAlert;
-
     private boolean _isProcessingCredentials;
 
     private ReminderSeekbarLabelPattern _twoHourSeekbarLabels;
@@ -125,10 +119,6 @@ public class SettingsFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
 
-        _isCurrentlySettingTwoHourReminder = false;
-        _isCurrentlySettingDayReminder = false;
-        _isCurrentlySettingLessonAlert = false;
-
         // On resume, set spinner values from existing value in DB
         _setTwoHourReminderSeekBar();
         _setDayReminderSeekBar();
@@ -143,20 +133,11 @@ public class SettingsFragment extends BaseFragment {
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     TwoHourNotificationPreference pref;
 
-                    if (_isCurrentlySettingTwoHourReminder) {
-                        // Prevent similar operations
-                        // Possible for asynchronous operation needed below
-                        return;
-                    }
-
-                    _isCurrentlySettingTwoHourReminder = true;
                     pref = TwoHourNotificationPreference.fromInt(seekBar.getProgress());
                     _twoHourSeekbarLabels.update(pref);
                     BusinessFactory
                         .providePreference(getActivity())
                         .updateTwoHourReminderPreference(pref);
-
-                    _isCurrentlySettingTwoHourReminder = false;
                 }
 
                 @Override
@@ -177,20 +158,11 @@ public class SettingsFragment extends BaseFragment {
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     DayNotificationPreference pref;
 
-                    if (_isCurrentlySettingDayReminder) {
-                        // Prevent similar operations
-                        // Possible for asynchronous operation needed below
-                        return;
-                    }
-
-                    _isCurrentlySettingDayReminder = true;
                     pref = DayNotificationPreference.fromInt(seekBar.getProgress());
                     _daySeekbarLabels.update(pref);
                     BusinessFactory
                         .providePreference(getActivity())
                         .updateDayReminderPreference(pref);
-
-                    _isCurrentlySettingDayReminder = false;
                 }
 
                 @Override
@@ -209,17 +181,9 @@ public class SettingsFragment extends BaseFragment {
             new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (_isCurrentlySettingLessonAlert) {
-                        // Prevent similar operations
-                        // Possible for asynchronous operation needed below
-                        return;
-                    }
-
-                    _isCurrentlySettingLessonAlert = true;
                     BusinessFactory
                         .providePreference(getActivity())
                         .updateLessonAlertPreference(buttonView.isChecked());
-                    _isCurrentlySettingLessonAlert = false;
                 }
             }
         );

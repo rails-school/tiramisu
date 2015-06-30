@@ -22,6 +22,7 @@
     <string name="settings_email_placeholder">Email</string>
     <string name="settings_password_placeholder">Password</string>
     <string name="settings_submit_credentials">Remember me</string>
+    <string name="settings_log_out">Log out</string>
     <string name="settings_invalid_credentials">
         Your username or password is invalid.
     </string>

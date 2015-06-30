@@ -51,8 +51,9 @@ public interface IUserBusiness {
      * @param success
      * @param failure
      */
-    void checkCredentials(String email, String password, Action0 success,
-                          Action<String> failure);
+    void checkCredentials(String email, String password, Action0 success, Action<String> failure);
+
+    void logOut(Action0 success, Action<String> failure);
 
     /**
      * Returns true if user is currently signed in

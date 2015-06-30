@@ -65,6 +65,9 @@ public class SettingsFragment extends BaseFragment {
     @InjectView(R.id.fragment_settings_submit_credentials)
     Button _submitButton;
 
+    @InjectView(R.id.fragment_settings_log_out)
+    Button _logOutButton;
+
     @InjectView(R.id.fragment_settings_two_hour_reminder)
     SeekBar _twoHourReminderBar;
 
@@ -114,8 +117,12 @@ public class SettingsFragment extends BaseFragment {
             _emailField.setText(
                 BusinessFactory.provideUser(getActivity()).getCurrentUserEmail()
             );
-
             _passwordField.setText(getString(R.string.app_name));
+            _submitButton.setVisibility(View.GONE);
+            _logOutButton.setVisibility(View.VISIBLE);
+        } else {
+            _submitButton.setVisibility(View.VISIBLE);
+            _logOutButton.setVisibility(View.GONE);
         }
     }
 
@@ -322,6 +329,51 @@ public class SettingsFragment extends BaseFragment {
                         new ConfirmationEvent(getString(R.string.saved_confirmation))
                     );
                     KeyboardHelper.hide(getActivity());
+                    _submitButton.setVisibility(View.GONE);
+                    _logOutButton.setVisibility(View.VISIBLE);
+
+                    finallyCallback.run();
+                },
+                (error) -> {
+                    publishError(error);
+                    finallyCallback.run();
+                }
+            );
+    }
+
+    @OnClick(R.id.fragment_settings_log_out)
+    public void onLogout(View view) {
+        Action0 finallyCallback;
+
+        if (_isProcessingCredentials) { // Operation already in progress
+            return;
+        }
+
+        _isProcessingCredentials = true;
+        EventBus.getDefault().post(new InformationEvent(getString(R.string.processing)));
+        _logOutButton.setBackgroundColor(getResources().getColor(R.color.white));
+        _logOutButton.setTextColor(getResources().getColor(R.color.red));
+
+        finallyCallback = () -> {
+            _isProcessingCredentials = false;
+            _logOutButton.setBackgroundColor(getResources().getColor(R.color.red));
+            _logOutButton.setTextColor(getResources().getColor(R.color.white));
+            DeviceHelper.unlockOrientation(getActivity());
+        };
+
+        DeviceHelper.lockOrientation(getActivity());
+        BusinessFactory
+            .provideUser(getActivity())
+            .logOut(
+                () -> {
+                    EventBus.getDefault().post(
+                        new ConfirmationEvent(getString(R.string.saved_confirmation))
+                    );
+                    _submitButton.setVisibility(View.VISIBLE);
+                    _logOutButton.setVisibility(View.GONE);
+                    _emailField.setText(null);
+                    _passwordField.setText(null);
+
                     finallyCallback.run();
                 },
                 (error) -> {

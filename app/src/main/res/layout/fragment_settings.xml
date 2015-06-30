@@ -2,6 +2,7 @@
 <LinearLayout
     style="@style/MatchParent.Vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     >
 
     <ScrollView
@@ -44,9 +45,15 @@
 
             <Button
                 android:id="@+id/fragment_settings_submit_credentials"
-                android:layout_gravity="right"
                 android:text="@string/settings_submit_credentials"
                 style="@style/FragmentSettingsSubmit"
+                />
+
+            <Button
+                android:id="@+id/fragment_settings_log_out"
+                android:text="@string/settings_log_out"
+                style="@style/FragmentSettingsLogout"
+                tools:visibility="visible"
                 />
 
             <ImageView

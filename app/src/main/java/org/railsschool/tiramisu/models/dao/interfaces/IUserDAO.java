@@ -26,4 +26,6 @@ public interface IUserDAO {
     void setCurrentUserSchoolId(int value);
 
     boolean hasCurrentUser();
+
+    void logOut();
 }

@@ -11,7 +11,6 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Switch;
 
-import com.coshx.chocolatine.helpers.DeviceHelper;
 import com.coshx.chocolatine.utils.actions.Action0;
 
 import org.railsschool.tiramisu.R;
@@ -150,7 +149,6 @@ public class SettingsFragment extends BaseFragment {
                         return;
                     }
 
-                    DeviceHelper.lockOrientation(getActivity());
                     _isCurrentlySettingTwoHourReminder = true;
                     pref = TwoHourNotificationPreference.fromInt(seekBar.getProgress());
                     _twoHourSeekbarLabels.update(pref);
@@ -158,7 +156,6 @@ public class SettingsFragment extends BaseFragment {
                         .providePreference(getActivity())
                         .updateTwoHourReminderPreference(pref);
 
-                    DeviceHelper.unlockOrientation(getActivity());
                     _isCurrentlySettingTwoHourReminder = false;
 
                     EventBus.getDefault().post(
@@ -190,7 +187,6 @@ public class SettingsFragment extends BaseFragment {
                         return;
                     }
 
-                    DeviceHelper.lockOrientation(getActivity());
                     _isCurrentlySettingDayReminder = true;
                     pref = DayNotificationPreference.fromInt(seekBar.getProgress());
                     _daySeekbarLabels.update(pref);
@@ -198,7 +194,6 @@ public class SettingsFragment extends BaseFragment {
                         .providePreference(getActivity())
                         .updateDayReminderPreference(pref);
 
-                    DeviceHelper.unlockOrientation(getActivity());
                     _isCurrentlySettingDayReminder = false;
 
                     EventBus.getDefault().post(
@@ -228,12 +223,10 @@ public class SettingsFragment extends BaseFragment {
                         return;
                     }
 
-                    DeviceHelper.lockOrientation(getActivity());
                     _isCurrentlySettingLessonAlert = true;
                     BusinessFactory
                         .providePreference(getActivity())
                         .updateLessonAlertPreference(buttonView.isChecked());
-                    DeviceHelper.unlockOrientation(getActivity());
                     _isCurrentlySettingLessonAlert = false;
 
                     EventBus.getDefault().post(
@@ -271,10 +264,8 @@ public class SettingsFragment extends BaseFragment {
             _isProcessingCredentials = false;
             _submitButton.setBackgroundColor(getResources().getColor(R.color.green));
             _submitButton.setTextColor(getResources().getColor(R.color.white));
-            DeviceHelper.unlockOrientation(getActivity());
         };
 
-        DeviceHelper.lockOrientation(getActivity());
         BusinessFactory
             .provideUser(getActivity())
             .checkCredentials(
@@ -314,10 +305,8 @@ public class SettingsFragment extends BaseFragment {
             _isProcessingCredentials = false;
             _logOutButton.setBackgroundColor(getResources().getColor(R.color.red));
             _logOutButton.setTextColor(getResources().getColor(R.color.white));
-            DeviceHelper.unlockOrientation(getActivity());
         };
 
-        DeviceHelper.lockOrientation(getActivity());
         BusinessFactory
             .provideUser(getActivity())
             .logOut(

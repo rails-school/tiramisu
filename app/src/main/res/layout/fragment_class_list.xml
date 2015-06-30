@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
     style="@style/FragmentClassList"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     >
+
+    <TextView
+        android:id="@+id/fragment_class_list_no_class"
+        android:layout_centerVertical="true"
+        android:text="@string/class_list_no_class"
+        style="@style/FragmentClassListNoClass"
+        tools:visibility="visible"
+        />
 
     <ListView
         android:id="@+id/fragment_class_list"
-        style="@style/MatchParentWrapContent"
         android:divider="@null"
         android:dividerHeight="0dp"
+        style="@style/MatchParentWrapContent"
         />
 
-</LinearLayout>
+</RelativeLayout>

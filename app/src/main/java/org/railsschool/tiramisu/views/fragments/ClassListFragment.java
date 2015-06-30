@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -24,6 +25,9 @@ import de.greenrobot.event.EventBus;
  * @brief
  */
 public class ClassListFragment extends BaseFragment {
+    @InjectView(R.id.fragment_class_list_no_class)
+    TextView _noClassMsg;
+
     @InjectView(R.id.fragment_class_list)
     ListView _list;
 
@@ -38,11 +42,19 @@ public class ClassListFragment extends BaseFragment {
                         return; // Prevent asynchronous conflicts
                     }
 
-                    _list.setAdapter(new ClassAdapter(slugs, getActivity()));
-                    YoYo
-                        .with(Techniques.FadeIn)
-                        .duration(500)
-                        .playOn(_list);
+                    if (slugs.size() == 0) {
+                        _noClassMsg.setVisibility(View.VISIBLE);
+                        _list.setVisibility(View.GONE);
+                    } else {
+                        _noClassMsg.setVisibility(View.GONE);
+                        _list.setVisibility(View.VISIBLE);
+
+                        _list.setAdapter(new ClassAdapter(slugs, getActivity()));
+                        YoYo
+                            .with(Techniques.FadeIn)
+                            .duration(500)
+                            .playOn(_list);
+                    }
                 },
                 this::publishError
             );

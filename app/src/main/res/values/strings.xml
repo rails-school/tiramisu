@@ -13,6 +13,8 @@
     <string name="saved_confirmation">Saved!</string>
     <string name="log_out_confirmation">Successfully logged out</string>
 
+    <string name="class_list_no_class">No upcoming classes :(</string>
+
     <string name="attend_class">RSVP!</string>
     <string name="remove_attendance">unRSVP</string>
 

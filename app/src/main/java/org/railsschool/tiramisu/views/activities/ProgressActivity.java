@@ -66,7 +66,7 @@ public abstract class ProgressActivity extends Activity {
                     _spinner.show();
                     _spinner.setContentView(R.layout.spinner); // Must be called after show()
                 },
-                500
+                300
             );
         }
     }

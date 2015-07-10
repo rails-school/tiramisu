@@ -24,7 +24,7 @@
 
                 <TextView
                     android:text="@string/settings_account_label"
-                    style="@style/FragmentSettingsLabel"
+                    style="@style/FragmentSettingsHeadline"
                     />
 
             </LinearLayout>
@@ -71,7 +71,7 @@
 
                 <TextView
                     android:text="@string/settings_reminder_label"
-                    style="@style/FragmentSettingsLabel"
+                    style="@style/FragmentSettingsHeadline"
                     />
 
             </LinearLayout>

@@ -12,4 +12,6 @@ public interface ILessonDAO {
     Lesson find(String slug);
 
     void save(Lesson lesson);
+
+    void truncateTable();
 }

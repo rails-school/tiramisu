@@ -23,11 +23,11 @@ class UserDAO extends BaseDAO implements IUserDAO {
         EMAIL_KEY                         = "email",
         SCHOOL_ID_KEY                     = "school_id",
         TOKEN_KEY                         = "token";
-    private SharedPreferences _preferenceDAL;
+    private SharedPreferences _keyValueDAL;
 
     public UserDAO(Realm dal, Context context) {
         super(dal);
-        this._preferenceDAL = context.getSharedPreferences(
+        this._keyValueDAL = context.getSharedPreferences(
             FILE_NAME,
             Context.MODE_PRIVATE
         );
@@ -56,32 +56,32 @@ class UserDAO extends BaseDAO implements IUserDAO {
 
     @Override
     public String getCurrentUserEmail() {
-        return _preferenceDAL.getString(EMAIL_KEY, null);
+        return _keyValueDAL.getString(EMAIL_KEY, null);
     }
 
     @Override
     public void setCurrentUserEmail(String value) {
-        _preferenceDAL.edit().putString(EMAIL_KEY, value).commit();
+        _keyValueDAL.edit().putString(EMAIL_KEY, value).commit();
     }
 
     @Override
     public String getCurrentUserToken() {
-        return _preferenceDAL.getString(TOKEN_KEY, null);
+        return _keyValueDAL.getString(TOKEN_KEY, null);
     }
 
     @Override
     public void setCurrentUserToken(String value) {
-        _preferenceDAL.edit().putString(TOKEN_KEY, value).commit();
+        _keyValueDAL.edit().putString(TOKEN_KEY, value).commit();
     }
 
     @Override
     public int getCurrentUserSchoolId() {
-        return _preferenceDAL.getInt(SCHOOL_ID_KEY, 0);
+        return _keyValueDAL.getInt(SCHOOL_ID_KEY, 0);
     }
 
     @Override
     public void setCurrentUserSchoolId(int value) {
-        _preferenceDAL.edit().putInt(SCHOOL_ID_KEY, value).commit();
+        _keyValueDAL.edit().putInt(SCHOOL_ID_KEY, value).commit();
     }
 
     @Override
@@ -91,12 +91,17 @@ class UserDAO extends BaseDAO implements IUserDAO {
 
     @Override
     public void logOut() {
-        _preferenceDAL
+        _keyValueDAL
             .edit()
             .remove(EMAIL_KEY)
             .remove(TOKEN_KEY)
             .remove(SCHOOL_ID_KEY)
             .commit();
+    }
+
+    @Override
+    public void truncateTable() {
+        getDAL().where(User.class).findAll().clear();
     }
 
     public void create(User user) {

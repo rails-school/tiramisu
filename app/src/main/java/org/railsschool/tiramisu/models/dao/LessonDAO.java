@@ -38,6 +38,11 @@ class LessonDAO extends BaseDAO implements ILessonDAO {
         }
     }
 
+    @Override
+    public void truncateTable() {
+        getDAL().where(Lesson.class).findAll().clear();
+    }
+
     public void create(Lesson lesson) {
         getDAL().executeTransaction(
             (dal) -> {

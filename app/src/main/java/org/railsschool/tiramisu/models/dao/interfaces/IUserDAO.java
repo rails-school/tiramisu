@@ -28,4 +28,6 @@ public interface IUserDAO {
     boolean hasCurrentUser();
 
     void logOut();
+
+    void truncateTable();
 }

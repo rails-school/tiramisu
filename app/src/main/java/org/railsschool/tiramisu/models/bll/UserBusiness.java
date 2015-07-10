@@ -233,4 +233,9 @@ class UserBusiness extends BaseBusiness implements IUserBusiness {
     public int getCurrentUserSchoolId() {
         return _userDAO.getCurrentUserSchoolId();
     }
+
+    @Override
+    public void cleanDatabase() {
+        _userDAO.truncateTable();
+    }
 }

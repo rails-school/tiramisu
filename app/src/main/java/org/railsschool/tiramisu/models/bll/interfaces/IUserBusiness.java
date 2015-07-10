@@ -70,4 +70,6 @@ public interface IUserBusiness {
     String getCurrentUserEmail();
 
     int getCurrentUserSchoolId();
+
+    void cleanDatabase();
 }

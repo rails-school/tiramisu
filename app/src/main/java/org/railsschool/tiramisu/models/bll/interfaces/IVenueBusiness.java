@@ -10,4 +10,6 @@ import org.railsschool.tiramisu.models.beans.Venue;
  */
 public interface IVenueBusiness {
     void get(int id, Action<Venue> success, Action<String> failure);
+
+    void cleanDatabase();
 }

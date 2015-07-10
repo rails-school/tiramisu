@@ -70,4 +70,6 @@ public interface ILessonBusiness {
      * @param dayAlarm
      */
     void engineAlarms(int periodMilli, Action<Lesson> twoHourAlarm, Action<Lesson> dayAlarm);
+
+    void cleanDatabase();
 }

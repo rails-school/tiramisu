@@ -73,4 +73,9 @@ class VenueBusiness extends BaseBusiness implements IVenueBusiness {
             );
         }
     }
+
+    @Override
+    public void cleanDatabase() {
+        _venueDAO.truncateTable();
+    }
 }

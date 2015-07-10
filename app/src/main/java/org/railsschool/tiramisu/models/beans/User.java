@@ -17,7 +17,7 @@ public class User extends RealmObject {
     private String email;
 
     /**
-     * Needed here for hiding last name within app too
+     * Needed here for hiding last name within the app too
      */
     private boolean hideLastName;
     private int     schoolId;

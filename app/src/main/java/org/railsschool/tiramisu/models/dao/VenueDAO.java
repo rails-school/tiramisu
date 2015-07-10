@@ -38,6 +38,11 @@ class VenueDAO extends BaseDAO implements IVenueDAO {
         }
     }
 
+    @Override
+    public void truncateTable() {
+        getDAL().where(Venue.class).findAll().clear();
+    }
+
     public void create(Venue venue) {
         getDAL().executeTransaction(
             (dal) -> {

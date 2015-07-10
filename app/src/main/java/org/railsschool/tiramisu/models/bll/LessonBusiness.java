@@ -309,4 +309,9 @@ class LessonBusiness extends BaseBusiness implements ILessonBusiness {
             }
         );
     }
+
+    @Override
+    public void cleanDatabase() {
+        _lessonDAO.truncateTable();
+    }
 }

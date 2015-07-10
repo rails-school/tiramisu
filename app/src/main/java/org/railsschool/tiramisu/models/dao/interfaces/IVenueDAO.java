@@ -12,4 +12,6 @@ public interface IVenueDAO {
     Venue find(int id);
 
     void save(Venue venue);
+
+    void truncateTable();
 }

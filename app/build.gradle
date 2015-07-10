@@ -2,15 +2,21 @@ apply plugin: 'com.android.application'
 apply plugin: 'org.robolectric'
 
 android {
-    // Needed for lambda functions
-    compileOptions {
+    signingConfigs {
+        config {
+            keyAlias 'RailsSchoolAndroidKey'
+            keyPassword(new File('signing/.key_password').text)
+            storeFile file('signing/rails_school_key_store.jks')
+            storePassword(new File('signing/.key_store_password').text)
+        }
+    }
+
+    compileOptions { // Needed for lambda functions
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
-
     defaultConfig {
         applicationId "org.railsschool.tiramisu"
         minSdkVersion 15
@@ -29,14 +35,13 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             testCoverageEnabled false
+            signingConfig signingConfigs.config
         }
     }
-
     productFlavors {
         app
         unitTest // Creates a new scope which wraps only unit tests
     }
-
     sourceSets {
         unitTest {
             java {
@@ -44,12 +49,10 @@ android {
             }
         }
     }
-
     lintOptions {
         // I prefer avoiding a build fail if there is any warning, for they are only warnings
         abortOnError false
     }
-
     // Prevent conflicts between Roboelectric's dependencies
     packagingOptions {
         exclude 'META-INF/services/javax.annotation.processing.Processor'

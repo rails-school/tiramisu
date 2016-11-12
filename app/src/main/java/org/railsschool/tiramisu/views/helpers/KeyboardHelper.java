@@ -6,8 +6,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 /**
- * @class KeyboardHelper
- * @brief
+ * Snippet from https://stackoverflow.com/q/7696791
  */
 public class KeyboardHelper {
     public static void hide(Activity activity) {
